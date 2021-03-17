@@ -6,30 +6,48 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    
-        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:TAP_DB"
         mc:Ignorable="d"
         xmlns:viewModel="clr-namespace:TAP_DB.ViewModel"
-  
-        Title="TapCH" Height="600" Width="1000">
-
+        Title="TapCH" Height="700" Width="1000">
 
     <Window.DataContext>
         <viewModel:MainVM/>
     </Window.DataContext>
-    <!--betterdatagrid:AutoFilterDataGrid-->
 
+    <Window.Resources>
+        <Storyboard x:Key="CloseMenu">
+            <DoubleAnimation Storyboard.TargetProperty="Width" Storyboard.TargetName="GridMenu"
+                        From="350" To="0" Duration="0:0:0.1"/>
+            <DoubleAnimation Storyboard.TargetProperty="Width" Storyboard.TargetName="ButtonOpen"
+                        From="0" To="30" Duration="0:0:0.1"/>
+        </Storyboard>
+        
+        <Storyboard x:Key="OpenMenu">
+            <DoubleAnimation Storyboard.TargetProperty="Width" Storyboard.TargetName="GridMenu"
+                        From="0" To="350" Duration="0:0:0.1"/>
+            <DoubleAnimation Storyboard.TargetProperty="Width" Storyboard.TargetName="ButtonOpen"
+                        From="30" To="0" Duration="0:0:0.1"/>
+        </Storyboard>
+    </Window.Resources>
 
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonClose">
+            <BeginStoryboard x:Name="CloseMenu_BeginStoryboard" Storyboard="{StaticResource CloseMenu}"></BeginStoryboard>
+        
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpen">
+            <BeginStoryboard x:Name="OpenMenu_BeginStoryboard" Storyboard="{StaticResource OpenMenu}"></BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
 
-
-
-    <Grid>
-
+    <Grid >
+     
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="350"/>
+            <ColumnDefinition    Width="{Binding ElementName=GridMenu, Path=Width}"  />
+
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -37,235 +55,216 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <!--<StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="10" >
-            <TextBlock  FontSize="15" Text="Число cовпадений: "/>
-            <TextBlock  FontSize="15" Text="{Binding AllTapCh.Rows.Count, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>-->
-
-        <Menu Height="auto" VerticalAlignment="Top" Grid.ColumnSpan="2">
-            <MenuItem Header="File" Height="20" >
-                <MenuItem Header="New Project" ></MenuItem>
-                <MenuItem Header="Open Project" >
-                    <MenuItem Header="WinForms"></MenuItem>
-                    <MenuItem Header="WPF" ></MenuItem>
-                </MenuItem>
-                <Separator />
-                <MenuItem Header="Exit" ></MenuItem>
-            </MenuItem>
-            <MenuItem Header="Edit" Height="20"  ></MenuItem>
-            <MenuItem Header="View" Height="20" ></MenuItem>
-        </Menu>
-
-        <StackPanel>
+        <Grid x:Name="GridMenu" Width="350"  Grid.Column="0" Grid.Row="1" >
             
-        </StackPanel>
+            <StackPanel >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <!--<Image Grid.Column="0" Height="50" Source="D:\УРОКИ С#\TAP_CH\TAP_DB\Resources\SMTT.jpg"/>-->
 
-        <ScrollViewer Grid.Row="1">
-           
+                    <Button Grid.Column="0" Width="150"
+                            HorizontalAlignment="Center"
+                            Background="Green"
+                            Content="Применить"
+                            Margin="5"/>
+                    <Button Grid.Column="1" Width="150"
+                            HorizontalAlignment="Center"
+                            Background="Red"
+                            Content="Очистить"
+                            Margin="5"/>
+                   
+                    <Button Grid.Column="2" 
+                VerticalAlignment="Top" 
+                Background="{x:Null}" 
+                x:Name="ButtonClose" 
+                HorizontalAlignment="Right"
+                BorderBrush="{x:Null}"
+                Width="30"
+                Height="30"
+                Padding="0">
+                        <materialDesign:PackIcon Background="Blue" Kind="ArrowCollapseLeft" Width="15" Height="15" Opacity="0.7" HorizontalAlignment="Center" VerticalAlignment="Center"></materialDesign:PackIcon>
+                    </Button>
+                </Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
-            <StackPanel Grid.Column="0" Margin="5" >
-                
-
-                    <!--<TreeView >
-                <TreeViewItem Header="Производитель" Focusable="False" Background="Aqua" BorderBrush="Aqua" Foreground="Gray">
-                  
-                    <TreeView ItemsSource="{Binding AllManufactures}" Foreground="Gray">
-                        <TreeView.ItemTemplate >
-                            <HierarchicalDataTemplate >
-                                <CheckBox Content="{Binding Manufacturer}" Foreground="Gray"></CheckBox>
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
-                    </TreeView>
-                </TreeViewItem>               
-            </TreeView>-->
-
-
-
-                <!--<GroupBox Grid.Column="0" Header="Завод изготовитель, кВ" Style="{StaticResource MaterialDesignCardGroupBox}">
-                    <ListView ItemsSource="{Binding AllManufactures}"
-                      
-                      FontSize="15" >
-
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <CheckBox Width="300" Content="{Binding Manufacturer}" Style="{StaticResource MaterialDesignUserForegroundCheckBox}">
-                                </CheckBox>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-
-                    </ListView>
-
-                </GroupBox>-->
-
-                <GroupBox Grid.Column="0" Header="Основные характеристики" Style="{StaticResource MaterialDesignGroupBox }">
-                    <StackPanel>
-                        <TextBox materialDesign:HintAssist.Hint="Наибольший рабочий ток, А" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding MaxCurrent, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="Наибольший установившийся ток КЗ, кА" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Itermal, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="Наибольший ударный ток КЗ, кА" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Idinamic, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">                
-                            
-
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="Наибольшее рабочее напряжение, кВ" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Urms, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="Мощность ступени, кВА" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        
-                        
-                        
-                    </StackPanel>
-                </GroupBox>
+                </Grid>
 
 
-
-                <GroupBox Grid.Column="1" Header="Испытательное напряжение, кВ" Style="{StaticResource MaterialDesignGroupBox }">
-                    <StackPanel>
-                        <TextBox materialDesign:HintAssist.Hint="Импульсное на землю" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="КПЧ на землю" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="Импульсное на диапазон" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="КПЧ на диапазон" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="Импульсное ступени" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="КПЧ ступени" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="Импульсное межфазное" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="КПЧ межфазное" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                    </StackPanel>
-                </GroupBox>
-
-
-                <GroupBox Grid.Column="1" Header="Число переключений" Style="{StaticResource MaterialDesignGroupBox }">
-                    <StackPanel>
-                        <TextBox materialDesign:HintAssist.Hint="Переключений до ревиизии" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="До замены контактов" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-                        <TextBox materialDesign:HintAssist.Hint="Механический ресурс" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
-                     Height="auto" TextWrapping="Wrap">
-                        </TextBox>
-
-
-                    </StackPanel>
-                </GroupBox>
 
 
 
             </StackPanel>
+            <ScrollViewer Margin="0,50,0,0"  >
 
-        </ScrollViewer>
+                <StackPanel   Margin="5,0,0,0" >
+
+
+
+                    <GroupBox  Header="Основные характеристики" Style="{StaticResource MaterialDesignGroupBox }">
+                        <StackPanel>
+                            <TextBox materialDesign:HintAssist.Hint="Наибольший рабочий ток, А" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding MaxCurrent, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="Наибольший установившийся ток КЗ, кА" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding Itermal, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="Наибольший ударный ток КЗ, кА" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding Idinamic, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+
+
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="Наибольшее рабочее напряжение, кВ" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding Urms, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="Мощность ступени, кВА" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+
+
+
+                        </StackPanel>
+                    </GroupBox>
+
+
+                    <GroupBox  Header="Испытательное напряжение, кВ" Style="{StaticResource MaterialDesignGroupBox }">
+                        <StackPanel>
+                            <TextBox materialDesign:HintAssist.Hint="Импульсное на землю" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding LI_kV, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="КПЧ на землю" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding KV50Hz1min, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="Импульсное на диапазон" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding LI_b1, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="КПЧ на диапазон" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding AC_b1, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="Импульсное ступени" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding LI_a0, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="КПЧ ступени" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding AC_a0, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="Импульсное межфазное" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding LI_b2, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="КПЧ межфазное" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding AC_b2, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                        </StackPanel>
+                    </GroupBox>
+
+
+                    <GroupBox   Header="Число переключений" Style="{StaticResource MaterialDesignGroupBox }">
+                        <StackPanel>
+                            <TextBox materialDesign:HintAssist.Hint="Переключений до ревиизии" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding Number_select_to_revisions, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="До замены контактов" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding Number_select_to_change_contact, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="Механический ресурс" FontSize="15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding Number_select_mechanical, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Height="auto" TextWrapping="Wrap">
+                            </TextBox>
+
+
+                        </StackPanel>
+                    </GroupBox>
+
+
+
+                </StackPanel>
+
+            </ScrollViewer>
+
+        </Grid>
+
+
+
+
+        <Grid Grid.Row="1" Grid.Column="1"    >
+            <Syncfusion:SfDataGrid  Margin="5"
+                  AutoGenerateColumns="False" 
+                  ColumnSizer="Auto"          
+                  ItemsSource="{Binding AllTapCh, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"                
+                  ShowGroupDropArea="True" AllowFiltering="True"   >
+
+                <Syncfusion:SfDataGrid.Columns>
+                    <Syncfusion:GridTextColumn HeaderText="Наименование"     MappingName="Column1"         ValueBinding="{Binding Column1}"/>
+                    <Syncfusion:GridTextColumn HeaderText="Число фаз"        MappingName="Phaze_number"    ValueBinding="{Binding Phaze_number}"/>
+                    <Syncfusion:GridTextColumn HeaderText="Место установки"  MappingName="Details"         ValueBinding="{Binding Details}" />
+                    <Syncfusion:GridTextColumn HeaderText="Ток, А"           MappingName="I_A"             ValueBinding="{Binding I_A}"/>
+                    <Syncfusion:GridTextColumn HeaderText="Ток т.с., кА"     MappingName="Iterm_kA"        ValueBinding="{Binding Iterm_kA}"/>
+                    <Syncfusion:GridTextColumn HeaderText="Ток д.с., кА"     MappingName="Idinamic_kA"     ValueBinding="{Binding Idinamic_kA}"/>
+                    <Syncfusion:GridTextColumn HeaderText="Um,кВ"            MappingName="Um_kV_rms"       ValueBinding="{Binding Um_kV_rms}"/>
+                    <Syncfusion:GridTextColumn HeaderText="Избиратель"       MappingName="Izbiratel_value" ValueBinding="{Binding Izbiratel_value}" />
+                    <Syncfusion:GridTextColumn HeaderText="Тип контактора"   MappingName="Contact_type"    ValueBinding="{Binding Contact_type}"/>
+                    <Syncfusion:GridTextColumn HeaderText="Схема соединения" MappingName="Shema"           ValueBinding="{Binding Shema}" />
+                    <Syncfusion:GridTextColumn HeaderText="Тип"              MappingName="Type"            ValueBinding="{Binding Type}"/>
+                    <Syncfusion:GridTextColumn HeaderText="Серия"            MappingName="Seria"           ValueBinding="{Binding Seria}"/>
+                </Syncfusion:SfDataGrid.Columns>
+            </Syncfusion:SfDataGrid>
+        </Grid>
 
        
 
 
-        <Syncfusion:SfDataGrid Grid.Row="1"
-                  AutoGenerateColumns="False" 
-                  ColumnSizer="Auto"          
-                  ItemsSource="{Binding AllTapCh, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"                
-                  Grid.Column="1" ShowGroupDropArea="True" AllowFiltering="True"   >
 
+        <Button Grid.Column="1" 
+                Grid.Row="1" 
+                VerticalAlignment="Top" 
+                Background="{x:Null}" 
+                x:Name="ButtonOpen" 
+                HorizontalAlignment="Left"
+                BorderBrush="{x:Null}"
+                Width="0"
+                Height="30"
+                Padding="0">
 
-
-            <Syncfusion:SfDataGrid.Columns>
-                <Syncfusion:GridTextColumn HeaderText="Наименование"     MappingName="Column1"         ValueBinding="{Binding Column1}"/>
-                <Syncfusion:GridTextColumn HeaderText="Число фаз"        MappingName="Phaze_number"    ValueBinding="{Binding Phaze_number}"/>
-                <Syncfusion:GridTextColumn HeaderText="Место установки"  MappingName="Details"         ValueBinding="{Binding Details}" />
-                <Syncfusion:GridTextColumn HeaderText="Ток, А"           MappingName="I_A"             ValueBinding="{Binding I_A}"/>
-                <Syncfusion:GridTextColumn HeaderText="Ток т.с., кА"     MappingName="Iterm_kA"        ValueBinding="{Binding Iterm_kA}"/>
-                <Syncfusion:GridTextColumn HeaderText="Ток д.с., кА"     MappingName="Idinamic_kA"     ValueBinding="{Binding Idinamic_kA}"/>
-                <Syncfusion:GridTextColumn HeaderText="Um,кВ"            MappingName="Um_kV_rms"       ValueBinding="{Binding Um_kV_rms}"/>
-                <Syncfusion:GridTextColumn HeaderText="Избиратель"       MappingName="Izbiratel_value" ValueBinding="{Binding Izbiratel_value}" />
-                <Syncfusion:GridTextColumn HeaderText="Тип контактора"   MappingName="Contact_type"    ValueBinding="{Binding Contact_type}"/>
-                <Syncfusion:GridTextColumn HeaderText="Схема соединения" MappingName="Shema"           ValueBinding="{Binding Shema}" />
-                <Syncfusion:GridTextColumn HeaderText="Тип"              MappingName="Type"            ValueBinding="{Binding Type}"/>
-                <Syncfusion:GridTextColumn HeaderText="Серия"            MappingName="Seria"           ValueBinding="{Binding Seria}"/> 
-            </Syncfusion:SfDataGrid.Columns>
-
-
-
-
-
-
-            <!--<DataGrid.Columns>
-                <DataGridTextColumn Header="Название" Binding="{Binding Column1}"/>
-                <DataGridTextColumn Header="Число фаз" Binding="{Binding Phaze_number}" />
-                <DataGridTextColumn Header="Место установки" Binding="{Binding Details}" />
-                <DataGridTextColumn Header="Ток, А" Binding="{Binding I_A}"/>
-                <DataGridTextColumn Header="Ток т.с., кА" Binding="{Binding Iterm_kA}"/>
-                <DataGridTextColumn Header="Ток д.с., кА" Binding="{Binding Idinamic_kA}"/>
-                <DataGridTextColumn Header="Um,кВ" Binding="{Binding Um_kV_rms}"/>
-                <DataGridTextColumn Header="Избиратель" Binding="{Binding Izbiratel_value}" />
-                <DataGridTextColumn Header="Тип контактора" Binding="{Binding Contact_type}"/>
-
-
-                <DataGridTextColumn Header="Схема соединения" Binding="{Binding Shema}" />
-                <DataGridTextColumn Header="Тип" Binding="{Binding Type}"/>
-                <DataGridTextColumn Header="Серия" Binding="{Binding Seria}"/>-->
-
-
-            <!--</DataGrid.Columns>-->
-
-
-
-        </Syncfusion:SfDataGrid>
-
-
-
-
+            <materialDesign:PackIcon Background="Blue" Kind="ArrowCollapseRight" Width="15" Height="15" HorizontalAlignment="Stretch" VerticalAlignment="Top" Opacity="0.7"></materialDesign:PackIcon>
+        </Button>
 
 
 

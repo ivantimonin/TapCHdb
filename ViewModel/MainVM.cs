@@ -15,8 +15,7 @@ using System.Windows;
 namespace TAP_DB.ViewModel
 {
     class MainVM:INotifyPropertyChanged
-    {
-        
+    {        
         private string sst = "0";
         public string Sst
         {
@@ -32,7 +31,7 @@ namespace TAP_DB.ViewModel
                     sst = value;
                 }
                 OnPropertyChanged();
-                //QueryAllTap();
+                QueryAllTap();
             }
         }
 
@@ -51,7 +50,7 @@ namespace TAP_DB.ViewModel
                     urms = value;
                 }
                 OnPropertyChanged();
-                //QueryAllTap();
+                QueryAllTap();
 
             }
         }
@@ -72,7 +71,29 @@ namespace TAP_DB.ViewModel
                     shema_perekl = "'"+value+"'";
                 }                
                 OnPropertyChanged();
-                //QueryAllTap();
+                QueryAllTap();
+
+            }
+        }
+
+
+        private string lI_kV = "0";
+        public string LI_kV
+        {
+            get { return lI_kV; }
+            set
+            {
+
+                if (value == "")
+                {
+                    lI_kV = "0";
+                }
+                else
+                {
+                    lI_kV = value;
+                }
+                OnPropertyChanged();
+                QueryAllTap();
 
             }
         }
@@ -116,7 +137,7 @@ namespace TAP_DB.ViewModel
                     itermal = value;
                 }
                 OnPropertyChanged();
-                //QueryAllTap();
+                QueryAllTap();
             }
         }
 
@@ -135,7 +156,7 @@ namespace TAP_DB.ViewModel
                     idinamic = value;
                 }
                 OnPropertyChanged();
-                //QueryAllTap();
+                QueryAllTap();
             }
         }
 
@@ -156,9 +177,204 @@ namespace TAP_DB.ViewModel
                     maxCurrent = value;
                 }               
                 OnPropertyChanged();
-                //QueryAllTap();
+                QueryAllTap();
             }
         }
+
+        private string kV50Hz1min = "0";
+        public string KV50Hz1min
+        {
+            get { return kV50Hz1min; }
+            set
+            {
+                if (value == "")
+                {
+                    kV50Hz1min = "0";
+                }
+                else
+                {
+                    kV50Hz1min = value;
+                }
+                OnPropertyChanged();
+                QueryAllTap();
+            }
+        }
+
+        private string lI_b1 = "0";
+        public string LI_b1
+        {
+            get { return lI_b1; }
+            set
+            {
+                if (value == "")
+                {
+                    lI_b1 = "0";
+                }
+                else
+                {
+                    lI_b1 = value;
+                }
+                OnPropertyChanged();
+                QueryAllTap();
+            }
+        }
+
+        private string aC_b1 = "0";
+        public string AC_b1
+        {
+            get { return lI_b1; }
+            set
+            {
+                if (value == "")
+                {
+                    aC_b1 = "0";
+                }
+                else
+                {
+                    aC_b1 = value;
+                }
+                OnPropertyChanged();
+                QueryAllTap();
+            }
+        }
+
+        private string lI_a0 = "0";
+        public string LI_a0
+        {
+            get { return lI_a0; }
+            set
+            {
+                if (value == "")
+                {
+                    lI_a0 = "0";
+                }
+                else
+                {
+                    lI_a0 = value;
+                }
+                OnPropertyChanged();
+                QueryAllTap();
+            }
+        }
+
+        private string aC_a0 = "0";
+        public string AC_a0
+        {
+            get { return aC_a0; }
+            set
+            {
+                if (value == "")
+                {
+                    aC_a0 = "0";
+                }
+                else
+                {
+                    aC_a0 = value;
+                }
+                OnPropertyChanged();
+                QueryAllTap();
+            }
+        }
+
+        private string lI_b2 = "0";
+        public string LI_b2
+        {
+            get { return lI_b2; }
+            set
+            {
+                if (value == "")
+                {
+                    lI_b2 = "0";
+                }
+                else
+                {
+                    lI_b2 = value;
+                }
+                OnPropertyChanged();
+                QueryAllTap();
+            }
+        }
+
+        private string aC_b2 = "0";
+        public string AC_b2
+        {
+            get { return aC_b2; }
+            set
+            {
+                if (value == "")
+                {
+                    aC_b2 = "0";
+                }
+                else
+                {
+                    aC_b2 = value;
+                }
+                OnPropertyChanged();
+                QueryAllTap();
+            }
+        }
+
+        private string number_select_to_revisions = "0";
+        public string Number_select_to_revisions
+        {
+            get { return number_select_to_revisions; }
+            set
+            {
+                if (value == "")
+                {
+                    number_select_to_revisions = "0";
+                }
+                else
+                {
+                    number_select_to_revisions = value;
+                }
+                OnPropertyChanged();
+                QueryAllTap();
+            }
+        }
+
+        private string number_select_to_change_contact = "0";
+        public string Number_select_to_change_contact
+        {
+            get { return number_select_to_change_contact; }
+            set
+            {
+                if (value == "")
+                {
+                    number_select_to_change_contact = "0";
+                }
+                else
+                {
+                    number_select_to_change_contact = value;
+                }
+                OnPropertyChanged();
+                QueryAllTap();
+            }
+        }
+
+        private string number_select_mechanical = "0";
+        public string Number_select_mechanical
+        {
+            get { return number_select_mechanical; }
+            set
+            {
+                if (value == "")
+                {
+                    number_select_mechanical = "0";
+                }
+                else
+                {
+                    number_select_mechanical = value;
+                }
+                OnPropertyChanged();
+                QueryAllTap();
+            }
+        }
+
+
+
+
+
 
         private DataTable allManufactures;
         public DataTable AllManufactures
@@ -250,8 +466,7 @@ namespace TAP_DB.ViewModel
                       "Um_kV_rms " +
                       ",[kV50Hz1min] " +
                       ",[SI_kV] " +
-                      ",[LI_kV] " +
-                      "Izbiratel_value " +
+                      ",[LI_kV] " +                     
                       ",[Izbiratel_value] " +
                       ",[LI_a0] " +
                       ",[LI_b1] " +
@@ -295,7 +510,18 @@ namespace TAP_DB.ViewModel
                         $"Iterm_kA>={itermal} and "+
                         $"Idinamic_kA>={idinamic} and "+
                         $"Um_kV_rms>={urms} and "+
-                        $"S_kVA>={sst}");
+                        $"S_kVA>={sst} and "+
+                        $"LI_kV>={lI_kV} and "+
+                        $"kV50Hz1min>={kV50Hz1min} and "+
+                        $"LI_b1>={lI_b1} and "+
+                        $"AC_b1>={aC_b1} and "+
+                        $"LI_a0>={lI_a0} and "+
+                        $"AC_a0>={aC_a0} and "+
+                        $"LI_b2>={lI_b2} and "+
+                        $"AC_b2>={aC_b2} and "+
+                        $"Number_select_to_revisions>={number_select_to_revisions} and "+
+                        $"Number_select_to_change_contact>={number_select_to_change_contact} and "+
+                        $"Number_select_mechanical>={number_select_mechanical}");
 
                 #endregion         
             }
