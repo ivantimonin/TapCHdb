@@ -93,12 +93,14 @@
                             HorizontalAlignment="Center"
                             Background="Green"
                             Content="Применить"
-                            Margin="5"/>
+                            Margin="5"
+                            Command="{Binding DoQuery, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Grid.Column="1" Width="150"
                             HorizontalAlignment="Center"
                             Background="Red"
-                            Content="Очистить"
-                            Margin="5"/>
+                            Content="Сбросить"
+                            Margin="5"
+                            Command="{Binding ClearInputData, UpdateSourceTrigger=PropertyChanged}"/>
                    
                     <Button Grid.Column="2" 
                 VerticalAlignment="Top" 
@@ -135,30 +137,30 @@
                         <StackPanel>
                             <TextBox materialDesign:HintAssist.Hint="Наибольший рабочий ток, А" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding MaxCurrent, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding MaxCurrent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="Наибольший установившийся ток КЗ, кА" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Itermal, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding Itermal, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="Наибольший ударный ток КЗ, кА" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Idinamic, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding Idinamic, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
 
 
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="Наибольшее рабочее напряжение, кВ" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Urms, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding Urms, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
 
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="Мощность ступени, кВА" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
 
@@ -172,42 +174,42 @@
                         <StackPanel>
                             <TextBox materialDesign:HintAssist.Hint="Импульсное на землю" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding LI_kV, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding LI_kV, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="КПЧ на землю" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding KV50Hz1min, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding KV50Hz1min, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="Импульсное на диапазон" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding LI_b1, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding LI_b1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="КПЧ на диапазон" FontSize="15"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding AC_b1, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                     Text="{Binding AC_b1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="Импульсное ступени" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding LI_a0, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding LI_a0, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="КПЧ ступени" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding AC_a0, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding AC_a0, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="Импульсное межфазное" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding LI_b2, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding LI_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="КПЧ межфазное" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding AC_b2, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding AC_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                         </StackPanel>
@@ -218,17 +220,17 @@
                         <StackPanel>
                             <TextBox materialDesign:HintAssist.Hint="Переключений до ревиизии" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Number_select_to_revisions, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding Number_select_to_revisions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="До замены контактов" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Number_select_to_change_contact, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding Number_select_to_change_contact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
                             <TextBox materialDesign:HintAssist.Hint="Механический ресурс" FontSize="15"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Number_select_mechanical, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource, Delay=500}" 
+                     Text="{Binding Number_select_mechanical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}" 
                      Height="auto" TextWrapping="Wrap">
                             </TextBox>
 

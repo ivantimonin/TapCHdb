@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FindInWord.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,7 +11,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace TAP_DB.ViewModel
 {
@@ -222,7 +224,7 @@ namespace TAP_DB.ViewModel
         private string aC_b1 = "0";
         public string AC_b1
         {
-            get { return lI_b1; }
+            get { return aC_b1; }
             set
             {
                 if (value == "")
@@ -390,8 +392,13 @@ namespace TAP_DB.ViewModel
         string connectionString;
         SqlConnection sqlConnection;
 
+        public ICommand DoQuery { get; private set; }
+        public ICommand ClearInputData { get; private set; }
+
         public MainVM()
         {
+            ClearInputData = new DelegateCommand(ClearInputDataFunctiun);
+            DoQuery = new DelegateCommand(QueryAllTap);
             try
             {
                 connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;//достаем строку подключения из config
@@ -410,7 +417,27 @@ namespace TAP_DB.ViewModel
             
         }
 
-       
+
+        public void ClearInputDataFunctiun(object obj)
+        {
+            MaxCurrent = "";
+            Itermal = "";
+            Idinamic = "";
+            Urms = "";
+            Sst = "";
+            LI_kV = "";
+            KV50Hz1min = "";
+            LI_b1 = "";
+            AC_b1 = "";
+            LI_a0 = "";
+            AC_a0 = "";
+            LI_b2 = "";
+            AC_b2 = "";
+            Number_select_to_revisions = "";
+            Number_select_to_change_contact = "";
+            Number_select_mechanical = "";
+            QueryAllTap();
+        }
 
 
 
@@ -443,9 +470,8 @@ namespace TAP_DB.ViewModel
 
 
 
-        public void QueryAllTap()
-        {
-            //MessageBox.Show("dddddd");
+        public void QueryAllTap(object obj=null)
+        {            
             try
             {           
                 #region Query
