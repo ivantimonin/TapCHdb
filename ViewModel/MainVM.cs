@@ -14,7 +14,7 @@ using System.Windows;
 
 namespace TAP_DB.ViewModel
 {
-    class MainVM:INotifyPropertyChanged
+    partial class MainVM:INotifyPropertyChanged
     {        
         private string sst = "0";
         public string Sst
@@ -31,7 +31,7 @@ namespace TAP_DB.ViewModel
                     sst = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+                //QueryAllTap();
             }
         }
 
@@ -50,7 +50,7 @@ namespace TAP_DB.ViewModel
                     urms = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+                //QueryAllTap();
 
             }
         }
@@ -71,7 +71,7 @@ namespace TAP_DB.ViewModel
                     shema_perekl = "'"+value+"'";
                 }                
                 OnPropertyChanged();
-                QueryAllTap();
+                //QueryAllTap();
 
             }
         }
@@ -93,7 +93,7 @@ namespace TAP_DB.ViewModel
                     lI_kV = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+                //QueryAllTap();
 
             }
         }
@@ -137,7 +137,7 @@ namespace TAP_DB.ViewModel
                     itermal = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+               // QueryAllTap();
             }
         }
 
@@ -156,7 +156,7 @@ namespace TAP_DB.ViewModel
                     idinamic = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+               // QueryAllTap();
             }
         }
 
@@ -177,7 +177,7 @@ namespace TAP_DB.ViewModel
                     maxCurrent = value;
                 }               
                 OnPropertyChanged();
-                QueryAllTap();
+               // QueryAllTap();
             }
         }
 
@@ -196,7 +196,7 @@ namespace TAP_DB.ViewModel
                     kV50Hz1min = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+                //QueryAllTap();
             }
         }
 
@@ -215,7 +215,7 @@ namespace TAP_DB.ViewModel
                     lI_b1 = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+                //QueryAllTap();
             }
         }
 
@@ -234,7 +234,7 @@ namespace TAP_DB.ViewModel
                     aC_b1 = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+                //QueryAllTap();
             }
         }
 
@@ -253,7 +253,7 @@ namespace TAP_DB.ViewModel
                     lI_a0 = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+               // QueryAllTap();
             }
         }
 
@@ -272,7 +272,7 @@ namespace TAP_DB.ViewModel
                     aC_a0 = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+                //QueryAllTap();
             }
         }
 
@@ -291,7 +291,7 @@ namespace TAP_DB.ViewModel
                     lI_b2 = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+                //QueryAllTap();
             }
         }
 
@@ -310,7 +310,7 @@ namespace TAP_DB.ViewModel
                     aC_b2 = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+                //QueryAllTap();
             }
         }
 
@@ -329,7 +329,7 @@ namespace TAP_DB.ViewModel
                     number_select_to_revisions = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+              //  QueryAllTap();
             }
         }
 
@@ -348,7 +348,7 @@ namespace TAP_DB.ViewModel
                     number_select_to_change_contact = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+               // QueryAllTap();
             }
         }
 
@@ -367,7 +367,7 @@ namespace TAP_DB.ViewModel
                     number_select_mechanical = value;
                 }
                 OnPropertyChanged();
-                QueryAllTap();
+               // QueryAllTap();
             }
         }
 
@@ -407,7 +407,6 @@ namespace TAP_DB.ViewModel
             {
                 MessageBox.Show($"{ex.Message}");
             }         
-
             
         }
 
