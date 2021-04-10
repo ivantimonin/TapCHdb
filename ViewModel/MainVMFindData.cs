@@ -19,8 +19,8 @@ namespace TAP_DB.ViewModel
                 selectedItem = value;
                 
                 if (selectedItem != null)
-                {                   
-                    
+                {
+                    TapCHname = Convert.ToString(selectedItem[0]);
                     MaxCurrentSelected = Convert.ToString(selectedItem[6]);
                     ItermalSelected = Convert.ToString(selectedItem[7]);
                     IdinamiclSelected = Convert.ToString(selectedItem[8]);
@@ -39,11 +39,65 @@ namespace TAP_DB.ViewModel
                     AC_b1Selected = Convert.ToString(selectedItem[23]);                  
                     AC_b2Selected = Convert.ToString(selectedItem[24]);
 
-                    Number_select_to_revisionsSelected = Convert.ToString(selectedItem[29]);
-                    Number_select_to_change_contactSelected = Convert.ToString(selectedItem[30]);
-                    Number_select_mechanicalSelected= Convert.ToString(selectedItem[31]);
+                    Number_select_to_revisionsSelected = Convert.ToString(selectedItem[28]);
+                    Number_select_to_change_contactSelected = Convert.ToString(selectedItem[29]);
+                    Number_select_mechanicalSelected= Convert.ToString(selectedItem[30]);
                     OnPropertyChanged();
                 }
+            }
+        }
+        /// <summary>
+        /// Схема переключения
+        /// </summary>
+        private DataRowView selectedItemShem;
+        public DataRowView SelectedItemShem
+        {
+            get { return selectedItemShem; }
+            set
+            {
+                selectedItemShem = value;
+
+                if (selectedItemShem != null)
+                {
+                    ShemaСoncretCH = Convert.ToString(selectedItemShem[1]);                                      
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Наименовние схемы для типа РПН
+        /// </summary>
+        private string shemaСoncretCH;
+        public string ShemaСoncretCH
+        {
+            get
+            {
+                return shemaСoncretCH;
+            }
+            set
+            {
+                shemaСoncretCH = value;               
+                OnPropertyChanged();
+            }
+        }
+      
+
+        /// <summary>
+        /// Наименовние найденного РПН
+        /// </summary>
+        private string tapCHname;
+        public string TapCHname
+        {
+            get
+            {
+                return tapCHname;
+            }
+            set
+            {
+                tapCHname = value;
+                QueryAllShem();
+                OnPropertyChanged();
             }
         }
 
