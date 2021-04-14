@@ -101,6 +101,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
+        /// <summary>
+        /// Ресурс механической стойкости
+        /// </summary>
         private string number_select_mechanicalSelected;
         public string Number_select_mechanicalSelected
         {
@@ -115,6 +118,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
+        /// <summary>
+        /// Число переключений до замены контактов
+        /// </summary>
         private string number_select_to_change_contactSelected;
         public string Number_select_to_change_contactSelected
         {
@@ -129,7 +135,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Число переключений до ревизии
+        /// </summary>
         private string number_select_to_revisionsSelected;
         public string Number_select_to_revisionsSelected
         {
@@ -144,6 +152,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
+        /// <summary>
+        /// КПЧ межфазное
+        /// </summary>
         private string aC_b2Selected;
         public string AC_b2Selected
         {
@@ -153,7 +164,7 @@ namespace TAP_DB.ViewModel
             }
             set
             {
-                if (Convert.ToString(selectedItem[4]) == "I")//если число фаз равно 1 (тогда медуфазного напряжения нет)
+                if (selectedItem != null && Convert.ToString(selectedItem[4]) == "I")//если число фаз равно 1 (тогда медуфазного напряжения нет)
                 {
                     aC_b2Selected = "-";
                 }
@@ -165,6 +176,7 @@ namespace TAP_DB.ViewModel
             }
         }
 
+
         private string lI_b2Selected;
         public string LI_b2Selected
         {
@@ -174,14 +186,14 @@ namespace TAP_DB.ViewModel
             }
             set
             {
-                if (Convert.ToString(selectedItem[4]) == "I")//если число фаз равно 1 (тогда медуфазного напряжения нет)
-                {
+                if (selectedItem != null && Convert.ToString(selectedItem[4]) == "I")//если число фаз равно 1 (тогда медуфазного напряжения нет)
+                    {
                     lI_b2Selected = "-";
                 }
                 else
                 {
                     lI_b2Selected = value;
-                }            
+                }
                 OnPropertyChanged();
             }
         }
@@ -299,6 +311,9 @@ namespace TAP_DB.ViewModel
             }            
         }
 
+        /// <summary>
+        /// Выбранный рабочий ток
+        /// </summary>
         private string maxCurrentSelected;
         public string MaxCurrentSelected
         {
@@ -313,6 +328,9 @@ namespace TAP_DB.ViewModel
             }           
         }
 
+        /// <summary>
+        /// Ток термической стойкости выбранный
+        /// </summary>
         private string itermalSelected;
         public string ItermalSelected
         {

@@ -461,8 +461,7 @@ namespace TAP_DB.ViewModel
         /// </summary>
         /// <param name="obj"></param>
         public  void ClearInputDataFunctiun(object obj)
-        {          
-                       
+        {                       
             MaxCurrent = "";
             Itermal = "";
             Idinamic = "";
@@ -479,11 +478,26 @@ namespace TAP_DB.ViewModel
             Number_select_to_revisions = "";
             Number_select_to_change_contact = "";
             Number_select_mechanical = "";
-            
 
+            Number_select_mechanicalSelected = "";
+            TapCHname = "";
+            ShemaСoncretCH = "";
+            Number_select_to_revisionsSelected = "";
+            AC_b2Selected = "";
+            LI_b2Selected = "";
+            AC_a0Selected = "";
+            LI_a0Selected = "";
+            AC_b1Selected = "";
+            KV50Hz1minSelected = "";
+            LI_kVSelected = "";
+            IdinamiclSelected = "";
+            UrmsSelected = "";
+            SstSelected = "";
+            MaxCurrentSelected = "";
+            ItermalSelected = "";
+            LI_b1Selected = "";
+            Number_select_to_change_contactSelected = "";
             QueryAllTap();
-         
-
         }
 
 
@@ -577,8 +591,6 @@ namespace TAP_DB.ViewModel
                 //             select AllTapCh;
 
                 //AllTapCh = Allrow.CopyToDataTable();
-
-
             }
 
         }
@@ -589,15 +601,10 @@ namespace TAP_DB.ViewModel
             IsBusy = true;
             await Task.Run(() =>
             {
-                
-
-
-
                 if (VariantOfReading == "DB")
                 {
                     try
                     {
-
                         #region Query
                         AllTapCh = Select("USE TAP_CHANGER " +
                       "SELECT DISTINCT TOP (10000)" +
