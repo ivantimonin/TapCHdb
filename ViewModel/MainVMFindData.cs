@@ -10,6 +10,9 @@ namespace TAP_DB.ViewModel
 {
     partial class MainVM
     {
+        /// <summary>
+        /// Выбранная строка в таблице с РПН
+        /// </summary>
         private DataRowView selectedItem;
         public DataRowView SelectedItem
         {
@@ -46,6 +49,7 @@ namespace TAP_DB.ViewModel
                 }
             }
         }
+       
         /// <summary>
         /// Схема переключения
         /// </summary>
@@ -176,7 +180,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Импульсное межфазное
+        /// </summary>
         private string lI_b2Selected;
         public string LI_b2Selected
         {
@@ -198,6 +204,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
+        /// <summary>
+        /// КПЧ ступени
+        /// </summary>
         private string aC_a0Selected;
         public string AC_a0Selected
         {
@@ -212,6 +221,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
+        /// <summary>
+        /// Импульсное ступени
+        /// </summary>
         private string lI_a0Selected;
         public string LI_a0Selected
         {
@@ -226,6 +238,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
+        /// <summary>
+        /// КПЧ на диапазон
+        /// </summary>
         private string aC_b1Selected;
         public string AC_b1Selected
         {
@@ -240,6 +255,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
+        /// <summary>
+        /// КПЧ на землю
+        /// </summary>
         private string kV50Hz1minSelected;
         public string KV50Hz1minSelected
         {
@@ -254,7 +272,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Импульсное на землю
+        /// </summary>
         private string lI_kVSelected;
         public string LI_kVSelected
         {
@@ -269,6 +289,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
+        /// <summary>
+        /// Наибольший ударный ток
+        /// </summary>
         private string idinamiclSelected;
         public string IdinamiclSelected
         {
@@ -283,6 +306,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
+        /// <summary>
+        /// Наибольшее рабочее напряжение, кВ
+        /// </summary>
         private string urmsSelected;
         public string UrmsSelected
         {
@@ -297,6 +323,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
+        /// <summary>
+        /// Мощность ступени, кВА
+        /// </summary>
         private string sstSelected;
         public string SstSelected
         {
@@ -345,6 +374,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
+        /// <summary>
+        /// Импульсное на диапазон
+        /// </summary>
         private string lI_b1Selected;
         public string LI_b1Selected
         {

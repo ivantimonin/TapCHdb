@@ -19,34 +19,66 @@
     <Window.Resources>
 
         <Style TargetType="Syncfusion:SfDataGrid" x:Key="SfDataGridStyle">
-            <Setter Property="NavigationMode" Value="Row"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="AllowResizingColumns" Value="True"/>
-            <Setter Property="AllowDraggingColumns" Value="True"/>
-            <Setter Property="AutoGenerateColumns" Value="False"/>
-            <Setter Property="IsReadOnly" Value="True"/>
-            <Setter Property="SelectionUnit" Value="Row"/>
-            <Setter Property="EnableDataVirtualization" Value="True"/>
-            <Setter Property="RowSelectionBrush" Value="#C71585"/>
-            <Setter Property="SelectionForegroundBrush" Value="White"/>
-            <Setter Property="ShowGroupDropArea" Value="True"/>
-            <Setter Property="AllowFiltering" Value="True"/>            
-            <Setter Property="Height" Value="auto"/>
-            <Setter Property="ColumnSizer" Value="Auto"></Setter>
-
+            <Style.Setters>
+                <Setter Property="NavigationMode" Value="Row"/>
+                <Setter Property="SelectionMode" Value="Single"></Setter>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="AllowResizingColumns" Value="True"/>
+                <Setter Property="AllowDraggingColumns" Value="True"/>
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="IsReadOnly" Value="True"/>
+                <Setter Property="SelectionUnit" Value="Row"/>
+                <Setter Property="EnableDataVirtualization" Value="True"/>
+                <Setter Property="RowSelectionBrush" Value="#C71585"/>
+                <Setter Property="SelectionForegroundBrush" Value="White"/>
+                <Setter Property="ShowGroupDropArea" Value="True"/>
+                <Setter Property="AllowFiltering" Value="True"/>
+                
+                <Setter Property="Height" Value="auto"/>
+                
+                <Setter Property="ColumnSizer" Value="Auto"></Setter>
+            </Style.Setters>           
+            
         </Style>
 
         <Style TargetType="Syncfusion:GridHeaderCellControl" x:Key="headerStyle">
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="#FF673AB7"/>
         </Style>
 
         <Style BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}" TargetType="TextBox" x:Key="TextBoxStyle">
-            <Setter Property="TextBox.Height" Value="50"></Setter>
-            <Setter Property="TextBox.TextWrapping" Value="Wrap"></Setter>
-            <Setter Property="TextBox.FontSize" Value="15"></Setter>
+            <Style.Setters>
+                <Setter Property="TextBox.Height" Value="50"></Setter>
+                <Setter Property="TextBox.TextWrapping" Value="Wrap"></Setter>
+                <Setter Property="TextBox.FontSize" Value="15"></Setter>
+            </Style.Setters>            
+            <Style.Triggers>
+                       
+
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="FontSize" To="16" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="FontSize" To="14" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+
+           
         </Style>
 
         <Storyboard x:Key="CloseMenu">
@@ -94,7 +126,7 @@
         </EventTrigger>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenFindData">
             <BeginStoryboard x:Name="OpenMenuFindData_BeginStoryboard" Storyboard="{StaticResource OpenMenuFindData}"></BeginStoryboard>
-        </EventTrigger>
+        </EventTrigger>        
 
     </Window.Triggers>
 
@@ -138,12 +170,12 @@
                     <materialDesign:PackIcon   Kind="SqlQuery"  Foreground="#7FFF00" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
 
-                <Button  Margin="50,0,0,0"                            
+                <Button  Margin="50,0,0,0"    
+                         x:Name="CleareFilter"
                             VerticalAlignment="Center"                           
                             Padding="0"
                             ToolTip="Очистить фильтры"
-                            Command="{Binding ClearInputData, UpdateSourceTrigger=PropertyChanged}"
-                           >
+                            Command="{Binding ClearInputData, UpdateSourceTrigger=PropertyChanged}">
                     
                             <materialDesign:PackIcon  Kind="RemoveCircle" Foreground="#FF4500" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
@@ -360,17 +392,21 @@
             </Grid>
 
             <Grid  Grid.Row="1" Grid.Column="1"  x:Name="GridHeight" >
-                <Syncfusion:ScrollableContentViewer  HorizontalAlignment="Center"  HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Disabled"   >
+                <Syncfusion:ScrollableContentViewer   HorizontalAlignment="Center"  HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Disabled"   >
 
                     <StackPanel Orientation="Horizontal"  >
-                        <Syncfusion:SfDataGrid                        
-                            Margin="20,0,0,0" 
+                        <Syncfusion:SfDataGrid   
+                            x:Name="BaseDataGrid"         
+                                       
                             
-                                            
+                            Margin="20,0,0,0" 
+                        
+                                        
                             Style="{StaticResource SfDataGridStyle}"    
                             HeaderStyle="{StaticResource headerStyle}"                         
                             ItemsSource="{Binding AllTapCh, Mode=OneWay}"                                                 
                             SelectedItem="{Binding SelectedItem, Mode=OneWayToSource, Delay=100}"    >
+                            
                             <Syncfusion:SfDataGrid.Columns  >
                                 <Syncfusion:GridTextColumn HeaderText="Наименование"     MappingName="Column1"         ValueBinding="{Binding Column1}" />
                                 <Syncfusion:GridTextColumn HeaderText="Число фаз"        MappingName="Phaze_number"    ValueBinding="{Binding Phaze_number}" />
@@ -381,6 +417,35 @@
                                 <Syncfusion:GridTextColumn HeaderText="Серия"            MappingName="Seria"           ValueBinding="{Binding Seria}"/>
                                 <Syncfusion:GridTextColumn HeaderText="Каталог"          MappingName="About_Catalog"   ValueBinding="{Binding About_Catalog}"/>
                             </Syncfusion:SfDataGrid.Columns>
+                            <Syncfusion:SfDataGrid.HeaderContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Click="CleareFilter_Click" Header="Очистить фильтры" >
+                                        <MenuItem.Icon>
+                                            <materialDesign:PackIcon  VerticalAlignment="Center"   Kind="Filter"  Foreground="Black" Width="15"  Height="15" ></materialDesign:PackIcon>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+
+                                    <MenuItem Click="CleareSorting_Click" Header="Очистить сортировки" >
+                                        <MenuItem.Icon>
+                                            <materialDesign:PackIcon  VerticalAlignment="Center"   Kind="Sort"  Foreground="Black" Width="15"  Height="15" ></materialDesign:PackIcon>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+
+                                    <MenuItem Click="CleareGrouping_Click" Header="Очистить группировки" >
+                                        <MenuItem.Icon>
+                                            <materialDesign:PackIcon  VerticalAlignment="Center"   Kind="Group"  Foreground="Black" Width="15"  Height="15" ></materialDesign:PackIcon>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator></Separator>
+                                    <MenuItem Click="CleareAll_Click" Header="Очистить все" >
+                                        <MenuItem.Icon>
+                                            <materialDesign:PackIcon  VerticalAlignment="Center"   Kind="Clear"  Foreground="Black" Width="15"  Height="15" ></materialDesign:PackIcon>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </Syncfusion:SfDataGrid.HeaderContextMenu>
+                            
+                            
                         </Syncfusion:SfDataGrid>
 
 

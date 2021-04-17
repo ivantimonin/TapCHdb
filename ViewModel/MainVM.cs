@@ -1,4 +1,5 @@
 ﻿using FindInWord.ViewModel;
+using Syncfusion.UI.Xaml.Grid;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,9 +17,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using TAP_DB.View;
 
+
 namespace TAP_DB.ViewModel
 {
-    partial class MainVM : INotifyPropertyChanged
+    partial class MainVM :INotifyPropertyChanged
     {
         /// <summary>
         /// Состояние без доступа, то есть блокировать интерфейс
@@ -128,8 +130,7 @@ namespace TAP_DB.ViewModel
         {
             get { return allTapCh; }
             set
-            {
-                
+            {                
                 allTapCh = value;
                 OnPropertyChanged();
             }
@@ -424,44 +425,22 @@ namespace TAP_DB.ViewModel
         }
 
 
-        SqlConnection sqlConnection;
-
         public ICommand DoQuery { get; private set; }
         public ICommand ClearInputData { get; private set; }
-        string VariantOfReading = "DB";//xml или DB
+       
         public MainVM()
         {
             ClearInputData = new DelegateCommand(ClearInputDataFunctiun);
             DoQuery = new DelegateCommand(QueryAllTap);
-
-            if (VariantOfReading == "DB")
-            {
-                try
-                {
-                    QueryAllTap();// получаем данные из таблицы
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"{ex.Message}");
-                }
-            }
-
-            if (VariantOfReading == "xml")
-            {
-                DataSet dataSet = new DataSet("dataBase");// создаём таблицу в приложении
-                dataSet.ReadXml("TapCH_DB.xml");
-                AllTapCh = dataSet.Tables[0];
-            }
+            QueryAllTap();// получаем данные из таблицы       
         }
-
-
-        Thread th;
+       
         /// <summary>
         /// Метод сброса всех фильтров
         /// </summary>
         /// <param name="obj"></param>
         public  void ClearInputDataFunctiun(object obj)
-        {                       
+        {
             MaxCurrent = "";
             Itermal = "";
             Idinamic = "";
@@ -500,13 +479,14 @@ namespace TAP_DB.ViewModel
             QueryAllTap();
         }
 
-
-
+        /// <summary>
+        /// Метод обработки запроса в БД
+        /// </summary>        
         public DataTable Select(string selectSQL) // функция  обработка запросов
         {
-
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;//достаем строку подключения из config
-            sqlConnection = new SqlConnection(connectionString); // подключаемся к базе данных
+
+            SqlConnection sqlConnection = new SqlConnection(connectionString); // подключаемся к базе данных
             DataSet dataSet = new DataSet("dataBase");// создаём таблицу в приложении
             try
             {
@@ -516,8 +496,7 @@ namespace TAP_DB.ViewModel
                     SqlCommand sqlCommand = sqlConnection.CreateCommand();          // создаём команду
                     sqlCommand.CommandText = selectSQL;                             // присваиваем команде текст
                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand); // создаём обработчик
-                    sqlDataAdapter.Fill(dataSet);                              // возращаем таблицу с результатом                                                                        // sqlConnection.Close();
-                    dataSet.WriteXml("TapCH_DB.xml");
+                    sqlDataAdapter.Fill(dataSet);                                  // возращаем таблицу с результатом             
                 }
             }
             catch (Exception ex)
@@ -526,11 +505,14 @@ namespace TAP_DB.ViewModel
             }
             finally
             {
-                sqlConnection.Close();
+               sqlConnection.Close();
             }
             return dataSet.Tables[0];
         }
 
+        /// <summary>
+        /// Реализация PropertyChanged
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string prop = "")
         {
@@ -540,165 +522,126 @@ namespace TAP_DB.ViewModel
             }
         }
 
-        public async void QueryAllShem(object obj = null)
+        /// <summary>
+        /// Запрос всех схем на нужный РПН
+        /// </summary>      
+        public void QueryAllShem(object obj = null)
         {
-            if (VariantOfReading == "DB")
-            {
-                try
-                {
-                    #region Query
-                    AllShem = Select("USE TAP_CHANGER " +
-                                    "SELECT DISTINCT " +
-                                    "CONCAT([Type], ' ', Seria, ' ', Phaze_number, '-', I_A, ' ', Simbol, '/', Um_kV_rms, ' ', Izbiratel_value), " +
-                                    "Shema, " +
-                                    "Shema_details " +
-                                    "FROM TapChanger " +
-                                    "JOIN Uispitael " +
-                                    "ON TapChanger.Um_kV_rms_id = Uispitael.Um_kV_rms_id " +
-                                    "JOIN Type " +
-                                    "ON TapChanger.Type_id = Type.Type_id " +
-                                    "JOIN Contact_type " +
-                                    "ON Type.Selector_type = Contact_type.Id " +
-                                    "JOIN Seria " +
-                                    "ON TapChanger.Seria_id = Seria.Seria_Id " +
-                                    "JOIN Catalog " +
-                                    "ON Seria.Seria_Id = Catalog.Seria_id and Type.Type_id = Catalog.Type_id " +
-                                    "JOIN Phaze_number " +
-                                    "ON TapChanger.Phaze_Number_id = Phaze_number.Phaze_Number_id " +
-                                    "JOIN Concrete_Phaze_number " +
-                                    "ON Phaze_number.Concrete_Phaze_number_id = Concrete_Phaze_number.Concrete_Phaze_number_id " +
-                                    "JOIN[Current] " +
-                                    "ON Phaze_number.Current_id =[Current].Current_Id " +
-                                    "JOIN Izbiratel " +
-                                    "ON TapChanger.Izbiratel_id = Izbiratel.Izbiratel_id " +
-                                    "JOIN Shema " +
-                                    "ON TapChanger.Shema_id = Shema.Shema_id " +
-                                    "Where " +
-                                    $"CONCAT([Type],' ',Seria,' ',Phaze_number,'-', I_A,' ',Simbol,'/',Um_kV_rms,' ',Izbiratel_value)= '{TapCHname}'");
+            #region Query
+            AllShem = Select("USE TAP_CHANGER " +
+                            "SELECT DISTINCT " +
+                            "CONCAT([Type], ' ', Seria, ' ', Phaze_number, '-', I_A, ' ', Simbol, '/', Um_kV_rms, ' ', Izbiratel_value), " +
+                            "Shema, " +
+                            "Shema_details " +
+                            "FROM TapChanger " +
+                            "JOIN Uispitael " +
+                            "ON TapChanger.Um_kV_rms_id = Uispitael.Um_kV_rms_id " +
+                            "JOIN Type " +
+                            "ON TapChanger.Type_id = Type.Type_id " +
+                            "JOIN Contact_type " +
+                            "ON Type.Selector_type = Contact_type.Id " +
+                            "JOIN Seria " +
+                            "ON TapChanger.Seria_id = Seria.Seria_Id " +
+                            "JOIN Catalog " +
+                            "ON Seria.Seria_Id = Catalog.Seria_id and Type.Type_id = Catalog.Type_id " +
+                            "JOIN Phaze_number " +
+                            "ON TapChanger.Phaze_Number_id = Phaze_number.Phaze_Number_id " +
+                            "JOIN Concrete_Phaze_number " +
+                            "ON Phaze_number.Concrete_Phaze_number_id = Concrete_Phaze_number.Concrete_Phaze_number_id " +
+                            "JOIN[Current] " +
+                            "ON Phaze_number.Current_id =[Current].Current_Id " +
+                            "JOIN Izbiratel " +
+                            "ON TapChanger.Izbiratel_id = Izbiratel.Izbiratel_id " +
+                            "JOIN Shema " +
+                            "ON TapChanger.Shema_id = Shema.Shema_id " +
+                            "Where " +
+                            $"CONCAT([Type],' ',Seria,' ',Phaze_number,'-', I_A,' ',Simbol,'/',Um_kV_rms,' ',Izbiratel_value)= '{TapCHname}'");
 
-                    #endregion
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"{ex.Message}");
-                }
-            }
-
-            if (VariantOfReading == "xml")
-            {
-                //var Allrow = from AllTapCh in AllTapCh.AsEnumerable()
-                //             where (AllTapCh.Field<int>("I_A")) == 1200 //
-                //             select AllTapCh;
-
-                //AllTapCh = Allrow.CopyToDataTable();
-            }
-
+            #endregion
         }
 
+        /// <summary>
+        /// Запрос всех РПН
+        /// </summary>        
         public async void QueryAllTap(object obj = null)
-        {
-            
-            IsBusy = true;
+        {         
             await Task.Run(() =>
             {
-                if (VariantOfReading == "DB")
-                {
-                    try
-                    {
-                        #region Query
-                        AllTapCh = Select("USE TAP_CHANGER " +
-                      "SELECT DISTINCT TOP (10000)" +
-                      "CONCAT([Type], ' ', Seria, ' ', Phaze_number, '-', I_A, ' ', Simbol, '/', Um_kV_rms, ' ', Izbiratel_value)," +
-                      "[Type], " +
-                      "Seria, " +
-                      "Contact_type, " +
-                      "Phaze_number, " +
-                      "Details, " +
-                      "I_A, " +
-                      "[Iterm_kA], " +
-                      "[Idinamic_kA], " +
-                      "[Ust_V], " +
-                      "[S_kVA], " +
-                      "Um_kV_rms " +
-                      ",[kV50Hz1min] " +
-                      ",[SI_kV] " +
-                      ",[LI_kV] " +
-                      ",[Izbiratel_value] " +
-                      ",[LI_a0] " +
-                      ",[LI_b1] " +
-                      ",[LI_b2] " +
-                      ",[LI_c1] " +
-                      ",[LI_c2] " +
-                      ",[LI_d] " +
-                      ",[AC_a0] " +
-                      ",[AC_b1] " +
-                      ",[AC_b2] " +
-                      ",[AC_c1] " +
-                      ",[AC_c2] " +
-                      ",[AC_d], " +
-                        "Number_select_to_revisions, " +
-                        "Number_select_to_change_contact, " +
-                        "Number_select_mechanical, " +
-                        "About_Catalog " +
-                        "FROM TapChanger " +
-                        "JOIN Uispitael " +
-                        "ON TapChanger.Um_kV_rms_id = Uispitael.Um_kV_rms_id " +
-                        "JOIN Type " +
-                        "ON TapChanger.Type_id = Type.Type_id " +
-                        "JOIN Contact_type " +
-                        "ON Type.Selector_type = Contact_type.Id " +
-                        "JOIN Seria " +
-                        "ON TapChanger.Seria_id = Seria.Seria_Id " +
-                        "JOIN Catalog " +
-                        "ON Seria.Seria_Id = Catalog.Seria_id and Type.Type_id = Catalog.Type_id " +
-                        "JOIN Phaze_number " +
-                        "ON TapChanger.Phaze_Number_id = Phaze_number.Phaze_Number_id " +
-                        "JOIN Concrete_Phaze_number " +
-                        "ON Phaze_number.Concrete_Phaze_number_id = Concrete_Phaze_number.Concrete_Phaze_number_id " +
-                        "JOIN[Current] " +
-                        "ON Phaze_number.Current_id =[Current].Current_Id " +
-                        "JOIN Izbiratel " +
-                        "ON TapChanger.Izbiratel_id = Izbiratel.Izbiratel_id " +
-                        "JOIN Shema " +
-                        "ON TapChanger.Shema_id = Shema.Shema_id Where " +
-                        $"I_A>={maxCurrent} and " +
-                        $"Iterm_kA>={itermal} and " +
-                        $"Idinamic_kA>={idinamic} and " +
-                        $"Um_kV_rms>={urms} and " +
-                        $"S_kVA>={sst} and " +
-                        $"LI_kV>={lI_kV} and " +
-                        $"kV50Hz1min>={kV50Hz1min} and " +
-                        $"LI_b1>={lI_b1} and " +
-                        $"AC_b1>={aC_b1} and " +
-                        $"LI_a0>={lI_a0} and " +
-                        $"AC_a0>={aC_a0} and " +
-                        $"LI_b2>={lI_b2} and " +
-                        $"AC_b2>={aC_b2} and " +
-                        $"Number_select_to_revisions>={number_select_to_revisions} and " +
-                        $"Number_select_to_change_contact>={number_select_to_change_contact} and " +
-                        $"Number_select_mechanical>={number_select_mechanical}");
-                        #endregion
-                       
-                    }
-
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"{ex.Message}");
-                    }
-                   
-                }
-
-                if (VariantOfReading == "xml")
-                {
-                    //var Allrow = from AllTapCh in AllTapCh.AsEnumerable()
-                    //             where (AllTapCh.Field<int>("I_A")) == 1200 //
-                    //             select AllTapCh;
-
-                    //AllTapCh = Allrow.CopyToDataTable();                
-
-                }
-                 IsBusy = false;
-                
+                IsBusy = true;
+                #region Query
+                AllTapCh = Select("USE TAP_CHANGER " +
+              "SELECT DISTINCT " +
+              "CONCAT([Type], ' ', Seria, ' ', Phaze_number, '-', I_A, ' ', Simbol, '/', Um_kV_rms, ' ', Izbiratel_value)," +
+              "[Type], " +
+              "Seria, " +
+              "Contact_type, " +
+              "Phaze_number, " +
+              "Details, " +
+              "I_A, " +
+              "[Iterm_kA], " +
+              "[Idinamic_kA], " +
+              "[Ust_V], " +
+              "[S_kVA], " +
+              "Um_kV_rms " +
+              ",[kV50Hz1min] " +
+              ",[SI_kV] " +
+              ",[LI_kV] " +
+              ",[Izbiratel_value] " +
+              ",[LI_a0] " +
+              ",[LI_b1] " +
+              ",[LI_b2] " +
+              ",[LI_c1] " +
+              ",[LI_c2] " +
+              ",[LI_d] " +
+              ",[AC_a0] " +
+              ",[AC_b1] " +
+              ",[AC_b2] " +
+              ",[AC_c1] " +
+              ",[AC_c2] " +
+              ",[AC_d], " +
+                "Number_select_to_revisions, " +
+                "Number_select_to_change_contact, " +
+                "Number_select_mechanical, " +
+                "About_Catalog " +
+                "FROM TapChanger " +
+                "JOIN Uispitael " +
+                "ON TapChanger.Um_kV_rms_id = Uispitael.Um_kV_rms_id " +
+                "JOIN Type " +
+                "ON TapChanger.Type_id = Type.Type_id " +
+                "JOIN Contact_type " +
+                "ON Type.Selector_type = Contact_type.Id " +
+                "JOIN Seria " +
+                "ON TapChanger.Seria_id = Seria.Seria_Id " +
+                "JOIN Catalog " +
+                "ON Seria.Seria_Id = Catalog.Seria_id and Type.Type_id = Catalog.Type_id " +
+                "JOIN Phaze_number " +
+                "ON TapChanger.Phaze_Number_id = Phaze_number.Phaze_Number_id " +
+                "JOIN Concrete_Phaze_number " +
+                "ON Phaze_number.Concrete_Phaze_number_id = Concrete_Phaze_number.Concrete_Phaze_number_id " +
+                "JOIN[Current] " +
+                "ON Phaze_number.Current_id =[Current].Current_Id " +
+                "JOIN Izbiratel " +
+                "ON TapChanger.Izbiratel_id = Izbiratel.Izbiratel_id " +
+                "JOIN Shema " +
+                "ON TapChanger.Shema_id = Shema.Shema_id Where " +
+                $"I_A>={maxCurrent} and " +
+                $"Iterm_kA>={itermal} and " +
+                $"Idinamic_kA>={idinamic} and " +
+                $"Um_kV_rms>={urms} and " +
+                $"S_kVA>={sst} and " +
+                $"LI_kV>={lI_kV} and " +
+                $"kV50Hz1min>={kV50Hz1min} and " +
+                $"LI_b1>={lI_b1} and " +
+                $"AC_b1>={aC_b1} and " +
+                $"LI_a0>={lI_a0} and " +
+                $"AC_a0>={aC_a0} and " +
+                $"LI_b2>={lI_b2} and " +
+                $"AC_b2>={aC_b2} and " +
+                $"Number_select_to_revisions>={number_select_to_revisions} and " +
+                $"Number_select_to_change_contact>={number_select_to_change_contact} and " +
+                $"Number_select_mechanical>={number_select_mechanical}");
+                #endregion
+                IsBusy = false;                
             });
 
         }
