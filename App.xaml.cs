@@ -15,7 +15,7 @@ namespace TAP_DB
     {
         public App()
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDEyNTgzQDMxMzgyZTM0MmUzMGhneHdlSUpWSUgwTjE2Z1NiNDNzbjRyUlhlbGpOeFZwa3RnYXJYaHoybkE9");
+            
         }
     }
 }

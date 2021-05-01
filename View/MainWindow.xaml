@@ -11,6 +11,7 @@
         xmlns:Syncfusion1="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         Title="РПН" WindowState="Maximized" MinWidth="715"  >
 
+
     <Window.DataContext>
         <viewModel:MainVM/>
     </Window.DataContext>
@@ -18,8 +19,52 @@
 
     <Window.Resources>
 
-        <Style TargetType="Syncfusion:SfDataGrid" x:Key="SfDataGridStyle">
+       
+
+
+        <Style TargetType="ToolBar">
             <Style.Setters>
+                <Setter Property="AllowDrop" Value="False"></Setter>
+                <Setter Property="Opacity" Value="0.5"></Setter>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#FF13051D" Offset="0"></GradientStop>
+                            <GradientStop Color="#FF852085" Offset="1"></GradientStop>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+
+            </Style.Setters>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Opacity" To="0.5" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style  TargetType="Syncfusion:FilterToggleButton" >
+            <Setter Property="Foreground" Value="Yellow" />
+        </Style>
+
+
+        <Style  TargetType="Syncfusion:SfDataGrid" x:Key="SfDataGridStyle">
+            <Style.Setters>
+
                 <Setter Property="NavigationMode" Value="Row"/>
                 <Setter Property="SelectionMode" Value="Single"></Setter>
                 <Setter Property="FontSize" Value="12"/>
@@ -34,30 +79,68 @@
                 <Setter Property="SelectionForegroundBrush" Value="White"/>
                 <Setter Property="ShowGroupDropArea" Value="True"/>
                 <Setter Property="AllowFiltering" Value="True"/>
-                
+                <Setter Property="AllowResizingColumns" Value="False"/>
+                <Setter Property="HeaderRowHeight" Value="40"/>
                 <Setter Property="Height" Value="auto"/>
-                
                 <Setter Property="ColumnSizer" Value="Auto"></Setter>
-            </Style.Setters>           
-            
+                <Setter Property="SelectionForegroundBrush" Value="White"></Setter>
+
+                <Setter Property="ScrollMode" Value="Async"/>
+                <Setter Property="UseDrawing" Value="Default"/>
+            </Style.Setters>
+
+
         </Style>
 
-        <Style TargetType="Syncfusion:GridHeaderCellControl" x:Key="headerStyle">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontWeight" Value="Bold"/>
+        <Style TargetType="Syncfusion:GridHeaderCellControl" x:Key="headerStyle" >
+            <Style.Setters>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#4B0082" Offset="0"></GradientStop>
+                            <GradientStop Color="#FF00FF" Offset="1"></GradientStop>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+
+        <Style BasedOn="{StaticResource MaterialDesignGroupBox}" TargetType="GroupBox" >
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#FF673AB7"/>
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontWeight="Bold"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="#FFCFECF6">
+
+            </Setter>
+            <Setter Property="materialDesign:ColorZoneAssist.Mode" Value="Custom"/>
+            <Setter Property="materialDesign:ColorZoneAssist.Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#4B0082" Offset="0"></GradientStop>
+                        <GradientStop Color="#FF00FF" Offset="1"></GradientStop>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="materialDesign:ColorZoneAssist.Foreground" Value="White"/>
         </Style>
 
         <Style BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}" TargetType="TextBox" x:Key="TextBoxStyle">
             <Style.Setters>
                 <Setter Property="TextBox.Height" Value="50"></Setter>
                 <Setter Property="TextBox.TextWrapping" Value="Wrap"></Setter>
-                <Setter Property="TextBox.FontSize" Value="15"></Setter>
-            </Style.Setters>            
+                <Setter Property="TextBox.FontSize" Value="14"></Setter>
+                <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="#FF00FF" />
+                <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="False" />
+            </Style.Setters>
             <Style.Triggers>
-                       
-
                 <EventTrigger RoutedEvent="MouseEnter">
                     <EventTrigger.Actions>
                         <BeginStoryboard>
@@ -77,8 +160,6 @@
                     </EventTrigger.Actions>
                 </EventTrigger>
             </Style.Triggers>
-
-           
         </Style>
 
         <Storyboard x:Key="CloseMenu">
@@ -126,7 +207,7 @@
         </EventTrigger>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenFindData">
             <BeginStoryboard x:Name="OpenMenuFindData_BeginStoryboard" Storyboard="{StaticResource OpenMenuFindData}"></BeginStoryboard>
-        </EventTrigger>        
+        </EventTrigger>
 
     </Window.Triggers>
 
@@ -144,8 +225,8 @@
                 <RowDefinition Height="0"/>
             </Grid.RowDefinitions>
 
-            <ToolBar   Grid.ColumnSpan="3" Grid.Row="0" Height="auto" Background="#808080" >
-                
+            <ToolBar   Grid.ColumnSpan="3" Grid.Row="0" Height="auto" >
+
                 <Button Margin="10,0,0,0" 
                             VerticalAlignment="Center"                                                      
                             Padding="0"
@@ -176,29 +257,25 @@
                             Padding="0"
                             ToolTip="Очистить фильтры"
                             Command="{Binding ClearInputData, UpdateSourceTrigger=PropertyChanged}">
-                    
-                            <materialDesign:PackIcon  Kind="RemoveCircle" Foreground="#FF4500" Width="30"  Height="30" ></materialDesign:PackIcon>
+
+                    <materialDesign:PackIcon  Kind="RemoveCircle" Foreground="#FF4500" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
 
                 <Button  Margin="50,0,0,0"                            
                             VerticalAlignment="Center"   
-                            ToolTip="Кнопка пока не работает"
+                            ToolTip="Экспорт в docx"
                             Padding="0"
-                            Command="{Binding CreateOfficeFile, UpdateSourceTrigger=PropertyChanged}">
+                            Command="{Binding CreateDocx, UpdateSourceTrigger=PropertyChanged}">
                     <materialDesign:PackIcon  Kind="MicrosoftOffice" Foreground="#FFA500"   Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
-
-
-
-                
             </ToolBar>
 
 
 
 
-            <Grid x:Name="GridMenu" Width="350"  Grid.Column="0" Grid.Row="1" Background="WhiteSmoke"  >
+            <Grid x:Name="GridMenu" Width="350"  Grid.Column="0" Grid.Row="1" Background="WhiteSmoke" >
                 <Grid>
-                    <StackPanel >                    
+                    <StackPanel  >
                         <Button Grid.Column="2" 
                             VerticalAlignment="Top"                                
                             Background="{x:Null}" 
@@ -207,73 +284,94 @@
                             BorderBrush="{x:Null}"
                             Width="30"
                             Height="15"
-                            Padding="0">
-                            <materialDesign:PackIcon Foreground="red" Kind="ArrowCollapseLeft" Width="15"  Height="15" Opacity="0.7" HorizontalAlignment="Center"   VerticalAlignment="Center"></materialDesign:PackIcon>
-                        </Button>                    
+                            Padding="0"
+                            >
+
+                            <materialDesign:PackIcon  Foreground="red" Kind="ArrowCollapseLeft" Width="15"  Height="15" Opacity="0.7" HorizontalAlignment="Center"   VerticalAlignment="Center"></materialDesign:PackIcon>
+                           
+                        </Button>
                     </StackPanel>
                 </Grid>
-                <ScrollViewer Margin="0,30,0,0"   >
+                <ScrollViewer Margin="0,30,0,0"  >
                     <StackPanel   Margin="5,0,0,0" >
 
-                        <GroupBox  Header="Основные характеристики" Style="{StaticResource MaterialDesignGroupBox }">
+                        <GroupBox Header="Основные характеристики" >
+
                             <StackPanel>
                                 <TextBox Style="{StaticResource TextBoxStyle}" x:Name="Imaxtext" materialDesign:HintAssist.Hint="Наибольший рабочий ток, А"
-                                    Text="{Binding MaxCurrent, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
+                                         
+                                         Text="{Binding MaxCurrent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Наибольший установившийся ток КЗ, кА"                    
-                                    Text="{Binding Itermal, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
+                                         
+                                         Text="{Binding Itermal, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}"  materialDesign:HintAssist.Hint="Наибольший ударный ток КЗ, кА"                    
-                                    Text="{Binding Idinamic, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
+                                         
+                                         Text="{Binding Idinamic, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
                                 </TextBox>
-                                <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Наибольшее рабочее напряжение, кВ"                     
-                                    Text="{Binding Urms, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
+                                <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Фазное напряжение ступени, В"                     
+                                         
+                                         Text="{Binding Ust_V, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Мощность ступени, кВА"                    
-                                    Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}"                    >
+                                        
+                                         Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}"                    >
                                 </TextBox>
                             </StackPanel>
                         </GroupBox>
 
-                        <GroupBox  Header="Испытательное напряжение, кВ" Style="{StaticResource MaterialDesignGroupBox }">
+                        <GroupBox  Header="Испытательное напряжение, кВ">
                             <StackPanel>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное на землю"                   
-                                Text="{Binding LI_kV, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         
+                                         Text="{Binding LI_kV, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="КПЧ на землю"                                    
-                                Text="{Binding KV50Hz1min, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                        
+                                         Text="{Binding KV50Hz1min, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное на диапазон"                     
-                                Text="{Binding LI_b1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                        
+                                         Text="{Binding LI_b1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="КПЧ на диапазон"                     
-                                Text="{Binding AC_b1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         
+                                         Text="{Binding AC_b1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное ступени"                    
-                                Text="{Binding LI_a0, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                        
+                                         Text="{Binding LI_a0, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="КПЧ ступени"                     
-                                Text="{Binding AC_a0, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                        
+                                         Text="{Binding AC_a0, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное межфазное"                    
-                                Text="{Binding LI_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         
+                                         Text="{Binding LI_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="КПЧ межфазное"                     
-                                Text="{Binding AC_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                        
+                                         Text="{Binding AC_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
                                 </TextBox>
                             </StackPanel>
                         </GroupBox>
 
-                        <GroupBox   Header="Число переключений" Style="{StaticResource MaterialDesignGroupBox }">
+                        <GroupBox   Header="Число переключений">
                             <StackPanel>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Переключений до ревиизии"                    
-                                Text="{Binding Number_select_to_revisions, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
+                                        
+                                         Text="{Binding Number_select_to_revisions, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="До замены контактов"                     
-                                Text="{Binding Number_select_to_change_contact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                        
+                                         Text="{Binding Number_select_to_change_contact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Механический ресурс"                    
-                                Text="{Binding Number_select_mechanical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         
+                                         Text="{Binding Number_select_mechanical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
                                 </TextBox>
                             </StackPanel>
                         </GroupBox>
@@ -286,12 +384,14 @@
                 <StackPanel  Margin="0,0,20,0" VerticalAlignment="Top" HorizontalAlignment="Right"   Orientation="Horizontal"  >
                     <TextBox Foreground="Black"
                              FontSize="14"
-                            Text="{Binding TapCHname, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                            IsReadOnly="True"  />
+                             Text="{Binding TapCHname, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }" 
+                             IsReadOnly="True"
+                             Style="{StaticResource MaterialDesignTextBoxBase}"/>
                     <TextBox   Foreground="Black"  
                                FontSize="14"
-                            Text="{Binding ShemaСoncretCH, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-                            IsReadOnly="True" Height="Auto"  >
+                               Text="{Binding ShemaСoncretCH, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                               IsReadOnly="True" Height="Auto"
+                               Style="{StaticResource MaterialDesignTextBoxBase}">
                     </TextBox>
                 </StackPanel>
                 <Button                                    
@@ -305,14 +405,14 @@
                             Padding="0">
                     <materialDesign:PackIcon Foreground="red" Kind="ArrowCollapseRight" Width="15" Height="15" Opacity="0.7" HorizontalAlignment="Center" VerticalAlignment="Center"></materialDesign:PackIcon>
                 </Button>
-                
+
                 <ScrollViewer Margin="0,30,0,0"  >
 
                     <StackPanel   Margin="5,0,0,0" >
-                        
 
-                        <GroupBox Header="Основные характеристики"    Style="{StaticResource MaterialDesignGroupBox }">
-                            
+
+                        <GroupBox Header="Основные характеристики">
+
                             <StackPanel>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Наибольший рабочий ток, А"                     
                                 Text="{Binding MaxCurrentSelected, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
@@ -326,8 +426,8 @@
                                 Text="{Binding IdinamiclSelected, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" 
                                 IsReadOnly="True">
                                 </TextBox>
-                                <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Наибольшее рабочее напряжение, кВ" 
-                                Text="{Binding UrmsSelected, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Фазное напряжение ступени, В" 
+                                Text="{Binding Ust_V_Selected, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                                 IsReadOnly="True">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Мощность ступени, кВА"
@@ -337,7 +437,7 @@
                             </StackPanel>
                         </GroupBox>
 
-                        <GroupBox  Header="Испытательное напряжение, кВ" Style="{StaticResource MaterialDesignGroupBox }">
+                        <GroupBox  Header="Испытательное напряжение, кВ">
 
                             <StackPanel>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное на землю"                   
@@ -374,7 +474,7 @@
                             </StackPanel>
                         </GroupBox>
 
-                        <GroupBox   Header="Число переключений" Style="{StaticResource MaterialDesignGroupBox }">
+                        <GroupBox   Header="Число переключений">
                             <StackPanel>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Переключений до ревиизии"                    
                                 Text="{Binding Number_select_to_revisionsSelected, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
@@ -394,24 +494,32 @@
             <Grid  Grid.Row="1" Grid.Column="1"  x:Name="GridHeight" >
                 <Syncfusion:ScrollableContentViewer   HorizontalAlignment="Center"  HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Disabled"   >
 
+
                     <StackPanel Orientation="Horizontal"  >
+
+                        <Syncfusion:GridFilterControl OverridesDefaultStyle="False">
+
+                        </Syncfusion:GridFilterControl>
+
                         <Syncfusion:SfDataGrid   
-                            x:Name="BaseDataGrid"         
-                                       
                             
-                            Margin="20,0,0,0" 
-                        
-                                        
-                            Style="{StaticResource SfDataGridStyle}"    
-                            HeaderStyle="{StaticResource headerStyle}"                         
+                            
+                            Style="{StaticResource SfDataGridStyle}"                               
+                            HeaderStyle="{StaticResource headerStyle}"                   
+                            x:Name="BaseDataGrid"                      
+                            Margin="20,0,0,0"                
+                            HeaderRowHeight="40"                   
                             ItemsSource="{Binding AllTapCh, Mode=OneWay}"                                                 
                             SelectedItem="{Binding SelectedItem, Mode=OneWayToSource, Delay=100}"    >
-                            
-                            <Syncfusion:SfDataGrid.Columns  >
+                          
+
+                            <Syncfusion:SfDataGrid.Columns >
+
                                 <Syncfusion:GridTextColumn HeaderText="Наименование"     MappingName="Column1"         ValueBinding="{Binding Column1}" />
                                 <Syncfusion:GridTextColumn HeaderText="Число фаз"        MappingName="Phaze_number"    ValueBinding="{Binding Phaze_number}" />
                                 <Syncfusion:GridTextColumn HeaderText="Место установки"  MappingName="Details"         ValueBinding="{Binding Details}" />
                                 <Syncfusion:GridTextColumn HeaderText="Ток, А"           MappingName="I_A"             ValueBinding="{Binding I_A}"   />
+                                <Syncfusion:GridTextColumn HeaderText="Um, кВ"           MappingName="Um_kV_rms"       ValueBinding="{Binding Um_kV_rms}"/>           
                                 <Syncfusion:GridTextColumn HeaderText="Тип контактора"   MappingName="Contact_type"    ValueBinding="{Binding Contact_type}"/>
                                 <Syncfusion:GridTextColumn HeaderText="Тип"              MappingName="Type"            ValueBinding="{Binding Type}"/>
                                 <Syncfusion:GridTextColumn HeaderText="Серия"            MappingName="Seria"           ValueBinding="{Binding Seria}"/>
@@ -444,8 +552,8 @@
                                     </MenuItem>
                                 </ContextMenu>
                             </Syncfusion:SfDataGrid.HeaderContextMenu>
-                            
-                            
+
+
                         </Syncfusion:SfDataGrid>
 
 

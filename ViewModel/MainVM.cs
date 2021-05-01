@@ -15,12 +15,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TAP_DB.Model;
 using TAP_DB.View;
 
 
 namespace TAP_DB.ViewModel
 {
-    partial class MainVM :INotifyPropertyChanged
+    public partial class MainVM :INotifyPropertyChanged
     {
         /// <summary>
         /// Состояние без доступа, то есть блокировать интерфейс
@@ -60,19 +61,19 @@ namespace TAP_DB.ViewModel
         /// <summary>
         /// Наибольшее рабочее напряжение, кВ
         /// </summary>
-        private string urms = "0";
-        public string Urms
+        private string ust_V = "0";
+        public string Ust_V
         {
-            get { return urms; }
+            get { return ust_V; }
             set
             {
                 if (value == "")
                 {
-                    urms = "0";
+                    ust_V = "0";
                 }
                 else
                 {
-                    urms = value;
+                    ust_V = value;
                 }
                 OnPropertyChanged();
             }
@@ -424,27 +425,40 @@ namespace TAP_DB.ViewModel
             }
         }
 
-
+        public ICommand CreateDocx { get; private set; }
         public ICommand DoQuery { get; private set; }
         public ICommand ClearInputData { get; private set; }
        
         public MainVM()
         {
+            CreateDocx = new DelegateCommand(CreateFileDocx);
             ClearInputData = new DelegateCommand(ClearInputDataFunctiun);
             DoQuery = new DelegateCommand(QueryAllTap);
             QueryAllTap();// получаем данные из таблицы       
         }
-       
+
+        /// <summary>
+        /// Метод создания отчета по характеристикам РПН
+        /// </summary>
+        /// <param name="obj"></param>
+        public async void CreateFileDocx(object obj)
+        {
+            await Task.Run(() =>
+            {               
+                CreateDocx someDocx = new CreateDocx(this);                
+            });
+        }
+
         /// <summary>
         /// Метод сброса всех фильтров
         /// </summary>
         /// <param name="obj"></param>
-        public  void ClearInputDataFunctiun(object obj)
+        public void ClearInputDataFunctiun(object obj)
         {
             MaxCurrent = "";
             Itermal = "";
             Idinamic = "";
-            Urms = "";
+            ust_V = "";
             Sst = "";
             LI_kV = "";
             KV50Hz1min = "";
@@ -457,6 +471,7 @@ namespace TAP_DB.ViewModel
             Number_select_to_revisions = "";
             Number_select_to_change_contact = "";
             Number_select_mechanical = "";
+            Ust_V = "";
 
             Number_select_mechanicalSelected = "";
             TapCHname = "";
@@ -470,7 +485,7 @@ namespace TAP_DB.ViewModel
             KV50Hz1minSelected = "";
             LI_kVSelected = "";
             IdinamiclSelected = "";
-            UrmsSelected = "";
+            Ust_V_Selected = "";
             SstSelected = "";
             MaxCurrentSelected = "";
             ItermalSelected = "";
@@ -487,7 +502,7 @@ namespace TAP_DB.ViewModel
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;//достаем строку подключения из config
 
             SqlConnection sqlConnection = new SqlConnection(connectionString); // подключаемся к базе данных
-            DataSet dataSet = new DataSet("dataBase");// создаём таблицу в приложении
+            DataTable dataTable = new DataTable("dataTable");// создаём таблицу в приложении
             try
             {
                 if (sqlConnection.State == ConnectionState.Closed)
@@ -496,18 +511,19 @@ namespace TAP_DB.ViewModel
                     SqlCommand sqlCommand = sqlConnection.CreateCommand();          // создаём команду
                     sqlCommand.CommandText = selectSQL;                             // присваиваем команде текст
                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand); // создаём обработчик
-                    sqlDataAdapter.Fill(dataSet);                                  // возращаем таблицу с результатом             
+                    sqlDataAdapter.Fill(dataTable);                                  // возращаем таблицу с результатом             
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+
             finally
             {
-               sqlConnection.Close();
+                sqlConnection.Close();
             }
-            return dataSet.Tables[0];
+            return dataTable;
         }
 
         /// <summary>
@@ -564,7 +580,8 @@ namespace TAP_DB.ViewModel
         /// Запрос всех РПН
         /// </summary>        
         public async void QueryAllTap(object obj = null)
-        {         
+        {
+            
             await Task.Run(() =>
             {
                 IsBusy = true;
@@ -627,7 +644,7 @@ namespace TAP_DB.ViewModel
                 $"I_A>={maxCurrent} and " +
                 $"Iterm_kA>={itermal} and " +
                 $"Idinamic_kA>={idinamic} and " +
-                $"Um_kV_rms>={urms} and " +
+                $"Ust_V>={ust_V} and " +
                 $"S_kVA>={sst} and " +
                 $"LI_kV>={lI_kV} and " +
                 $"kV50Hz1min>={kV50Hz1min} and " +

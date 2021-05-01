@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace TAP_DB.ViewModel
 {
-    partial class MainVM
+    partial  class MainVM
     {
         /// <summary>
         /// Выбранная строка в таблице с РПН
@@ -29,7 +29,7 @@ namespace TAP_DB.ViewModel
                     IdinamiclSelected = Convert.ToString(selectedItem[8]);
 
                     SstSelected = Convert.ToString(selectedItem[10]);
-                    UrmsSelected = Convert.ToString(selectedItem[11]);
+                    Ust_V_Selected = Convert.ToString(selectedItem[9]);
                     KV50Hz1minSelected = Convert.ToString(selectedItem[12]);
 
                     LI_kVSelected = Convert.ToString(selectedItem[14]);
@@ -309,16 +309,16 @@ namespace TAP_DB.ViewModel
         /// <summary>
         /// Наибольшее рабочее напряжение, кВ
         /// </summary>
-        private string urmsSelected;
-        public string UrmsSelected
+        private string ust_V_Selected;
+        public string Ust_V_Selected
         {
             get
             {
-                return urmsSelected;
+                return ust_V_Selected;
             }
             set
             {
-                urmsSelected = value;
+                ust_V_Selected = value;
                 OnPropertyChanged();
             }
         }
