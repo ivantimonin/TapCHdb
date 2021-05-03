@@ -11,15 +11,16 @@
         xmlns:Syncfusion1="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         Title="РПН" WindowState="Maximized" MinWidth="715"  >
 
-
+   
     <Window.DataContext>
         <viewModel:MainVM/>
     </Window.DataContext>
 
+    
 
     <Window.Resources>
 
-       
+        <viewModel:TexBoxConverter x:Key="TexBoxConverter" />
 
 
         <Style TargetType="ToolBar">
@@ -231,7 +232,8 @@
                             VerticalAlignment="Center"                                                      
                             Padding="0"
                             ToolTip="Кнопка пока не работает"
-                            Command="{Binding Open, UpdateSourceTrigger=PropertyChanged}">
+                            Command="{Binding Open}"
+                            CommandParameter="{Binding ElementName=BaseDataGrid}">
                     <materialDesign:PackIcon   Kind="OpenInNew"  Foreground="#00FFFF" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
 
@@ -239,7 +241,9 @@
                             VerticalAlignment="Center"                        
                             Padding="0"
                             ToolTip="Кнопка пока не работает"
-                            Command="{Binding Open, UpdateSourceTrigger=PropertyChanged}">
+                            Command="{Binding Save}"
+                            CommandParameter="{Binding ElementName=BaseDataGrid}">
+                           
                     <materialDesign:PackIcon   Kind="ContentSaveAll"  Foreground="#0000FF" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
 
@@ -300,24 +304,24 @@
                             <StackPanel>
                                 <TextBox Style="{StaticResource TextBoxStyle}" x:Name="Imaxtext" materialDesign:HintAssist.Hint="Наибольший рабочий ток, А"
                                          
-                                         Text="{Binding MaxCurrent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         Text="{Binding MaxCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TexBoxConverter}}">
 
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Наибольший установившийся ток КЗ, кА"                    
                                          
-                                         Text="{Binding Itermal, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
+                                         Text="{Binding Itermal, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}"  materialDesign:HintAssist.Hint="Наибольший ударный ток КЗ, кА"                    
                                          
-                                         Text="{Binding Idinamic, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
+                                         Text="{Binding Idinamic, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Фазное напряжение ступени, В"                     
                                          
-                                         Text="{Binding Ust_V, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
+                                         Text="{Binding Ust_V, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Мощность ступени, кВА"                    
                                         
-                                         Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}"                    >
+                                         Text="{Binding Sst, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TexBoxConverter}}"                    >
                                 </TextBox>
                             </StackPanel>
                         </GroupBox>
@@ -326,35 +330,35 @@
                             <StackPanel>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное на землю"                   
                                          
-                                         Text="{Binding LI_kV, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         Text="{Binding LI_kV, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="КПЧ на землю"                                    
                                         
-                                         Text="{Binding KV50Hz1min, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         Text="{Binding KV50Hz1min, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное на диапазон"                     
                                         
-                                         Text="{Binding LI_b1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         Text="{Binding LI_b1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="КПЧ на диапазон"                     
                                          
-                                         Text="{Binding AC_b1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         Text="{Binding AC_b1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное ступени"                    
                                         
-                                         Text="{Binding LI_a0, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         Text="{Binding LI_a0, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="КПЧ ступени"                     
                                         
-                                         Text="{Binding AC_a0, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         Text="{Binding AC_a0, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное межфазное"                    
                                          
-                                         Text="{Binding LI_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         Text="{Binding LI_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="КПЧ межфазное"                     
                                         
-                                         Text="{Binding AC_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         Text="{Binding AC_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                             </StackPanel>
                         </GroupBox>
@@ -363,15 +367,15 @@
                             <StackPanel>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Переключений до ревиизии"                    
                                         
-                                         Text="{Binding Number_select_to_revisions, UpdateSourceTrigger=PropertyChanged, StringFormat={}{}}">
+                                         Text="{Binding Number_select_to_revisions, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="До замены контактов"                     
                                         
-                                         Text="{Binding Number_select_to_change_contact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         Text="{Binding Number_select_to_change_contact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Механический ресурс"                    
                                          
-                                         Text="{Binding Number_select_mechanical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{}}">
+                                         Text="{Binding Number_select_mechanical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                             </StackPanel>
                         </GroupBox>
@@ -501,8 +505,10 @@
 
                         </Syncfusion:GridFilterControl>
 
-                        <Syncfusion:SfDataGrid   
-                            
+                        <Syncfusion:SfDataGrid 
+                        
+                           
+                          
                             
                             Style="{StaticResource SfDataGridStyle}"                               
                             HeaderStyle="{StaticResource headerStyle}"                   
@@ -511,7 +517,7 @@
                             HeaderRowHeight="40"                   
                             ItemsSource="{Binding AllTapCh, Mode=OneWay}"                                                 
                             SelectedItem="{Binding SelectedItem, Mode=OneWayToSource, Delay=100}"    >
-                          
+                            
 
                             <Syncfusion:SfDataGrid.Columns >
 

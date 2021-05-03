@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,17 +16,21 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Xml.Serialization;
 using TAP_DB.Model;
 using TAP_DB.View;
 
 
+
 namespace TAP_DB.ViewModel
 {
-    public partial class MainVM :INotifyPropertyChanged
+    
+    public partial class MainVM : INotifyPropertyChanged
     {
+
         /// <summary>
         /// Состояние без доступа, то есть блокировать интерфейс
-        /// </summary>
+        /// </summary>        
         private bool isBusy;
         public bool IsBusy
         {
@@ -125,7 +130,7 @@ namespace TAP_DB.ViewModel
 
         /// <summary>
         /// Таблица, которая содержит все данные по РПН
-        /// </summary>
+        /// </summary>      
         private DataTable allTapCh;
         public DataTable AllTapCh
         {
@@ -133,6 +138,20 @@ namespace TAP_DB.ViewModel
             set
             {                
                 allTapCh = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Datagid
+        /// </summary>       
+        private SfDataGrid myDtataGrid;
+        public SfDataGrid MyDtataGrid
+        {
+            get { return myDtataGrid; }
+            set
+            {              
+                myDtataGrid = value;
                 OnPropertyChanged();
             }
         }
@@ -189,12 +208,13 @@ namespace TAP_DB.ViewModel
             get { return maxCurrent; }
             set
             {
+                
                 if (value == "")
                 {
                     maxCurrent = "0";
                 }
                 else
-                {
+                {                    
                     maxCurrent = value;
                 }
                 OnPropertyChanged();
@@ -411,9 +431,10 @@ namespace TAP_DB.ViewModel
             }
         }
 
+
         /// <summary>
         /// Все схемы переключения
-        /// </summary>
+        /// </summary>           
         private DataTable allShem;
         public DataTable AllShem
         {
@@ -425,17 +446,93 @@ namespace TAP_DB.ViewModel
             }
         }
 
-        public ICommand CreateDocx { get; private set; }
+
+        public ICommand CreateDocx { get; private set; }     
         public ICommand DoQuery { get; private set; }
         public ICommand ClearInputData { get; private set; }
-       
+        public ICommand Save { get; private set; }
+        public ICommand Open { get; private set; }
+
         public MainVM()
         {
             CreateDocx = new DelegateCommand(CreateFileDocx);
             ClearInputData = new DelegateCommand(ClearInputDataFunctiun);
             DoQuery = new DelegateCommand(QueryAllTap);
+            Save = new DelegateCommand(SaveWork);
+            Open = new DelegateCommand(OpenWork);
             QueryAllTap();// получаем данные из таблицы       
         }
+
+        /// <summary>
+        /// Метод сохранения данных
+        /// </summary>
+        /// <param name="obj"></param>
+        public  void SaveWork(object obj)
+        {
+            MyDtataGrid  = (SfDataGrid)obj;
+            using (var file = File.Create("DataGridSave.xml"))
+            {
+                MyDtataGrid.Serialize(file);
+            }
+
+
+            Save data = new Save(this);
+
+
+
+        }
+
+        /// <summary>
+        /// Метод чтения данных
+        /// </summary>
+        /// <param name="obj"></param>
+        public void OpenWork(object obj)
+        {
+            MyDtataGrid = (SfDataGrid)obj;
+            using (var file = File.Open("DataGridSave.xml", FileMode.Open))
+            {
+                MyDtataGrid.Deserialize(file);                
+            }
+            Save data = new Save();
+            Save oldData = data.DeSerializableFile();
+            MaxCurrent = oldData.maxCurrent;
+            Itermal = oldData.itermal;
+            Idinamic = oldData.idinamic;
+            ust_V = oldData.Ust_V;
+            Sst = oldData.sst;
+            LI_kV = oldData.lI_kV;
+            KV50Hz1min = oldData.kV50Hz1min;
+            LI_b1 = oldData.lI_b1;
+            AC_b1 = oldData.aC_b1;
+            LI_a0 = oldData.lI_a0;
+            AC_a0 = oldData.aC_a0;
+            LI_b2 = oldData.lI_b2;
+            AC_b2 = oldData.aC_b2;
+            Number_select_to_revisions = oldData.Number_to_revisions;
+            Number_select_to_change_contact = oldData.Number_select_to_change_contact;
+            Number_select_mechanical = oldData.Number_select_mechanical;
+            Ust_V = oldData.Ust_V;
+
+            Number_select_mechanicalSelected = oldData.Number_select_mechanicalSelected;
+            TapCHname = oldData.tapCHnameSelected;
+            ShemaСoncretCH = oldData.shemaСoncretCH;
+            Number_select_to_revisionsSelected = oldData.Number_select_to_revisions;
+            AC_b2Selected = oldData.aC_b2Selected;
+            LI_b2Selected = oldData.lI_b2Selected;
+            AC_a0Selected = oldData.aC_a0Selected;
+            LI_a0Selected = oldData.lI_a0Selected;
+            AC_b1Selected = oldData.aC_b1Selected;
+            KV50Hz1minSelected = oldData.kV50Hz1minSelected;
+            LI_kVSelected = oldData.lI_kVSelected;
+            IdinamiclSelected = oldData.idinamiclSelected;
+            Ust_V_Selected = oldData.Ust_V_Selected;
+            SstSelected = oldData.sstSelected;
+            MaxCurrentSelected = oldData.maxCurrentSelected;
+            ItermalSelected = oldData.itermalSelected;
+            LI_b1Selected = oldData.lI_b1Selected;
+            Number_select_to_change_contactSelected = oldData.Number_select_to_change_contactSelected;
+        }
+
 
         /// <summary>
         /// Метод создания отчета по характеристикам РПН

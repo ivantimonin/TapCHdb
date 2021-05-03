@@ -1,236 +1,246 @@
-﻿using EasyDox;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Serialization;
 using TAP_DB.ViewModel;
-using Application = Microsoft.Office.Interop.Word.Application;
-using Document = Microsoft.Office.Interop.Word.Document;
 
 namespace TAP_DB.Model
 {
-    public class CreateDocx
+    [Serializable]
+    public class Save
     {
         /// <summary>
         /// Механический ресурс
         /// </summary>
-        private string Number_select_mechanicalSelected;
+        public string Number_select_mechanicalSelected;
 
         /// <summary>
         /// Механический ресурс требуемый
         /// </summary>
-        private string Number_select_mechanical;
+        public string Number_select_mechanical;
 
 
         /// <summary>
         /// Переключений до замены контактов
         /// </summary>
-        private string Number_select_to_change_contactSelected;
+        public string Number_select_to_change_contactSelected;
 
         /// <summary>
         /// Переключений до замены контактов труется
         /// </summary>
-        private string Number_select_to_change_contact;
+        public string Number_select_to_change_contact;
 
 
         /// <summary>
         /// Переключений до ревиизии
         /// </summary>
-        private string Number_select_to_revisions;
+        public string Number_select_to_revisions;
 
         /// <summary>
         /// Переключений до ревиизии требуется
         /// </summary>
-        private string Number_to_revisions;
+        public string Number_to_revisions;
 
 
         /// <summary>
         /// фазное напряжение ступени
         /// </summary>
-        private string Ust_V_Selected;
+        public string Ust_V_Selected;
 
         /// <summary>
         /// фазное напряжение ступени требуется
         /// </summary>
-        private string Ust_V;
+        public string Ust_V;
 
 
         /// <summary>
         /// Число ступеней
         /// </summary>
-        private string StepNumberSelected;
+        public string StepNumberSelected;
 
         /// <summary>
         /// Число ступеней требуется
         /// </summary> 
-        private string StepNumber;
+        public string StepNumber;
 
 
         /// <summary>
         /// Включение РО
         /// </summary>
-        private string ConnectionToTapSelected;
+        public string ConnectionToTapSelected;
 
         /// <summary>
         /// Включение РО требуется
         /// </summary>
-        private string ConnectionToTap;
+        public string ConnectionToTap;
 
 
         /// <summary>
         /// Наименовние схемы для типа РПН
         /// </summary>
-        private string shemaСoncretCHSelected;
+        public string shemaСoncretCHSelected;
 
         /// <summary>
         /// Наименовние схемы для типа РПН требуется
         /// </summary>
-        private string shemaСoncretCH;
+        public string shemaСoncretCH;
 
 
         /// <summary>
         /// Наименовние найденного РПН
         /// </summary>
-        private string tapCHnameSelected;
+        public string tapCHnameSelected;
 
 
         /// <summary>
         /// КПЧ межфазное
         /// </summary>
-        private string aC_b2Selected;
+        public string aC_b2Selected;
 
         /// <summary>
         /// КПЧ межфазное требуется
         /// </summary>
-        private string aC_b2;
+        public string aC_b2;
 
 
         /// <summary>
         /// Импульсное межфазное
         /// </summary>
-        private string lI_b2Selected;
+        public string lI_b2Selected;
 
         /// <summary>
         /// Импульсное межфазное требуется
         /// </summary>
-        private string lI_b2;
+        public string lI_b2;
 
 
         /// <summary>
         /// КПЧ ступени
         /// </summary>
-        private string aC_a0Selected;
+        public string aC_a0Selected;
 
         /// <summary>
         /// КПЧ ступени требуется
         /// </summary>
-        private string aC_a0;
+        public string aC_a0;
 
 
 
         /// <summary>
         /// Импульсное ступени
         /// </summary>
-        private string lI_a0Selected;
+        public string lI_a0Selected;
 
         /// <summary>
         /// Импульсное ступени требуется
         /// </summary>
-        private string lI_a0;
+        public string lI_a0;
 
 
         /// <summary>
         /// КПЧ на диапазон
         /// </summary>
-        private string aC_b1Selected;
+        public string aC_b1Selected;
 
         /// <summary>
         /// КПЧ на диапазон требуется
         /// </summary>
-        private string aC_b1;
+        public string aC_b1;
 
 
         /// <summary>
         /// КПЧ на землю
         /// </summary>
-        private string kV50Hz1minSelected;
+        public string kV50Hz1minSelected;
 
         /// <summary>
         /// КПЧ на землю требуется
         /// </summary>
-        private string kV50Hz1min;
+        public string kV50Hz1min;
 
 
         /// <summary>
         /// Импульсное на землю
         /// </summary>
-        private string lI_kVSelected;
+        public string lI_kVSelected;
 
 
         /// <summary>
         /// Импульсное на землю требуется
         /// </summary>
-        private string lI_kV;
+        public string lI_kV;
 
 
         /// <summary>
         /// Наибольший ударный ток
         /// </summary>
-        private string idinamiclSelected;
+        public string idinamiclSelected;
 
-         /// <summary>
+        /// <summary>
         /// Наибольший ударный ток требуется
         /// </summary>
-        private string idinamic;
+        public string idinamic;
 
 
         /// <summary>
         /// Мощность ступени, кВА
         /// </summary>
-        private string sstSelected;
+        public string sstSelected;
 
         /// <summary>
         /// Мощность ступени, кВА требуется
         /// </summary>
-        private string sst;
+        public string sst;
 
 
         /// <summary>
         /// Выбранный рабочий ток
         /// </summary>
-        private string maxCurrentSelected;
+        public string maxCurrentSelected;
 
         /// <summary>
         /// Выбранный рабочий ток требуется
         /// </summary>
-        private string maxCurrent;
+        public string maxCurrent;
 
 
         /// <summary>
         /// Ток термической стойкости выбранный
         /// </summary>
-        private string itermalSelected;
+        public string itermalSelected;
 
         /// <summary>
         /// Ток термической стойкости выбранный требуется
         /// </summary>
-        private string itermal;
+        public string itermal;
 
         /// <summary>
         /// Импульсное на диапазон
         /// </summary>
-        private string lI_b1Selected;
+        public string lI_b1Selected;
 
         /// <summary>
         /// Импульсное на диапазон требуется
         /// </summary>
-        private string lI_b1;
+        public string lI_b1;
 
-        public CreateDocx(MainVM FindData)
+
+
+
+        public Save()
+        {
+        }
+
+
+        // передаем в конструктор тип класса
+        [NonSerialized]
+        private XmlSerializer formatter = new XmlSerializer(typeof(Save));
+        public Save(MainVM FindData)
         {
 
             //выбранные параметры  
@@ -254,7 +264,7 @@ namespace TAP_DB.Model
             this.Number_select_to_revisions = FindData.Number_select_to_revisionsSelected != null ? FindData.Number_select_to_revisionsSelected : " ";
             this.Number_select_to_change_contactSelected = FindData.Number_select_to_change_contactSelected != null ? FindData.Number_select_to_change_contactSelected : " ";
             this.Number_select_mechanicalSelected = FindData.Number_select_mechanicalSelected != null ? FindData.Number_select_mechanicalSelected : " ";
-          
+
             //требуемые параметры                       
             this.aC_b2 = FindData.AC_b2 != null ? FindData.AC_b2 : " ";
             this.lI_b2 = FindData.LI_b2 != null ? FindData.LI_b2 : " ";
@@ -275,96 +285,33 @@ namespace TAP_DB.Model
             this.Number_to_revisions = FindData.Number_select_to_revisions != null ? FindData.Number_select_to_revisions : " ";
             this.Number_select_to_change_contact = FindData.Number_select_to_change_contact != null ? FindData.Number_select_to_change_contact : " ";
             this.Number_select_mechanical = FindData.Number_select_mechanical != null ? FindData.Number_select_mechanical : " ";
-            StartCreateDocx();
+
+            SerializableFile();
+
         }
 
-        public void StartCreateDocx()
+        public void SerializableFile()
         {
-            var fieldValues = new Dictionary<string, string>
+            
+            // получаем поток, куда будем записывать сериализованный объект
+            using (FileStream fs = new FileStream("MainVM.xml", FileMode.Create))
             {
-                {"Наименовние найденного РПН", tapCHnameSelected+" "+shemaСoncretCHSelected },
-                {"КПЧ межфазное", aC_b2Selected },
-                {"Импульсное межфазное", lI_b2Selected },
-                {"КПЧ ступени", aC_a0Selected },
-                {"Импульсное ступени", lI_a0Selected },
-                {"КПЧ на диапазон", aC_b1Selected },
-                {"КПЧ на землю", kV50Hz1minSelected },
-                {"Наибольший ударный ток",idinamiclSelected },
-                {"Мощность ступени, кВА", sstSelected },
-                {"Выбранный рабочий ток", maxCurrentSelected },
-                {"Ток термической стойкости выбранный", itermalSelected },
-                {"Импульсное на диапазон", lI_b1Selected },
-                {"Включение РО", ConnectionToTapSelected },
-                {"Число ступеней", StepNumberSelected },
-                {"Схема переключения", shemaСoncretCHSelected },
-                {"Фазное напряжение ступени, В", Ust_V_Selected},
-                {"Импульсное на землю", lI_kVSelected},
-                {"Переключений до ревиизии РПН", Number_select_to_revisions },
-                {"До замены контактов", Number_select_to_change_contactSelected },
-                {"Механический ресурс", Number_select_mechanicalSelected },
-
-                {"КПЧ межфазное требуемое", aC_b2 },
-                {"Импульсное межфазное требуемое", lI_b2 },
-                {"КПЧ ступени требуемое", aC_a0 },
-                {"Импульсное ступени требуемое", lI_a0},
-                {"КПЧ на диапазон требуемое", aC_b1 },
-                {"КПЧ на землю требуемое", kV50Hz1min },
-                {"Наибольший ударный ток требуемый",idinamic },
-                {"Мощность ступени, кВА требуемая", sst },
-                {"Рабочий ток требуемый", maxCurrent },
-                {"Ток термической стойкости требуемый", itermal },
-                {"Импульсное на диапазон требуемое", lI_b1 },
-                {"Включение РО требуемое", ConnectionToTap },
-                {"Число ступеней требуемое", StepNumber },
-                {"Схема переключения требуемая", shemaСoncretCH },
-                {"Фазное напряжение ступени, В требуемое", Ust_V},
-                {"Импульсное на землю требуемое", lI_kV},
-                {"Переключений до ревиизии РПН требуемое", Number_to_revisions },
-                {"До замены контактов требуемое", Number_select_to_change_contact },
-                {"Механический ресурс требуемый", Number_select_mechanical }
-            };
-
-            var engine = new Engine();
-            string pathTemplate = Directory.GetCurrentDirectory();
-            string userReport = GetDirectoryPath();
-            if (userReport != "")
-            {
-                try
-                {
-                    engine.Merge($@"{pathTemplate}\template.docx", fieldValues, $@"{userReport}");
-                    Openfile(userReport);
-                    MessageBox.Show("Экспорт завершен!");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                formatter.Serialize(fs, this);
+                MessageBox.Show("Файл сохранен");
             }
+
         }
 
-        public string GetDirectoryPath()
+        public Save DeSerializableFile()
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "DocxFile(*.docx)|*.docx";
-            saveFileDialog.ShowDialog();
-            return saveFileDialog.FileName;
-        }
+            using (FileStream fs = new FileStream("MainVM.xml", FileMode.Open))
+            {
 
-        public void Openfile(string FileName)
-        {
-            Application app = new Application();
-            Document doc = app.Documents.Open(FileName);
-            try
-            {
-                app.Documents.Open(FileName);
-            }
-            catch (Exception ex)
-            {
-                doc.Close();
-                app.Quit();
-                MessageBox.Show(ex.Message);
+                Save old_data = (Save)formatter.Deserialize(fs);
+                MessageBox.Show("Файл выгружен");
+             
+                return old_data;
             }
         }
     }
-
 }

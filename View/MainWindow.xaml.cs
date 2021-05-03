@@ -18,6 +18,7 @@ using System.Data;
 using System.Collections.ObjectModel;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion;
+using System.IO;
 
 namespace TAP_DB.View
 {
@@ -25,38 +26,32 @@ namespace TAP_DB.View
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {                
+    {
         public MainWindow()
         {
-           
+
         }
 
         private void CleareFilter_Click(object sender, RoutedEventArgs e)
         {
-             BaseDataGrid.ClearFilters();
+            BaseDataGrid.ClearFilters();
         }
 
         private void CleareSorting_Click(object sender, RoutedEventArgs e)
         {
-            BaseDataGrid.SortColumnDescriptions.Clear();
+            BaseDataGrid.SortColumnDescriptions.Clear();          
         }
 
         private void CleareGrouping_Click(object sender, RoutedEventArgs e)
         {
-            
             BaseDataGrid.GroupColumnDescriptions.Clear();
-            
         }
 
         private void CleareAll_Click(object sender, RoutedEventArgs e)
         {
             BaseDataGrid.GroupColumnDescriptions.Clear();
-            BaseDataGrid.SortColumnDescriptions.Clear();            
+            BaseDataGrid.SortColumnDescriptions.Clear();
             BaseDataGrid.ClearFilters();
-        }
-
-        
-
-        
+        }     
     }
 }

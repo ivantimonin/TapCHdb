@@ -209,6 +209,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\CreateDocx.cs" />
+    <Compile Include="Model\Save.cs" />
+    <Compile Include="ViewModel\TexBoxConverter.cs" />
     <Compile Include="ViewModel\DelegateCommand.cs" />
     <Compile Include="ViewModel\MainVM.cs" />
     <Compile Include="ViewModel\MainVMFindData.cs" />
