@@ -13,7 +13,7 @@ namespace TAP_DB.ViewModel
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == "0")
+            if ((string)value == "0")
             {
                 return "";
             }

@@ -21,7 +21,7 @@
     <Window.Resources>
 
         <viewModel:TexBoxConverter x:Key="TexBoxConverter" />
-
+        <viewModel:CustomConverter x:Key="CustomConverter" />
 
         <Style TargetType="ToolBar">
             <Style.Setters>
@@ -231,18 +231,29 @@
                 <Button Margin="10,0,0,0" 
                             VerticalAlignment="Center"                                                      
                             Padding="0"
-                            ToolTip="Кнопка пока не работает"
-                            Command="{Binding Open}"
-                            CommandParameter="{Binding ElementName=BaseDataGrid}">
+                            ToolTip="Открыть"
+                            Command="{Binding Open}">
+                    <ButtonBase.CommandParameter>
+                        <MultiBinding Converter="{StaticResource CustomConverter}">
+                            <Binding ElementName="BaseDataGrid"/>
+                            <Binding ElementName="ShemaDataGrid"/>
+                        </MultiBinding>
+                    </ButtonBase.CommandParameter>
                     <materialDesign:PackIcon   Kind="OpenInNew"  Foreground="#00FFFF" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
 
                 <Button Margin="50,0,0,0" 
                             VerticalAlignment="Center"                        
                             Padding="0"
-                            ToolTip="Кнопка пока не работает"
-                            Command="{Binding Save}"
-                            CommandParameter="{Binding ElementName=BaseDataGrid}">
+                            ToolTip="Сохранить"
+                            Command="{Binding Save}">
+                    <ButtonBase.CommandParameter>
+                        <MultiBinding Converter="{StaticResource CustomConverter}">
+                            <Binding ElementName="BaseDataGrid"/>
+                            <Binding ElementName="ShemaDataGrid"/>
+                        </MultiBinding>
+                    </ButtonBase.CommandParameter>
+                          
                            
                     <materialDesign:PackIcon   Kind="ContentSaveAll"  Foreground="#0000FF" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
@@ -498,7 +509,6 @@
             <Grid  Grid.Row="1" Grid.Column="1"  x:Name="GridHeight" >
                 <Syncfusion:ScrollableContentViewer   HorizontalAlignment="Center"  HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Disabled"   >
 
-
                     <StackPanel Orientation="Horizontal"  >
 
                         <Syncfusion:GridFilterControl OverridesDefaultStyle="False">
@@ -506,17 +516,15 @@
                         </Syncfusion:GridFilterControl>
 
                         <Syncfusion:SfDataGrid 
-                        
-                           
-                          
-                            
+                                            
                             Style="{StaticResource SfDataGridStyle}"                               
                             HeaderStyle="{StaticResource headerStyle}"                   
                             x:Name="BaseDataGrid"                      
                             Margin="20,0,0,0"                
                             HeaderRowHeight="40"                   
-                            ItemsSource="{Binding AllTapCh, Mode=OneWay}"                                                 
-                            SelectedItem="{Binding SelectedItem, Mode=OneWayToSource, Delay=100}"    >
+                            ItemsSource="{Binding AllTapCh, Mode=OneWay}"
+                            SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                           
+                            SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}" >
                             
 
                             <Syncfusion:SfDataGrid.Columns >
@@ -564,10 +572,12 @@
 
 
                         <Syncfusion:SfDataGrid 
+                            x:Name="ShemaDataGrid" 
                             Margin="0,0,20,0"                            
                             Style="{StaticResource SfDataGridStyle}"    
                             HeaderStyle="{StaticResource headerStyle}"                    
-                            ItemsSource="{Binding AllShem, Mode=OneWay}"                                                          
+                            ItemsSource="{Binding AllShem, Mode=OneWay}"   
+                            SelectedIndex="{Binding SelectedShema, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             SelectedItem="{Binding SelectedItemShem, Mode=OneWayToSource}" AllowDraggingColumns="True" AllowResizingHiddenColumns="True">
 
                             <Syncfusion:SfDataGrid.Columns >

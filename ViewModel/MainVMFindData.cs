@@ -9,7 +9,7 @@ using System.Windows;
 namespace TAP_DB.ViewModel
 {
     partial  class MainVM
-    {
+    {    
         /// <summary>
         /// Выбранная строка в таблице с РПН
         /// </summary>
@@ -20,6 +20,7 @@ namespace TAP_DB.ViewModel
             set
             {               
                 selectedItem = value;
+               // MessageBox.Show($"{selectedItem?.}");
                 
                 if (selectedItem != null)
                 {
@@ -63,7 +64,12 @@ namespace TAP_DB.ViewModel
 
                 if (selectedItemShem != null)
                 {
-                    ShemaСoncretCH = Convert.ToString(selectedItemShem[1]);                                      
+                    ShemaСoncretCH = Convert.ToString(selectedItemShem[1]);
+                    OnPropertyChanged();
+                }
+                else
+                {
+                    ShemaСoncretCH = "";
                     OnPropertyChanged();
                 }
             }
@@ -319,6 +325,41 @@ namespace TAP_DB.ViewModel
             set
             {
                 ust_V_Selected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// ВЫбранный индекс для DataGridBase
+        /// </summary>
+        private string selectedIndex;
+        public string SelectedIndex
+        {
+            get
+            {
+                return selectedIndex;
+            }
+            set
+            {                
+                selectedIndex = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// ВЫбранный индекс для DataGridShema
+        /// </summary>
+        private string selectedShema;
+        public string SelectedShema
+        {
+            get
+            {
+                return selectedShema;
+            }
+            set
+            {
+              
+                selectedShema = value;           
                 OnPropertyChanged();
             }
         }

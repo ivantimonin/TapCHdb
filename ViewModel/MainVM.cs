@@ -1,33 +1,25 @@
 ﻿using FindInWord.ViewModel;
 using Syncfusion.UI.Xaml.Grid;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Xml.Serialization;
 using TAP_DB.Model;
-using TAP_DB.View;
 
 
 
 namespace TAP_DB.ViewModel
 {
-    
+
     public partial class MainVM : INotifyPropertyChanged
     {
-
+        #region Поля класса
         /// <summary>
         /// Состояние без доступа, то есть блокировать интерфейс
         /// </summary>        
@@ -136,22 +128,36 @@ namespace TAP_DB.ViewModel
         {
             get { return allTapCh; }
             set
-            {                
+            {
                 allTapCh = value;
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// Datagid
+        /// DatagidBase
         /// </summary>       
         private SfDataGrid myDtataGrid;
-        public SfDataGrid MyDtataGrid
+        public SfDataGrid MyDtataGridBase
         {
             get { return myDtataGrid; }
             set
-            {              
+            {
                 myDtataGrid = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// DatagidShema
+        /// </summary>       
+        private SfDataGrid myDtataGridShema;
+        public SfDataGrid MyDtataGridShema
+        {
+            get { return myDtataGridShema; }
+            set
+            {
+                myDtataGridShema = value;
                 OnPropertyChanged();
             }
         }
@@ -208,13 +214,13 @@ namespace TAP_DB.ViewModel
             get { return maxCurrent; }
             set
             {
-                
+
                 if (value == "")
                 {
                     maxCurrent = "0";
                 }
                 else
-                {                    
+                {
                     maxCurrent = value;
                 }
                 OnPropertyChanged();
@@ -446,8 +452,9 @@ namespace TAP_DB.ViewModel
             }
         }
 
-
-        public ICommand CreateDocx { get; private set; }     
+        #endregion
+               
+        public ICommand CreateDocx { get; private set; }
         public ICommand DoQuery { get; private set; }
         public ICommand ClearInputData { get; private set; }
         public ICommand Save { get; private set; }
@@ -467,19 +474,27 @@ namespace TAP_DB.ViewModel
         /// Метод сохранения данных
         /// </summary>
         /// <param name="obj"></param>
-        public  void SaveWork(object obj)
-        {
-            MyDtataGrid  = (SfDataGrid)obj;
-            using (var file = File.Create("DataGridSave.xml"))
+        public void SaveWork(object obj)
+        {           
+            Save data = new Save(this);
+            data.CreateFoldreSave();
+            #region Серриализация умных таблиц
+            MainVM mainVM = (MainVM)obj;
+            MyDtataGridBase = mainVM.MyDtataGridBase;
+            MyDtataGridShema = mainVM.MyDtataGridShema;
+            using (var file = File.Create(@"Save\DataGridBaseSave.xml"))
             {
-                MyDtataGrid.Serialize(file);
+                MyDtataGridBase.Serialize(file);
+            }
+            #endregion
+
+            using (var file = File.Create(@"Save\DataGridShemaSave.xml"))
+            {
+                MyDtataGridShema.Serialize(file);
             }
 
-
-            Save data = new Save(this);
-
-
-
+            data.SerializableFile();
+            data.CreateZip();
         }
 
         /// <summary>
@@ -488,49 +503,75 @@ namespace TAP_DB.ViewModel
         /// <param name="obj"></param>
         public void OpenWork(object obj)
         {
-            MyDtataGrid = (SfDataGrid)obj;
-            using (var file = File.Open("DataGridSave.xml", FileMode.Open))
-            {
-                MyDtataGrid.Deserialize(file);                
-            }
             Save data = new Save();
             Save oldData = data.DeSerializableFile();
-            MaxCurrent = oldData.maxCurrent;
-            Itermal = oldData.itermal;
-            Idinamic = oldData.idinamic;
-            ust_V = oldData.Ust_V;
-            Sst = oldData.sst;
-            LI_kV = oldData.lI_kV;
-            KV50Hz1min = oldData.kV50Hz1min;
-            LI_b1 = oldData.lI_b1;
-            AC_b1 = oldData.aC_b1;
-            LI_a0 = oldData.lI_a0;
-            AC_a0 = oldData.aC_a0;
-            LI_b2 = oldData.lI_b2;
-            AC_b2 = oldData.aC_b2;
-            Number_select_to_revisions = oldData.Number_to_revisions;
-            Number_select_to_change_contact = oldData.Number_select_to_change_contact;
-            Number_select_mechanical = oldData.Number_select_mechanical;
-            Ust_V = oldData.Ust_V;
+            #region Дессериализация умных таблиц
+            MainVM mainVM = (MainVM)obj;
+            MyDtataGridBase = mainVM.MyDtataGridBase;
+            MyDtataGridShema = mainVM.MyDtataGridShema;
 
-            Number_select_mechanicalSelected = oldData.Number_select_mechanicalSelected;
-            TapCHname = oldData.tapCHnameSelected;
-            ShemaСoncretCH = oldData.shemaСoncretCH;
-            Number_select_to_revisionsSelected = oldData.Number_select_to_revisions;
-            AC_b2Selected = oldData.aC_b2Selected;
-            LI_b2Selected = oldData.lI_b2Selected;
-            AC_a0Selected = oldData.aC_a0Selected;
-            LI_a0Selected = oldData.lI_a0Selected;
-            AC_b1Selected = oldData.aC_b1Selected;
-            KV50Hz1minSelected = oldData.kV50Hz1minSelected;
-            LI_kVSelected = oldData.lI_kVSelected;
-            IdinamiclSelected = oldData.idinamiclSelected;
-            Ust_V_Selected = oldData.Ust_V_Selected;
-            SstSelected = oldData.sstSelected;
-            MaxCurrentSelected = oldData.maxCurrentSelected;
-            ItermalSelected = oldData.itermalSelected;
-            LI_b1Selected = oldData.lI_b1Selected;
-            Number_select_to_change_contactSelected = oldData.Number_select_to_change_contactSelected;
+            try
+            {
+                using (var file = File.Open(@"Save\DataGridBaseSave.xml", FileMode.Open))
+                {
+                    MyDtataGridBase.Deserialize(file);
+                }
+                using (var file = File.Open(@"Save\DataGridShemaSave.xml", FileMode.Open))
+                {
+                    MyDtataGridShema.Deserialize(file);
+                }
+            }
+            
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.Message);
+            }
+            #endregion
+
+            if (oldData != null)
+            {               
+                MaxCurrent = oldData.maxCurrent;
+                Itermal = oldData.itermal;
+                Idinamic = oldData.idinamic;
+                ust_V = oldData.Ust_V;
+                Sst = oldData.sst;
+                LI_kV = oldData.lI_kV;
+                KV50Hz1min = oldData.kV50Hz1min;
+                LI_b1 = oldData.lI_b1;
+                AC_b1 = oldData.aC_b1;
+                LI_a0 = oldData.lI_a0;
+                AC_a0 = oldData.aC_a0;
+                LI_b2 = oldData.lI_b2;
+                AC_b2 = oldData.aC_b2;
+                Number_select_to_revisions = oldData.Number_to_revisions;
+                Number_select_to_change_contact = oldData.Number_select_to_change_contact;
+                Number_select_mechanical = oldData.Number_select_mechanical;
+                Ust_V = oldData.Ust_V;
+
+                Number_select_mechanicalSelected = oldData.Number_select_mechanicalSelected;
+                TapCHname = oldData.tapCHnameSelected;
+                ShemaСoncretCH = oldData.shemaСoncretCH;
+                Number_select_to_revisionsSelected = oldData.Number_select_to_revisions;
+                AC_b2Selected = oldData.aC_b2Selected;
+                LI_b2Selected = oldData.lI_b2Selected;
+                AC_a0Selected = oldData.aC_a0Selected;
+                LI_a0Selected = oldData.lI_a0Selected;
+                AC_b1Selected = oldData.aC_b1Selected;
+                KV50Hz1minSelected = oldData.kV50Hz1minSelected;
+                LI_kVSelected = oldData.lI_kVSelected;
+                IdinamiclSelected = oldData.idinamiclSelected;
+                Ust_V_Selected = oldData.Ust_V_Selected;
+                SstSelected = oldData.sstSelected;
+                MaxCurrentSelected = oldData.maxCurrentSelected;
+                ItermalSelected = oldData.itermalSelected;
+                LI_b1Selected = oldData.lI_b1Selected;
+                Number_select_to_change_contactSelected = oldData.Number_select_to_change_contactSelected;              
+                AllTapCh = oldData.AllTapCh;
+                AllShem = oldData.AllShem;
+                SelectedIndex = oldData.SelectedIndex;               
+                SelectedShema = oldData.SelectedShema;
+               
+            }
         }
 
 
@@ -541,8 +582,8 @@ namespace TAP_DB.ViewModel
         public async void CreateFileDocx(object obj)
         {
             await Task.Run(() =>
-            {               
-                CreateDocx someDocx = new CreateDocx(this);                
+            {
+                CreateDocx someDocx = new CreateDocx(this);
             });
         }
 
@@ -588,7 +629,14 @@ namespace TAP_DB.ViewModel
             ItermalSelected = "";
             LI_b1Selected = "";
             Number_select_to_change_contactSelected = "";
-            QueryAllTap();
+            try
+            {
+                QueryAllTap();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}");
+            }
         }
 
         /// <summary>
@@ -597,11 +645,12 @@ namespace TAP_DB.ViewModel
         public DataTable Select(string selectSQL) // функция  обработка запросов
         {
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;//достаем строку подключения из config
-
             SqlConnection sqlConnection = new SqlConnection(connectionString); // подключаемся к базе данных
-            DataTable dataTable = new DataTable("dataTable");// создаём таблицу в приложении
             try
             {
+
+                DataTable dataTable = new DataTable("dataTable");// создаём таблицу в приложении
+
                 if (sqlConnection.State == ConnectionState.Closed)
                 {
                     sqlConnection.Open();// открываем базу данных  
@@ -610,6 +659,7 @@ namespace TAP_DB.ViewModel
                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand); // создаём обработчик
                     sqlDataAdapter.Fill(dataTable);                                  // возращаем таблицу с результатом             
                 }
+                return dataTable;
             }
             catch (Exception ex)
             {
@@ -620,7 +670,7 @@ namespace TAP_DB.ViewModel
             {
                 sqlConnection.Close();
             }
-            return dataTable;
+            return AllTapCh;
         }
 
         /// <summary>
@@ -678,7 +728,6 @@ namespace TAP_DB.ViewModel
         /// </summary>        
         public async void QueryAllTap(object obj = null)
         {
-            
             await Task.Run(() =>
             {
                 IsBusy = true;
@@ -755,9 +804,8 @@ namespace TAP_DB.ViewModel
                 $"Number_select_to_change_contact>={number_select_to_change_contact} and " +
                 $"Number_select_mechanical>={number_select_mechanical}");
                 #endregion
-                IsBusy = false;                
+                IsBusy = false;
             });
-
         }
     }
 }

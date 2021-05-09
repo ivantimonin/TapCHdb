@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Syncfusion.UI.Xaml.Grid;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,12 +9,36 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Serialization;
 using TAP_DB.ViewModel;
+using System.IO.Compression;
+using Microsoft.Win32;
+using System.Data;
 
 namespace TAP_DB.Model
 {
     [Serializable]
     public class Save
     {
+        #region Поля класса
+        /// <summary>
+        /// Основная таблица всех схем РПН
+        /// </summary>
+        public DataTable AllShem;
+
+        /// <summary>
+        /// Основная таблица всех РПН
+        /// </summary>
+        public DataTable AllTapCh;
+
+        /// <summary>
+        /// Выбранная строка РПН
+        /// </summary>
+        public string SelectedIndex;
+
+        /// <summary>
+        /// Выбранная строка схемы
+        /// </summary>
+        public string SelectedShema;
+
         /// <summary>
         /// Механический ресурс
         /// </summary>
@@ -228,22 +253,16 @@ namespace TAP_DB.Model
         /// Импульсное на диапазон требуется
         /// </summary>
         public string lI_b1;
-
-
-
-
-        public Save()
-        {
-        }
-
-
+        #endregion
+        public Save() { }       
+        
         // передаем в конструктор тип класса
         [NonSerialized]
-        private XmlSerializer formatter = new XmlSerializer(typeof(Save));
+        private XmlSerializer formatter = new XmlSerializer(typeof(Save));      
+
         public Save(MainVM FindData)
         {
-
-            //выбранные параметры  
+             //выбранные параметры  
             this.tapCHnameSelected = FindData.TapCHname != null ? FindData.TapCHname : " ";
             this.aC_b2Selected = FindData.AC_b2Selected != null ? FindData.AC_b2Selected : " ";
             this.lI_b2Selected = FindData.LI_b2Selected != null ? FindData.LI_b2Selected : " ";
@@ -285,33 +304,107 @@ namespace TAP_DB.Model
             this.Number_to_revisions = FindData.Number_select_to_revisions != null ? FindData.Number_select_to_revisions : " ";
             this.Number_select_to_change_contact = FindData.Number_select_to_change_contact != null ? FindData.Number_select_to_change_contact : " ";
             this.Number_select_mechanical = FindData.Number_select_mechanical != null ? FindData.Number_select_mechanical : " ";
-
-            SerializableFile();
-
+            this.SelectedIndex= FindData.SelectedIndex != null ? FindData.SelectedIndex : "-1";
+            this.SelectedShema = FindData.SelectedShema != null ? FindData.SelectedShema : "-1";
+            this.AllTapCh = FindData.AllTapCh;
+            this.AllShem = FindData.AllShem;
         }
 
+        /// <summary>
+        /// Серриализация
+        /// </summary>
         public void SerializableFile()
-        {
-            
+        {            
             // получаем поток, куда будем записывать сериализованный объект
-            using (FileStream fs = new FileStream("MainVM.xml", FileMode.Create))
+            using (FileStream fs = new FileStream(@"Save\MainVM.xml", FileMode.Create))
             {
-                formatter.Serialize(fs, this);
-                MessageBox.Show("Файл сохранен");
+                formatter.Serialize(fs, this);              
             }
-
         }
 
+        /// <summary>
+        /// Дессериализация
+        /// </summary>
         public Save DeSerializableFile()
         {
-            using (FileStream fs = new FileStream("MainVM.xml", FileMode.Open))
+            
+            try
             {
-
-                Save old_data = (Save)formatter.Deserialize(fs);
-                MessageBox.Show("Файл выгружен");
-             
-                return old_data;
+                ExtractZip();
+                using (FileStream fs = new FileStream(@"Save\MainVM.xml", FileMode.Open))
+                {
+                    Save old_data = (Save)formatter.Deserialize(fs);
+                    // MessageBox.Show("Файл выгружен");
+                    return old_data;
+                }
             }
+            catch(Exception ex)
+            {
+                //MessageBox.Show(ex.Message);
+                return null;
+            }
+            
+        }
+
+        /// <summary>
+        /// Метод создает папку куда будут сохраняться все XML файлы
+        /// </summary>       
+        public void CreateFoldreSave()
+        {           
+            string path = Directory.GetCurrentDirectory() + @"\Save";         
+            DirectoryInfo dirInfo = new DirectoryInfo(path);
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }      
+        }
+       
+        /// <summary>
+        /// Метод, который архивирует  папку сохранения в указанную пользователем дирректорию
+        /// </summary>
+        public void CreateZip()
+        {
+            string sourceFolder = Directory.GetCurrentDirectory() + @"\Save"; // исходная папка
+            string zipFile = SaveDirectoryPath(); // сжатый файл
+            if (zipFile != "")
+            {
+                FileInfo fileInfo = new FileInfo(zipFile);
+                if (fileInfo.Exists)
+                {
+                    fileInfo.Delete();
+                }
+                ZipFile.CreateFromDirectory(sourceFolder, zipFile);// архивация   
+            }                        
+        }
+
+        private void ExtractZip()
+        {           
+            string targetFolder = Directory.GetCurrentDirectory() + @"\Save"; // исходная папка
+            string zipFile = OpenDirectoryPath(); // сжатый файл
+            DirectoryInfo dirInfo = new DirectoryInfo(targetFolder);
+            if (dirInfo.Exists)
+            {
+                dirInfo.Delete(true);
+            }
+            ZipFile.ExtractToDirectory(zipFile, targetFolder);//распаковка
+        }
+
+        private string SaveDirectoryPath()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "SavedFile(*.smtt)|*.smtt";        
+            saveFileDialog.AddExtension = true;            
+            saveFileDialog.ShowDialog();
+            return saveFileDialog.FileName;
+        }
+
+        private string OpenDirectoryPath()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "OpenFile(*.smtt|*.smtt";
+            openFileDialog.AddExtension = true;
+            openFileDialog.ShowDialog();
+            return openFileDialog.FileName;
         }
     }
 }
