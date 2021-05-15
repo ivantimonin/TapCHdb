@@ -10,28 +10,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Data;
-using System.Collections.ObjectModel;
-using Syncfusion.UI.Xaml.Grid;
-using Syncfusion;
-using System.IO;
+using TAP_DB.ViewModel;
 
 namespace TAP_DB.View
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для CleareFilter.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CleareFilter : Window
     {
-        public MainWindow()
+        public CleareFilter(MainVM ParentVM)
         {
-
+            this.DataContext = ParentVM;
+            InitializeComponent();
         }
-
-
     }
 }

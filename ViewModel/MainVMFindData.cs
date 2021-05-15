@@ -19,8 +19,7 @@ namespace TAP_DB.ViewModel
             get { return selectedItem; }
             set
             {               
-                selectedItem = value;
-               // MessageBox.Show($"{selectedItem?.}");
+                selectedItem = value;            
                 
                 if (selectedItem != null)
                 {

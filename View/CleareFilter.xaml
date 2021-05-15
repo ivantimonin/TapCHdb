@@ -1,0 +1,27 @@
+﻿<Window x:Class="TAP_DB.View.CleareFilter"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:TAP_DB.ViewModel"
+        xmlns:local="clr-namespace:TAP_DB.View"
+        mc:Ignorable="d"
+        Title="Очистить фильтры:" Height="150" Width="350" ResizeMode="NoResize"
+        x:Name="WindowCleareFilter" WindowStartupLocation="CenterScreen">
+ 
+    <Grid>
+        <StackPanel Margin="10">
+            <CheckBox  FontSize="18"  IsChecked="{Binding CleareSmartTable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Content="Очистить фильтры умных таблиц"/>
+            <CheckBox  FontSize="18" IsChecked="{Binding CleareInputData, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Content="Очистить входные параметры"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button Command="{Binding ConfirmCleareFilter}"
+                    CommandParameter="{Binding ElementName=WindowCleareFilter}"
+                    Margin="10" Width="120" Height="auto" Content="Применить">
+              
+            </Button>
+            
+        </StackPanel>
+
+    </Grid>
+</Window>

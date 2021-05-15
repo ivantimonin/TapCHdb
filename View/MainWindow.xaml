@@ -11,13 +11,11 @@
         xmlns:Syncfusion1="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         Title="РПН" WindowState="Maximized" MinWidth="715"  >
 
-   
+
     <Window.DataContext>
         <viewModel:MainVM/>
     </Window.DataContext>
-
     
-
     <Window.Resources>
 
         <viewModel:TexBoxConverter x:Key="TexBoxConverter" />
@@ -27,6 +25,7 @@
             <Style.Setters>
                 <Setter Property="AllowDrop" Value="False"></Setter>
                 <Setter Property="Opacity" Value="0.5"></Setter>
+                <Setter Property="IsOverflowOpen" Value="False"></Setter>
                 <Setter Property="Background">
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -193,6 +192,29 @@
 
     </Window.Resources>
 
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding DoQuery}" Gesture="CTRL+E" />
+        <KeyBinding Command="{Binding Save}" Gesture="CTRL+S" >
+            <KeyBinding.CommandParameter>
+                <MultiBinding Converter="{StaticResource CustomConverter}">
+                    <Binding ElementName="BaseDataGrid"/>
+                    <Binding ElementName="ShemaDataGrid"/>
+                </MultiBinding>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Command="{Binding Open}" Gesture="CTRL+O">
+            <KeyBinding.CommandParameter>
+                <MultiBinding Converter="{StaticResource CustomConverter}">
+                    <Binding ElementName="BaseDataGrid"/>
+                    <Binding ElementName="ShemaDataGrid"/>
+                </MultiBinding>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+       
+    </Window.InputBindings>
+
+   
+
     <Window.Triggers>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonClose">
             <BeginStoryboard x:Name="CloseMenu_BeginStoryboard" Storyboard="{StaticResource CloseMenu}"></BeginStoryboard>
@@ -214,6 +236,7 @@
 
     <Syncfusion:BusyIndicator IsIndeterminate="True"  AllowDrop="False" Background="LightCoral"  IsBusy="{Binding IsBusy, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
 
+       
         <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition    Width="{Binding ElementName=GridMenu, Path=Width}"  />
@@ -231,7 +254,7 @@
                 <Button Margin="10,0,0,0" 
                             VerticalAlignment="Center"                                                      
                             Padding="0"
-                            ToolTip="Открыть"
+                            ToolTip="Открыть Ctrl+O"
                             Command="{Binding Open}">
                     <ButtonBase.CommandParameter>
                         <MultiBinding Converter="{StaticResource CustomConverter}">
@@ -245,8 +268,8 @@
                 <Button Margin="50,0,0,0" 
                             VerticalAlignment="Center"                        
                             Padding="0"
-                            ToolTip="Сохранить"
-                            Command="{Binding Save}">
+                            ToolTip="Сохранить (Ctrl+S)"
+                            Command="{Binding Save}"                         >
                     <ButtonBase.CommandParameter>
                         <MultiBinding Converter="{StaticResource CustomConverter}">
                             <Binding ElementName="BaseDataGrid"/>
@@ -261,8 +284,9 @@
                 <Button Margin="50,0,0,0" 
                             VerticalAlignment="Center"                                
                             Padding="0"
-                            ToolTip="Применить фильтры"
+                            ToolTip="Применить фильтры (Ctrl+E)"
                             Command="{Binding DoQuery, UpdateSourceTrigger=PropertyChanged}" Background="#FF8EF40B">
+                    
                     <materialDesign:PackIcon   Kind="SqlQuery"  Foreground="#7FFF00" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
 
@@ -270,12 +294,20 @@
                          x:Name="CleareFilter"
                             VerticalAlignment="Center"                           
                             Padding="0"
+                         
                             ToolTip="Очистить фильтры"
                             Command="{Binding ClearInputData, UpdateSourceTrigger=PropertyChanged}">
-
+                   
+                    <ButtonBase.CommandParameter>
+                        <MultiBinding Converter="{StaticResource CustomConverter}">
+                            <Binding ElementName="BaseDataGrid"/>
+                            <Binding ElementName="ShemaDataGrid"/>
+                        </MultiBinding>
+                    </ButtonBase.CommandParameter>
+                    
                     <materialDesign:PackIcon  Kind="RemoveCircle" Foreground="#FF4500" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
-
+                
                 <Button  Margin="50,0,0,0"                            
                             VerticalAlignment="Center"   
                             ToolTip="Экспорт в docx"
@@ -284,8 +316,6 @@
                     <materialDesign:PackIcon  Kind="MicrosoftOffice" Foreground="#FFA500"   Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
             </ToolBar>
-
-
 
 
             <Grid x:Name="GridMenu" Width="350"  Grid.Column="0" Grid.Row="1" Background="WhiteSmoke" >
@@ -539,34 +569,7 @@
                                 <Syncfusion:GridTextColumn HeaderText="Серия"            MappingName="Seria"           ValueBinding="{Binding Seria}"/>
                                 <Syncfusion:GridTextColumn HeaderText="Каталог"          MappingName="About_Catalog"   ValueBinding="{Binding About_Catalog}"/>
                             </Syncfusion:SfDataGrid.Columns>
-                            <Syncfusion:SfDataGrid.HeaderContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Click="CleareFilter_Click" Header="Очистить фильтры" >
-                                        <MenuItem.Icon>
-                                            <materialDesign:PackIcon  VerticalAlignment="Center"   Kind="Filter"  Foreground="Black" Width="15"  Height="15" ></materialDesign:PackIcon>
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-
-                                    <MenuItem Click="CleareSorting_Click" Header="Очистить сортировки" >
-                                        <MenuItem.Icon>
-                                            <materialDesign:PackIcon  VerticalAlignment="Center"   Kind="Sort"  Foreground="Black" Width="15"  Height="15" ></materialDesign:PackIcon>
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-
-                                    <MenuItem Click="CleareGrouping_Click" Header="Очистить группировки" >
-                                        <MenuItem.Icon>
-                                            <materialDesign:PackIcon  VerticalAlignment="Center"   Kind="Group"  Foreground="Black" Width="15"  Height="15" ></materialDesign:PackIcon>
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <Separator></Separator>
-                                    <MenuItem Click="CleareAll_Click" Header="Очистить все" >
-                                        <MenuItem.Icon>
-                                            <materialDesign:PackIcon  VerticalAlignment="Center"   Kind="Clear"  Foreground="Black" Width="15"  Height="15" ></materialDesign:PackIcon>
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </Syncfusion:SfDataGrid.HeaderContextMenu>
-
+                            
 
                         </Syncfusion:SfDataGrid>
 

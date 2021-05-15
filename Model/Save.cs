@@ -19,6 +19,7 @@ namespace TAP_DB.Model
     public class Save
     {
         #region Поля класса
+        
         /// <summary>
         /// Основная таблица всех схем РПН
         /// </summary>
@@ -308,6 +309,7 @@ namespace TAP_DB.Model
             this.SelectedShema = FindData.SelectedShema != null ? FindData.SelectedShema : "-1";
             this.AllTapCh = FindData.AllTapCh;
             this.AllShem = FindData.AllShem;
+           
         }
 
         /// <summary>
@@ -326,8 +328,7 @@ namespace TAP_DB.Model
         /// Дессериализация
         /// </summary>
         public Save DeSerializableFile()
-        {
-            
+        {            
             try
             {
                 ExtractZip();
@@ -342,8 +343,7 @@ namespace TAP_DB.Model
             {
                 //MessageBox.Show(ex.Message);
                 return null;
-            }
-            
+            }            
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace TAP_DB.Model
         private string OpenDirectoryPath()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "OpenFile(*.smtt|*.smtt";
+            openFileDialog.Filter = "OpenFile(*.smtt)|*.smtt";
             openFileDialog.AddExtension = true;
             openFileDialog.ShowDialog();
             return openFileDialog.FileName;

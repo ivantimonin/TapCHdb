@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TAP_DB.Model;
-
-
+using TAP_DB.View;
 
 namespace TAP_DB.ViewModel
 {
@@ -20,6 +19,39 @@ namespace TAP_DB.ViewModel
     public partial class MainVM : INotifyPropertyChanged
     {
         #region Поля класса
+        /// <summary>
+        /// Индиктор нажатия кнопки подтверждения фильтрации
+        /// </summary>
+        private bool IsConfirmCleareFilterTrue=false;
+
+
+        /// <summary>
+        /// Очистка умных таблиц (индикатор)
+        /// </summary>        
+        private bool cleareSmartTable=true;
+        public bool CleareSmartTable
+        {
+            get { return cleareSmartTable; }
+            set
+            {               
+                cleareSmartTable = value;
+              
+            }
+        }
+        /// <summary>
+        /// Очистка введенных данных (индикатор)
+        /// </summary>        
+        private bool сleareInputData = true;
+        public bool CleareInputData
+        {
+            get { return сleareInputData; }
+            set
+            {        
+                сleareInputData = value;                
+            }
+        }
+
+
         /// <summary>
         /// Состояние без доступа, то есть блокировать интерфейс
         /// </summary>        
@@ -453,7 +485,8 @@ namespace TAP_DB.ViewModel
         }
 
         #endregion
-               
+
+        public ICommand ConfirmCleareFilter { get; private set; }
         public ICommand CreateDocx { get; private set; }
         public ICommand DoQuery { get; private set; }
         public ICommand ClearInputData { get; private set; }
@@ -462,6 +495,7 @@ namespace TAP_DB.ViewModel
 
         public MainVM()
         {
+            ConfirmCleareFilter = new DelegateCommand(ConfirmCleareFilterFunction);
             CreateDocx = new DelegateCommand(CreateFileDocx);
             ClearInputData = new DelegateCommand(ClearInputDataFunctiun);
             DoQuery = new DelegateCommand(QueryAllTap);
@@ -470,12 +504,15 @@ namespace TAP_DB.ViewModel
             QueryAllTap();// получаем данные из таблицы       
         }
 
+
+       
+
         /// <summary>
         /// Метод сохранения данных
         /// </summary>
         /// <param name="obj"></param>
         public void SaveWork(object obj)
-        {           
+        {
             Save data = new Save(this);
             data.CreateFoldreSave();
             #region Серриализация умных таблиц
@@ -521,7 +558,7 @@ namespace TAP_DB.ViewModel
                     MyDtataGridShema.Deserialize(file);
                 }
             }
-            
+
             catch (Exception ex)
             {
                 //MessageBox.Show(ex.Message);
@@ -529,7 +566,7 @@ namespace TAP_DB.ViewModel
             #endregion
 
             if (oldData != null)
-            {               
+            {
                 MaxCurrent = oldData.maxCurrent;
                 Itermal = oldData.itermal;
                 Idinamic = oldData.idinamic;
@@ -565,12 +602,15 @@ namespace TAP_DB.ViewModel
                 MaxCurrentSelected = oldData.maxCurrentSelected;
                 ItermalSelected = oldData.itermalSelected;
                 LI_b1Selected = oldData.lI_b1Selected;
-                Number_select_to_change_contactSelected = oldData.Number_select_to_change_contactSelected;              
+                Number_select_to_change_contactSelected = oldData.Number_select_to_change_contactSelected;
                 AllTapCh = oldData.AllTapCh;
                 AllShem = oldData.AllShem;
-                SelectedIndex = oldData.SelectedIndex;               
-                SelectedShema = oldData.SelectedShema;
-               
+                // MessageBox.Show($"{oldData.SelectedIndex}");
+                // SelectedIndex = oldData.SelectedIndex;               
+                //SelectedShema = oldData.SelectedShema;
+
+
+
             }
         }
 
@@ -586,63 +626,125 @@ namespace TAP_DB.ViewModel
                 CreateDocx someDocx = new CreateDocx(this);
             });
         }
-
+        public void ConfirmCleareFilterFunction(object obj)
+        {
+            OnPropertyChanged();
+            IsConfirmCleareFilterTrue = true;
+            var mainVM = (Window)obj;
+            mainVM.Close();
+        }
         /// <summary>
         /// Метод сброса всех фильтров
         /// </summary>
         /// <param name="obj"></param>
         public void ClearInputDataFunctiun(object obj)
-        {
-            MaxCurrent = "";
-            Itermal = "";
-            Idinamic = "";
-            ust_V = "";
-            Sst = "";
-            LI_kV = "";
-            KV50Hz1min = "";
-            LI_b1 = "";
-            AC_b1 = "";
-            LI_a0 = "";
-            AC_a0 = "";
-            LI_b2 = "";
-            AC_b2 = "";
-            Number_select_to_revisions = "";
-            Number_select_to_change_contact = "";
-            Number_select_mechanical = "";
-            Ust_V = "";
+        {           
+            CleareFilter Filter = new CleareFilter(this);
+            Filter.ShowDialog();
+            
+            if (CleareSmartTable && IsConfirmCleareFilterTrue)
+            {              
+                #region Сброс фильтров таблицы
+                MainVM mainVM = (MainVM)obj;
+                MyDtataGridBase = mainVM.MyDtataGridBase;
+                MyDtataGridShema = mainVM.MyDtataGridShema;
 
-            Number_select_mechanicalSelected = "";
-            TapCHname = "";
-            ShemaСoncretCH = "";
-            Number_select_to_revisionsSelected = "";
-            AC_b2Selected = "";
-            LI_b2Selected = "";
-            AC_a0Selected = "";
-            LI_a0Selected = "";
-            AC_b1Selected = "";
-            KV50Hz1minSelected = "";
-            LI_kVSelected = "";
-            IdinamiclSelected = "";
-            Ust_V_Selected = "";
-            SstSelected = "";
-            MaxCurrentSelected = "";
-            ItermalSelected = "";
-            LI_b1Selected = "";
-            Number_select_to_change_contactSelected = "";
-            try
-            {
-                QueryAllTap();
+                MyDtataGridShema.GroupColumnDescriptions.Clear();
+                MyDtataGridBase.GroupColumnDescriptions.Clear();
+                SelectedShema = "-1";
+                SelectedIndex = "-1";
+                MyDtataGridShema.SortColumnDescriptions.Clear();
+                MyDtataGridBase.SortColumnDescriptions.Clear();
+                MyDtataGridShema.ClearFilters();         
+                MyDtataGridBase.ClearFilters();
+                #endregion
+
+                #region Сброс найденных данных
+                Number_select_mechanicalSelected = "";
+                TapCHname = "";
+                ShemaСoncretCH = "";
+                Number_select_to_revisionsSelected = "";
+                AC_b2Selected = "";
+                LI_b2Selected = "";
+                AC_a0Selected = "";
+                LI_a0Selected = "";
+                AC_b1Selected = "";
+                KV50Hz1minSelected = "";
+                LI_kVSelected = "";
+                IdinamiclSelected = "";
+                Ust_V_Selected = "";
+                SstSelected = "";
+                MaxCurrentSelected = "";
+                ItermalSelected = "";
+                LI_b1Selected = "";
+                Number_select_to_change_contactSelected = "";
+                #endregion
             }
-            catch (Exception ex)
+
+            if (CleareInputData && IsConfirmCleareFilterTrue)
             {
-                MessageBox.Show($"{ex.Message}");
+
+                #region Сброс исходных данных
+                MaxCurrent = "";
+                Itermal = "";
+                Idinamic = "";
+                Ust_V = "";
+                Sst = "";
+                LI_kV = "";
+                KV50Hz1min = "";
+                LI_b1 = "";
+                AC_b1 = "";
+                LI_a0 = "";
+                AC_a0 = "";
+                LI_b2 = "";
+                AC_b2 = "";
+                Number_select_to_revisions = "";
+                Number_select_to_change_contact = "";
+                Number_select_mechanical = "";
+                Ust_V = "";
+                #endregion
+
+                #region Сброс найденных данных
+                Number_select_mechanicalSelected = "";
+                TapCHname = "";
+                ShemaСoncretCH = "";
+                Number_select_to_revisionsSelected = "";
+                AC_b2Selected = "";
+                LI_b2Selected = "";
+                AC_a0Selected = "";
+                LI_a0Selected = "";
+                AC_b1Selected = "";
+                KV50Hz1minSelected = "";
+                LI_kVSelected = "";
+                IdinamiclSelected = "";
+                Ust_V_Selected = "";
+                SstSelected = "";
+                MaxCurrentSelected = "";
+                ItermalSelected = "";
+                LI_b1Selected = "";
+                Number_select_to_change_contactSelected = "";
+                #endregion
+
+                #region Обновить данные из  БД
+                try
+                {
+                    QueryAllTap();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.Message}");
+                }
+                #endregion
             }
+            IsConfirmCleareFilterTrue = false;
+            CleareSmartTable = true;
+            CleareInputData = true;
         }
 
-        /// <summary>
-        /// Метод обработки запроса в БД
-        /// </summary>        
-        public DataTable Select(string selectSQL) // функция  обработка запросов
+            /// <summary>
+            /// Метод обработки запроса в БД
+            /// </summary>        
+            public DataTable Select(string selectSQL) // функция  обработка запросов
         {
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;//достаем строку подключения из config
             SqlConnection sqlConnection = new SqlConnection(connectionString); // подключаемся к базе данных
