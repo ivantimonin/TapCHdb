@@ -15,7 +15,7 @@
     <Window.DataContext>
         <viewModel:MainVM/>
     </Window.DataContext>
-    
+
     <Window.Resources>
 
         <viewModel:TexBoxConverter x:Key="TexBoxConverter" />
@@ -57,10 +57,10 @@
                 </EventTrigger>
             </Style.Triggers>
         </Style>
+        
         <Style  TargetType="Syncfusion:FilterToggleButton" >
             <Setter Property="Foreground" Value="Yellow" />
         </Style>
-
 
         <Style  TargetType="Syncfusion:SfDataGrid" x:Key="SfDataGridStyle">
             <Style.Setters>
@@ -108,7 +108,7 @@
             </Style.Setters>
         </Style>
 
-        <Style BasedOn="{StaticResource MaterialDesignGroupBox}" TargetType="GroupBox" >
+        <Style BasedOn="{StaticResource MaterialDesignGroupBox}" TargetType="GroupBox" >            
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
@@ -210,10 +210,10 @@
                 </MultiBinding>
             </KeyBinding.CommandParameter>
         </KeyBinding>
-       
+
     </Window.InputBindings>
 
-   
+
 
     <Window.Triggers>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonClose">
@@ -236,7 +236,7 @@
 
     <Syncfusion:BusyIndicator IsIndeterminate="True"  AllowDrop="False" Background="LightCoral"  IsBusy="{Binding IsBusy, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
 
-       
+
         <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition    Width="{Binding ElementName=GridMenu, Path=Width}"  />
@@ -276,8 +276,8 @@
                             <Binding ElementName="ShemaDataGrid"/>
                         </MultiBinding>
                     </ButtonBase.CommandParameter>
-                          
-                           
+
+
                     <materialDesign:PackIcon   Kind="ContentSaveAll"  Foreground="#0000FF" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
 
@@ -286,28 +286,27 @@
                             Padding="0"
                             ToolTip="Применить фильтры (Ctrl+E)"
                             Command="{Binding DoQuery, UpdateSourceTrigger=PropertyChanged}" Background="#FF8EF40B">
-                    
+
                     <materialDesign:PackIcon   Kind="SqlQuery"  Foreground="#7FFF00" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
 
                 <Button  Margin="50,0,0,0"    
                          x:Name="CleareFilter"
-                            VerticalAlignment="Center"                           
-                            Padding="0"
-                         
-                            ToolTip="Очистить фильтры"
-                            Command="{Binding ClearInputData, UpdateSourceTrigger=PropertyChanged}">
-                   
+                         VerticalAlignment="Center"                           
+                         Padding="0"                         
+                         ToolTip="Очистить фильтры"
+                         Command="{Binding ClearInputData, UpdateSourceTrigger=PropertyChanged}">
+
                     <ButtonBase.CommandParameter>
                         <MultiBinding Converter="{StaticResource CustomConverter}">
                             <Binding ElementName="BaseDataGrid"/>
                             <Binding ElementName="ShemaDataGrid"/>
                         </MultiBinding>
                     </ButtonBase.CommandParameter>
-                    
+
                     <materialDesign:PackIcon  Kind="RemoveCircle" Foreground="#FF4500" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
-                
+
                 <Button  Margin="50,0,0,0"                            
                             VerticalAlignment="Center"   
                             ToolTip="Экспорт в docx"
@@ -315,6 +314,8 @@
                             Command="{Binding CreateDocx, UpdateSourceTrigger=PropertyChanged}">
                     <materialDesign:PackIcon  Kind="MicrosoftOffice" Foreground="#FFA500"   Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
+                
+                
             </ToolBar>
 
 
@@ -333,7 +334,7 @@
                             >
 
                             <materialDesign:PackIcon  Foreground="red" Kind="ArrowCollapseLeft" Width="15"  Height="15" Opacity="0.7" HorizontalAlignment="Center"   VerticalAlignment="Center"></materialDesign:PackIcon>
-                           
+
                         </Button>
                     </StackPanel>
                 </Grid>
@@ -367,8 +368,27 @@
                             </StackPanel>
                         </GroupBox>
 
-                        <GroupBox  Header="Испытательное напряжение, кВ">
-                            <StackPanel>
+                        <GroupBox >
+                            <GroupBox.HeaderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="0">
+                                        <TextBlock FontWeight="Bold" FontSize="14" Text="Испытательное напряжение, кВ"></TextBlock>
+                                        <Button Margin="70,0,0,0" 
+                                                ToolTip="Добавить/Выгрузить"                                                 
+                                                Height="17" Width="18" Padding="0" 
+                                                Background="{x:Null}" 
+                                                BorderBrush="{x:Null}"
+                                                Command="{Binding ImpulseDataOn}">
+                                            <Button.DataContext>
+                                                <viewModel:MainVM/>
+                                            </Button.DataContext>
+                                            <materialDesign:PackIcon  Padding="0" Kind="Flash" Foreground="Yellow" Width="auto" Height="auto"></materialDesign:PackIcon>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                                
+                            </GroupBox.HeaderTemplate>
+                            <StackPanel>                               
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное на землю"                   
                                          
                                          Text="{Binding LI_kV, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource TexBoxConverter}}">
@@ -555,7 +575,7 @@
                             ItemsSource="{Binding AllTapCh, Mode=OneWay}"
                             SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                           
                             SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}" >
-                            
+
 
                             <Syncfusion:SfDataGrid.Columns >
 
@@ -563,13 +583,13 @@
                                 <Syncfusion:GridTextColumn HeaderText="Число фаз"        MappingName="Phaze_number"    ValueBinding="{Binding Phaze_number}" />
                                 <Syncfusion:GridTextColumn HeaderText="Место установки"  MappingName="Details"         ValueBinding="{Binding Details}" />
                                 <Syncfusion:GridTextColumn HeaderText="Ток, А"           MappingName="I_A"             ValueBinding="{Binding I_A}"   />
-                                <Syncfusion:GridTextColumn HeaderText="Um, кВ"           MappingName="Um_kV_rms"       ValueBinding="{Binding Um_kV_rms}"/>           
+                                <Syncfusion:GridTextColumn HeaderText="Um, кВ"           MappingName="Um_kV_rms"       ValueBinding="{Binding Um_kV_rms}"/>
                                 <Syncfusion:GridTextColumn HeaderText="Тип контактора"   MappingName="Contact_type"    ValueBinding="{Binding Contact_type}"/>
                                 <Syncfusion:GridTextColumn HeaderText="Тип"              MappingName="Type"            ValueBinding="{Binding Type}"/>
                                 <Syncfusion:GridTextColumn HeaderText="Серия"            MappingName="Seria"           ValueBinding="{Binding Seria}"/>
                                 <Syncfusion:GridTextColumn HeaderText="Каталог"          MappingName="About_Catalog"   ValueBinding="{Binding About_Catalog}"/>
                             </Syncfusion:SfDataGrid.Columns>
-                            
+
 
                         </Syncfusion:SfDataGrid>
 

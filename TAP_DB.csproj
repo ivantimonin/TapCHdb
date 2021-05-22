@@ -198,6 +198,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\Add_Import_Impulse.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\CleareFilter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -221,10 +225,14 @@
     <Compile Include="Model\CreateDocx.cs" />
     <Compile Include="Model\Save.cs" />
     <Compile Include="ViewModel\CustomConverter.cs" />
+    <Compile Include="ViewModel\MainVMFindDataImpuls.cs" />
     <Compile Include="ViewModel\TexBoxConverter.cs" />
     <Compile Include="ViewModel\DelegateCommand.cs" />
     <Compile Include="ViewModel\MainVM.cs" />
     <Compile Include="ViewModel\MainVMFindData.cs" />
+    <Compile Include="View\Add_Import_Impulse.xaml.cs">
+      <DependentUpon>Add_Import_Impulse.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CleareFilter.xaml.cs">
       <DependentUpon>CleareFilter.xaml</DependentUpon>
     </Compile>

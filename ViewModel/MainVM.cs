@@ -167,6 +167,20 @@ namespace TAP_DB.ViewModel
         }
 
         /// <summary>
+        /// Таблица, которая содержит все данные по испытательным напряжениям
+        /// </summary>      
+        private DataTable allImpulseData;
+        public DataTable AllImpulseData
+        {
+            get { return allImpulseData; }
+            set
+            {
+                allImpulseData = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// DatagidBase
         /// </summary>       
         private SfDataGrid myDtataGrid;
@@ -486,15 +500,19 @@ namespace TAP_DB.ViewModel
 
         #endregion
 
+
         public ICommand ConfirmCleareFilter { get; private set; }
         public ICommand CreateDocx { get; private set; }
         public ICommand DoQuery { get; private set; }
         public ICommand ClearInputData { get; private set; }
         public ICommand Save { get; private set; }
         public ICommand Open { get; private set; }
+        public ICommand ImpulseDataOn { get; private set; }
+        public ICommand LoadImpulsOnMainForm { get; private set; }
 
         public MainVM()
         {
+            ImpulseDataOn = new DelegateCommand(ImpulseDataOnFunction);
             ConfirmCleareFilter = new DelegateCommand(ConfirmCleareFilterFunction);
             CreateDocx = new DelegateCommand(CreateFileDocx);
             ClearInputData = new DelegateCommand(ClearInputDataFunctiun);
@@ -504,8 +522,17 @@ namespace TAP_DB.ViewModel
             QueryAllTap();// получаем данные из таблицы       
         }
 
+        /// <summary>
+        /// Открытие окна данных испытательных напряжений и загрузка данных из БД
+        /// </summary>    
+        public void ImpulseDataOnFunction(object obj)
+        {
+            QueryAllImpuls();
+            Add_Import_Impulse imp = new Add_Import_Impulse(this);
+            imp.ShowDialog();
+            
 
-       
+        }
 
         /// <summary>
         /// Метод сохранения данных
@@ -614,7 +641,6 @@ namespace TAP_DB.ViewModel
             }
         }
 
-
         /// <summary>
         /// Метод создания отчета по характеристикам РПН
         /// </summary>
@@ -626,6 +652,10 @@ namespace TAP_DB.ViewModel
                 CreateDocx someDocx = new CreateDocx(this);
             });
         }
+        
+        /// <summary>
+        /// Подтвердить сброс фильтров
+        /// </summary>        
         public void ConfirmCleareFilterFunction(object obj)
         {
             OnPropertyChanged();
@@ -633,6 +663,7 @@ namespace TAP_DB.ViewModel
             var mainVM = (Window)obj;
             mainVM.Close();
         }
+
         /// <summary>
         /// Метод сброса всех фильтров
         /// </summary>
@@ -741,10 +772,10 @@ namespace TAP_DB.ViewModel
             CleareInputData = true;
         }
 
-            /// <summary>
+        /// <summary>
             /// Метод обработки запроса в БД
             /// </summary>        
-            public DataTable Select(string selectSQL) // функция  обработка запросов
+        public DataTable Select(string selectSQL) // функция  обработка запросов
         {
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;//достаем строку подключения из config
             SqlConnection sqlConnection = new SqlConnection(connectionString); // подключаемся к базе данных
@@ -786,6 +817,8 @@ namespace TAP_DB.ViewModel
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
             }
         }
+
+        #region Запросы
 
         /// <summary>
         /// Запрос всех схем на нужный РПН
@@ -909,5 +942,37 @@ namespace TAP_DB.ViewModel
                 IsBusy = false;
             });
         }
+
+        /// <summary>
+        /// Запрос на получение всех испытательных напряжений
+        /// </summary>       
+        public void QueryAllImpuls(object obj = null)
+        {
+            #region Query
+            AllImpulseData = Select("USE TAP_CHANGER " +
+                                     "Select "+
+                                    "[Transformer] "+
+                                    ",[U_klass_kV] "+
+                                    ",[CLI_kV] "+
+                                    ",[LI_kV] "+
+                                    ",[One_min_kV] "+
+                                    ",[SI_kV] "+
+                                    ",[GOST_ISO] "+
+                                    ",[LI_kV_RPN] "+
+                                    ",[KV50Hz1minRPN] "+
+                                    ",[LI_b1] "+
+                                    ",[AC_b1] "+
+                                    ",[LI_a0] "+
+                                    ",[AC_a0] "+
+                                    ",[LI_b2] "+
+                                    ",[AC_b2] "+
+                                    ",TKP_RR1 "+
+                                    "FROM[TAP_CHANGER].[dbo].[Impulse]"  );
+
+            #endregion
+        }
+
+        #endregion
+
     }
 }
