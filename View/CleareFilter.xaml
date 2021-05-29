@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:TAP_DB.ViewModel"
+        xmlns:Command="clr-namespace:TAP_DB.Command" 
         xmlns:local="clr-namespace:TAP_DB.View"
         mc:Ignorable="d"
         Title="Очистить фильтры:" Height="150" Width="350" ResizeMode="NoResize"
@@ -17,10 +18,14 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Button Command="{Binding ConfirmCleareFilter}"
                     CommandParameter="{Binding ElementName=WindowCleareFilter}"
-                    Margin="10" Width="120" Height="auto" Content="Применить">
-              
+                    Margin="10" Width="120" Height="auto" Content="Применить">              
             </Button>
-            
+            <Button CommandParameter="{Binding ElementName=WindowCleareFilter}"
+                    Margin="10" Width="120" Height="auto" Content="Отмена">
+                <Button.Command>
+                     <Command:CloseWindowCommand></Command:CloseWindowCommand>
+                </Button.Command>          
+            </Button>
         </StackPanel>
 
     </Grid>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace FindInWord.ViewModel
+namespace TAP_DB.Command
 {
     public class DelegateCommand : ICommand
     {

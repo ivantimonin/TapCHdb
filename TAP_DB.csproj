@@ -222,12 +222,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Command\CloseWindowCommand.cs" />
+    <Compile Include="Command\Base\Command.cs" />
     <Compile Include="Model\CreateDocx.cs" />
     <Compile Include="Model\Save.cs" />
     <Compile Include="ViewModel\CustomConverter.cs" />
     <Compile Include="ViewModel\MainVMFindDataImpuls.cs" />
     <Compile Include="ViewModel\TexBoxConverter.cs" />
-    <Compile Include="ViewModel\DelegateCommand.cs" />
+    <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="ViewModel\MainVM.cs" />
     <Compile Include="ViewModel\MainVMFindData.cs" />
     <Compile Include="View\Add_Import_Impulse.xaml.cs">

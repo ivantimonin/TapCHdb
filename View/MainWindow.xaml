@@ -532,7 +532,7 @@
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное межфазное"
                                 Text="{Binding LI_b2Selected, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                                 IsReadOnly="True">
-                                </TextBox>
+                                </TextBox>                                
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="КПЧ межфазное" 
                                 Text="{Binding AC_b2Selected, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                                 </TextBox>

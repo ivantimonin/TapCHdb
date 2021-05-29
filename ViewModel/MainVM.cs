@@ -1,4 +1,4 @@
-﻿using FindInWord.ViewModel;
+﻿
 using Syncfusion.UI.Xaml.Grid;
 using System;
 using System.ComponentModel;
@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using TAP_DB.Command;
 using TAP_DB.Model;
 using TAP_DB.View;
 
@@ -532,10 +533,7 @@ namespace TAP_DB.ViewModel
         {
             // var mainVM = (Window)obj;
             //mainVM.Close();
-            MessageBox.Show($"LI_kV={LI_kV}");
-            this.LI_kV = "100";
-            // LI_kV = LI_kV_impuls;
-            MessageBox.Show($"LI_kV={LI_kV}");
+          
             KV50Hz1min = KV50Hz1min_impuls;
             LI_b1 = LI_b1_impuls;
             AC_b1 = AC_b1_impuls;
@@ -555,7 +553,7 @@ namespace TAP_DB.ViewModel
         /// </summary>    
         public void ImpulseDataOnFunction(object obj)
         {
-            this.LI_kV = "300";
+          
             QueryAllImpuls();
             Add_Import_Impulse imp = new Add_Import_Impulse(this);
             imp.ShowDialog();
