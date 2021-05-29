@@ -22,6 +22,7 @@ namespace TAP_DB.View
     {
         public Add_Import_Impulse(MainVM ParentVM)
         {
+         
             this.DataContext = ParentVM;
             InitializeComponent();
         }

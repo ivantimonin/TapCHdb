@@ -138,6 +138,9 @@ namespace TAP_DB.ViewModel
             get { return lI_kV; }
             set
             {
+                MessageBox.Show($"old_value={lI_kV}");
+                MessageBox.Show($"value={value}");
+              
                 if (value == "")
                 {
                     lI_kV = "0";
@@ -145,7 +148,8 @@ namespace TAP_DB.ViewModel
                 else
                 {
                     lI_kV = value;
-                }
+                } 
+                
                 OnPropertyChanged();
                 //QueryAllTap();
 
@@ -512,6 +516,7 @@ namespace TAP_DB.ViewModel
 
         public MainVM()
         {
+            LoadImpulsOnMainForm = new DelegateCommand(LoadImpulsOnMainFormFunction);
             ImpulseDataOn = new DelegateCommand(ImpulseDataOnFunction);
             ConfirmCleareFilter = new DelegateCommand(ConfirmCleareFilterFunction);
             CreateDocx = new DelegateCommand(CreateFileDocx);
@@ -519,19 +524,41 @@ namespace TAP_DB.ViewModel
             DoQuery = new DelegateCommand(QueryAllTap);
             Save = new DelegateCommand(SaveWork);
             Open = new DelegateCommand(OpenWork);
-            QueryAllTap();// получаем данные из таблицы       
+            QueryAllTap();// получаем данные из таблицы   
+            
         }
+
+        public  void LoadImpulsOnMainFormFunction(object obj)
+        {
+            // var mainVM = (Window)obj;
+            //mainVM.Close();
+            MessageBox.Show($"LI_kV={LI_kV}");
+            this.LI_kV = "100";
+            // LI_kV = LI_kV_impuls;
+            MessageBox.Show($"LI_kV={LI_kV}");
+            KV50Hz1min = KV50Hz1min_impuls;
+            LI_b1 = LI_b1_impuls;
+            AC_b1 = AC_b1_impuls;
+            LI_a0 = LI_a0_impuls;
+            AC_a0 = AC_a0_impuls;
+            LI_b2 = LI_b2_impuls;
+            AC_b2 = AC_b2_impuls;
+
+            OnPropertyChanged();
+            MessageBox.Show("Данные по испытательным напряжениям выгружены на основную форму");
+        }
+
+       
 
         /// <summary>
         /// Открытие окна данных испытательных напряжений и загрузка данных из БД
         /// </summary>    
         public void ImpulseDataOnFunction(object obj)
         {
+            this.LI_kV = "300";
             QueryAllImpuls();
             Add_Import_Impulse imp = new Add_Import_Impulse(this);
             imp.ShowDialog();
-            
-
         }
 
         /// <summary>
@@ -539,7 +566,7 @@ namespace TAP_DB.ViewModel
         /// </summary>
         /// <param name="obj"></param>
         public void SaveWork(object obj)
-        {
+        {            
             Save data = new Save(this);
             data.CreateFoldreSave();
             #region Серриализация умных таблиц
@@ -773,8 +800,8 @@ namespace TAP_DB.ViewModel
         }
 
         /// <summary>
-            /// Метод обработки запроса в БД
-            /// </summary>        
+        /// Метод обработки запроса в БД
+        /// </summary>        
         public DataTable Select(string selectSQL) // функция  обработка запросов
         {
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;//достаем строку подключения из config
@@ -825,7 +852,7 @@ namespace TAP_DB.ViewModel
         /// </summary>      
         public void QueryAllShem(object obj = null)
         {
-            #region Query
+            #region Query          
             AllShem = Select("USE TAP_CHANGER " +
                             "SELECT DISTINCT " +
                             "CONCAT([Type], ' ', Seria, ' ', Phaze_number, '-', I_A, ' ', Simbol, '/', Um_kV_rms, ' ', Izbiratel_value), " +
@@ -853,7 +880,8 @@ namespace TAP_DB.ViewModel
                             "JOIN Shema " +
                             "ON TapChanger.Shema_id = Shema.Shema_id " +
                             "Where " +
-                            $"CONCAT([Type],' ',Seria,' ',Phaze_number,'-', I_A,' ',Simbol,'/',Um_kV_rms,' ',Izbiratel_value)= '{TapCHname}'");
+                            $"CONCAT([Type],' ',Seria,' ',Phaze_number,'-', I_A,' ',Simbol,'/',Um_kV_rms,' ',Izbiratel_value)= '{TapCHname}' "+
+                            $"and S_kVA={(SelectedItem==null?(SstSelected):(selectedItem[10]))}");
 
             #endregion
         }
@@ -900,7 +928,7 @@ namespace TAP_DB.ViewModel
                 "Number_select_to_revisions, " +
                 "Number_select_to_change_contact, " +
                 "Number_select_mechanical, " +
-                "About_Catalog " +
+                "About_Catalog " +                
                 "FROM TapChanger " +
                 "JOIN Uispitael " +
                 "ON TapChanger.Um_kV_rms_id = Uispitael.Um_kV_rms_id " +
@@ -947,7 +975,7 @@ namespace TAP_DB.ViewModel
         /// Запрос на получение всех испытательных напряжений
         /// </summary>       
         public void QueryAllImpuls(object obj = null)
-        {
+        {         
             #region Query
             AllImpulseData = Select("USE TAP_CHANGER " +
                                      "Select "+

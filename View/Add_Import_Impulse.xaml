@@ -8,7 +8,8 @@
         xmlns:viewModel="clr-namespace:TAP_DB.ViewModel"
         xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
-        Title="Данные испытательных напряжений" Height="600" Width="1000" WindowState="Maximized">
+        Title="Данные испытательных напряжений" Height="600" Width="1000" WindowState="Maximized"
+        x:Name="WindowImpuls">
 
 
     <Window.Resources>
@@ -221,7 +222,7 @@
                             </GroupBox>
 
                         </ScrollViewer>
-                        <Button Grid.Row="1" Margin="0,0,18,0" VerticalAlignment="Top" Content="Выгрузить на основную форму">
+                        <Button Command="{Binding LoadImpulsOnMainForm, UpdateSourceTrigger=PropertyChanged}"  CommandParameter="{Binding ElementName=WindowImpuls}" Grid.Row="1" Margin="0,0,18,0" VerticalAlignment="Top" Content="Выгрузить на основную форму">
 
                         </Button>
                     </Grid>

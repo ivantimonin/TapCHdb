@@ -172,18 +172,6 @@ namespace TAP_DB.ViewModel
                 aC_b2_impuls = value;
                 OnPropertyChanged();
             }
-        }
-
-       
-
-       
-
-        
-
-       
-
-       
-
-      
+        }      
     }
 }

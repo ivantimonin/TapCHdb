@@ -23,7 +23,8 @@ namespace TAP_DB.ViewModel
                 
                 if (selectedItem != null)
                 {
-                    TapCHname = Convert.ToString(selectedItem[0]);
+                    TapCHname = Convert.ToString(selectedItem[0]);                   
+                  
                     MaxCurrentSelected = Convert.ToString(selectedItem[6]);
                     ItermalSelected = Convert.ToString(selectedItem[7]);
                     IdinamiclSelected = Convert.ToString(selectedItem[8]);
@@ -92,8 +93,10 @@ namespace TAP_DB.ViewModel
         }
       
 
+        
+
         /// <summary>
-        /// Наименовние найденного РПН
+        /// Имя найденного РПН
         /// </summary>
         private string tapCHname;
         public string TapCHname

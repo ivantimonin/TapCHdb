@@ -419,7 +419,7 @@
                                 </TextBox>
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="КПЧ межфазное"                     
                                         
-                                         Text="{Binding AC_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,Converter={StaticResource TexBoxConverter}}">
+                                         Text="{Binding AC_b2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource TexBoxConverter}}">
                                 </TextBox>
                             </StackPanel>
                         </GroupBox>
@@ -574,7 +574,8 @@
                             HeaderRowHeight="40"                   
                             ItemsSource="{Binding AllTapCh, Mode=OneWay}"
                             SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                           
-                            SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}" >
+                            SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}" 
+                            >
 
 
                             <Syncfusion:SfDataGrid.Columns >
@@ -585,8 +586,7 @@
                                 <Syncfusion:GridTextColumn HeaderText="Ток, А"           MappingName="I_A"             ValueBinding="{Binding I_A}"   />
                                 <Syncfusion:GridTextColumn HeaderText="Um, кВ"           MappingName="Um_kV_rms"       ValueBinding="{Binding Um_kV_rms}"/>
                                 <Syncfusion:GridTextColumn HeaderText="Тип контактора"   MappingName="Contact_type"    ValueBinding="{Binding Contact_type}"/>
-                                <Syncfusion:GridTextColumn HeaderText="Тип"              MappingName="Type"            ValueBinding="{Binding Type}"/>
-                                <Syncfusion:GridTextColumn HeaderText="Серия"            MappingName="Seria"           ValueBinding="{Binding Seria}"/>
+                                <Syncfusion:GridTextColumn HeaderText="Тип"              MappingName="Type"            ValueBinding="{Binding Type}"/>                             
                                 <Syncfusion:GridTextColumn HeaderText="Каталог"          MappingName="About_Catalog"   ValueBinding="{Binding About_Catalog}"/>
                             </Syncfusion:SfDataGrid.Columns>
 
