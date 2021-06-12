@@ -490,39 +490,32 @@ namespace TAP_DB.ViewModel
 
         #endregion
 
-
         public ICommand ConfirmCleareFilter { get; private set; }
         public ICommand CreateDocx { get; private set; }
         public ICommand DoQuery { get; private set; }
         public ICommand ClearInputData { get; private set; }
         public ICommand Save { get; private set; }
         public ICommand Open { get; private set; }
-        public ICommand ImpulseDataOn { get; private set; }
-
-       
+        public ICommand ImpulseDataOn { get; private set; }       
    
         public MainVM()
-        {
-           
+        {           
             ImpulseDataOn = new DelegateCommand(ImpulseDataOnFunction);
             ConfirmCleareFilter = new DelegateCommand(ConfirmCleareFilterFunction);
             CreateDocx = new DelegateCommand(CreateFileDocx);
             ClearInputData = new DelegateCommand(ClearInputDataFunctiun);
             DoQuery = new DelegateCommand(QueryAllTap);
             Save = new DelegateCommand(SaveWork);
-            Open = new DelegateCommand(OpenWork);
-           
-            QueryAllTap();// получаем данные из таблицы               
-        }
-           
+            Open = new DelegateCommand(OpenWork);           
+            QueryAllTap();// получаем данные всех РПН              
+        }           
 
         /// <summary>
         /// Открытие окна данных испытательных напряжений
         /// </summary>    
         public void ImpulseDataOnFunction(object obj)
         {                     
-            Add_Import_Impulse imp = new Add_Import_Impulse(this);
-           
+            Add_Import_Impulse imp = new Add_Import_Impulse(this);//создаем объект нового окна и передаем ссылку на текущее окно           
         }
 
         /// <summary>
@@ -547,9 +540,9 @@ namespace TAP_DB.ViewModel
             {
                 MyDtataGridShema.Serialize(file);
             }
-
             data.SerializableFile();
             data.CreateZip();
+
         }
 
         /// <summary>
@@ -557,8 +550,7 @@ namespace TAP_DB.ViewModel
         /// </summary>
         /// <param name="obj"></param>
         public void OpenWork(object obj)
-        {
-          
+        {          
             Save data = new Save();
             Save oldData = data.DeSerializableFile();
             #region Дессериализация умных таблиц
@@ -583,6 +575,7 @@ namespace TAP_DB.ViewModel
                 //MessageBox.Show(ex.Message);
             }
             #endregion
+
 
             if (oldData != null)
             {
@@ -626,11 +619,8 @@ namespace TAP_DB.ViewModel
                 AllShem = oldData.AllShem;
                 TapCHname = oldData.tapCHnameSelected;
                 // MessageBox.Show($"{oldData.SelectedIndex}");
-                // SelectedIndex = oldData.SelectedIndex;               
+                //SelectedIndex = oldData.SelectedIndex;               
                 //SelectedShema = oldData.SelectedShema;
-
-
-
             }
         }
 

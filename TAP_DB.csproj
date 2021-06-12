@@ -233,6 +233,7 @@
     <Compile Include="ViewModel\Converters\MainVMConverter.cs" />
     <Compile Include="ViewModel\Converters\TexBoxConverter.cs" />
     <Compile Include="Command\DelegateCommand.cs" />
+    <Compile Include="ViewModel\Converters\TexBoxConverterForInsertInDB.cs" />
     <Compile Include="ViewModel\MainVM.cs" />
     <Compile Include="ViewModel\MainVMFindData.cs" />
     <Compile Include="View\Add_Import_Impulse.xaml.cs">

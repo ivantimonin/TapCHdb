@@ -22,8 +22,8 @@ namespace TAP_DB.ViewModel
         /// </summary>      
 
         public MainVM MainVM_Data;
-        
 
+        #region Поля вкладки импорт
         /// <summary>
         /// Таблица, которая содержит все данные по испытательным напряжениям
         /// </summary>      
@@ -64,12 +64,12 @@ namespace TAP_DB.ViewModel
             }
         }
 
-
+       
 
         /// <summary>
         /// Импульсное напряжение на землю, кВ
         /// </summary>
-        
+
         private string lI_kV_impuls;
         public string LI_kV_impuls
         {
@@ -96,7 +96,7 @@ namespace TAP_DB.ViewModel
             }
             set
             {
-              
+
                 kV50Hz1min_impuls = value;
                 OnPropertyChanged();
             }
@@ -205,6 +205,322 @@ namespace TAP_DB.ViewModel
         }
         #endregion
 
+        #region Поля вкладки добавить в БД
+
+        /// <summary>
+        /// Выбранная строка в таблице с импульсами вкладки добавления в БД
+        /// </summary>
+        private DataRowView selectedImpulseAdd;
+        public DataRowView SelectedImpulseAdd
+        {
+            get { return selectedImpulseAdd; }
+            set
+            {
+                selectedImpulseAdd = value;
+
+                if (selectedImpulseAdd != null)
+                {
+                    ID = Convert.ToString(selectedImpulseAdd[0]);                
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// ID выбранной строки в БД
+        /// </summary>
+        private string iD;
+        public string ID
+        {
+            get
+            {
+                return iD;
+            }
+            set
+            {
+                iD = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Импульсное напряжение на землю, кВ
+        /// </summary>
+        private string lI_kV_impuls_add = "null";
+        public string LI_kV_impuls_add
+        {
+            get
+            {
+                return lI_kV_impuls_add;
+            }
+            set
+            {
+                lI_kV_impuls_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// КПЧ на землю
+        /// </summary>
+        private string kV50Hz1min_impuls_add = "null";
+        public string KV50Hz1min_impuls_add
+        {
+            get
+            {
+                return kV50Hz1min_impuls_add;
+            }
+            set
+            {
+                kV50Hz1min_impuls_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Импульсное на диапазон
+        /// </summary>
+        private string lI_b1_impuls_add = "null";
+        public string LI_b1_impuls_add
+        {
+            get
+            {
+                return lI_b1_impuls_add;
+            }
+            set
+            {
+                lI_b1_impuls_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// КПЧ ступени
+        /// </summary>
+        private string aC_a0_impuls_add = "null";
+        public string AC_a0_impuls_add
+        {
+            get
+            {
+                return aC_a0_impuls_add;
+            }
+            set
+            {
+                aC_a0_impuls_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Импульсное ступени
+        /// </summary>
+        private string lI_a0_impuls_add = "null";
+        public string LI_a0_impuls_add
+        {
+            get
+            {
+                return lI_a0_impuls_add;
+            }
+            set
+            {
+                lI_a0_impuls_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// КПЧ на диапазон
+        /// </summary>
+        private string aC_b1_impuls_add = "null";
+        public string AC_b1_impuls_add
+        {
+            get
+            {
+                return aC_b1_impuls_add;
+            }
+            set
+            {
+                aC_b1_impuls_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Импульсное межфазное
+        /// </summary>
+        private string lI_b2_impuls_add = "null";
+        public string LI_b2_impuls_add
+        {
+            get
+            {
+                return lI_b2_impuls_add;
+            }
+            set
+            {
+                lI_b2_impuls_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// КПЧ межфазное
+        /// </summary>
+        private string aC_b2_impuls_add = "null";
+        public string AC_b2_impuls_add
+        {
+            get
+            {
+                return aC_b2_impuls_add;
+            }
+            set
+            {
+                aC_b2_impuls_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Тип трансформатора
+        /// </summary>
+        private string transformer_add = "null";
+        public string Transformer_add
+        {
+            get
+            {
+                return transformer_add;
+            }
+            set
+            {
+                transformer_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Класс напряжения
+        /// </summary>
+        private string u_klass_kV_add = "null";
+        public string U_klass_kV_add
+        {
+            get
+            {
+                return u_klass_kV_add;
+            }
+            set
+            {
+                u_klass_kV_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// ПГИ, кВ
+        /// </summary>
+        private string lI_kV_add = "null";
+        public string LI_kV_add
+        {
+            get
+            {
+                return lI_kV_add;
+            }
+            set
+            {
+                lI_kV_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// CГИ, кВ
+        /// </summary>
+        private string cLI_kV_add = "null";
+        public string CLI_kV_add
+        {
+            get
+            {
+                return cLI_kV_add;
+            }
+            set
+            {
+                cLI_kV_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// ОПЧ, кВ
+        /// </summary>
+        private string one_min_kV_add = "null";
+        public string One_min_kV_add
+        {
+            get
+            {
+                return one_min_kV_add;
+            }
+            set
+            {
+                one_min_kV_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// КИ, кВ
+        /// </summary>
+        private string sI_kV_add = "null";
+        public string SI_kV_add
+        {
+            get
+            {
+                return sI_kV_add;
+            }
+            set
+            {
+                sI_kV_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// ГОСТ или МЭК, кВ
+        /// </summary>
+        private string gOST_ISO_add = "null";
+        public string GOST_ISO_add
+        {
+            get
+            {
+                return gOST_ISO_add;
+            }
+            set
+            {
+                gOST_ISO_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// ТКП или РР1, кВ
+        /// </summary>
+        private string tKP_RR1_add="null";
+        public string TKP_RR1_add
+        {
+            get
+            {
+                return tKP_RR1_add;
+            }
+            set
+            {
+                tKP_RR1_add = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        #endregion
+
+        #endregion
+
         #region Команда загрузки данных на основную форму
         public ICommand LoadImpulsOnMainForm { get; private set; }
 
@@ -217,18 +533,54 @@ namespace TAP_DB.ViewModel
             MainVM_Data.LI_a0 = LI_a0_impuls;
             MainVM_Data.AC_a0 = AC_a0_impuls;
             MainVM_Data.LI_b2 = LI_b2_impuls;
-            MainVM_Data.AC_b2 = AC_b2_impuls;          
-
-           
+            MainVM_Data.AC_b2 = AC_b2_impuls;
             MessageBox.Show("Данные по испытательным напряжениям выгружены на основную форму");
         }
         #endregion
+
+        #region Команда добавления испытательных напряжений в БД
+        public ICommand AddToDataBase { get; private set; }
+
+        public void AddToDataBaseFunction(object obj)
+        {
+            try
+            {
+                InsertImpuls();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }            
+            QueryAllImpuls();
+        }
+        #endregion
+
+        #region Команда удаления испытательных напряжений из БД
+        public ICommand DelateRowFromDb { get; private set; }
+
+        public void DelateRowFromDbFunction(object obj)
+        {
+            try
+            {
+                DelateRow();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            QueryAllImpuls();
+        }
+        #endregion
+
+
 
         public Add_Import_Impuls_VM(MainVM mainVMdata)
         {
             MainVM_Data = mainVMdata;
             QueryAllImpuls();
-            LoadImpulsOnMainForm = new DelegateCommand(LoadImpulsOnMainFormFunction);            
+            LoadImpulsOnMainForm = new DelegateCommand(LoadImpulsOnMainFormFunction);
+            AddToDataBase = new DelegateCommand(AddToDataBaseFunction);
+            DelateRowFromDb = new DelegateCommand(DelateRowFromDbFunction);
         }
 
         #region Запросы  
@@ -240,7 +592,8 @@ namespace TAP_DB.ViewModel
             #region Query
             AllImpulseData = DataBase.Select("USE TAP_CHANGER " +
                                      "Select " +
-                                    "[Transformer] " +
+                                     "ID "+
+                                    ",[Transformer] " +
                                     ",[U_klass_kV] " +
                                     ",[CLI_kV] " +
                                     ",[LI_kV] " +
@@ -260,10 +613,51 @@ namespace TAP_DB.ViewModel
 
             #endregion
         }
+
+        /// <summary>
+        /// Запрос на удаление  строки из бд
+        /// </summary>       
+        public void DelateRow(object obj = null)
+        {            
+            #region Query
+            AllImpulseData = DataBase.Select("USE TAP_CHANGER " +
+               $"DELETE FROM [TAP_CHANGER].[dbo].[Impulse] WHERE [ID] = {ID}");
+
+            #endregion
+        }
+
+
+        /// <summary>
+        /// Запрос на добавление  испытательных напряжений
+        /// </summary>       
+        public void InsertImpuls(object obj = null)
+        {
+            #region Query
+            AllImpulseData = DataBase.Select("USE TAP_CHANGER " +
+                "INSERT INTO Impulse "+
+                $"VALUES('{Transformer_add}', " +
+                $"{U_klass_kV_add}, " +
+                $"{CLI_kV_add}, " +
+                $"{LI_kV_add}, " +
+                $"{One_min_kV_add}, " +
+                $"{SI_kV_add}, " +
+                $"{GOST_ISO_add}, " +
+                $"{LI_kV_impuls_add}, " +
+                $"{KV50Hz1min_impuls_add}, " +
+                $"{LI_b1_impuls_add}, " +
+                $"{AC_b1_impuls_add}, " +
+                $"{LI_a0_impuls_add}, " +
+                $"{AC_a0_impuls_add}, " +
+                $"{LI_b2_impuls_add}, " +
+                $"{AC_b2_impuls_add}, " +
+                $"{TKP_RR1_add})");
+
+            #endregion
+        }
         #endregion
 
 
-       
+
     }
 }
 

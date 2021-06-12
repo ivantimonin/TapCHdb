@@ -594,7 +594,7 @@
                         </Syncfusion:GridFilterControl>
 
                         <Syncfusion:SfDataGrid 
-                                            
+                                    
                             Style="{StaticResource SfDataGridStyle}"                               
                             HeaderStyle="{StaticResource headerStyle}"                   
                             x:Name="BaseDataGrid"                      

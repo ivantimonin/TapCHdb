@@ -342,8 +342,9 @@ namespace TAP_DB.ViewModel
                 return selectedIndex;
             }
             set
-            {                
+            {             
                 selectedIndex = value;
+                //  MessageBox.Show($"{selectedIndex}");
                 OnPropertyChanged();
             }
         }
