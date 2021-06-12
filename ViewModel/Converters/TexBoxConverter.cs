@@ -23,7 +23,6 @@ namespace TAP_DB.ViewModel
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value;
-
         }
     }
 }

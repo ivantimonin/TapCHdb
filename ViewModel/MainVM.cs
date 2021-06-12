@@ -13,11 +13,12 @@ using System.Windows.Input;
 using TAP_DB.Command;
 using TAP_DB.Model;
 using TAP_DB.View;
+using TAP_DB.ViewModel.Base;
 
 namespace TAP_DB.ViewModel
 {
 
-    public partial class MainVM : INotifyPropertyChanged
+    public partial class MainVM:BaseVM
     {
         #region Поля класса
         /// <summary>
@@ -96,7 +97,7 @@ namespace TAP_DB.ViewModel
         {
             get { return ust_V; }
             set
-            {
+            {                
                 if (value == "")
                 {
                     ust_V = "0";
@@ -138,10 +139,7 @@ namespace TAP_DB.ViewModel
         {
             get { return lI_kV; }
             set
-            {
-                MessageBox.Show($"old_value={lI_kV}");
-                MessageBox.Show($"value={value}");
-              
+            {               
                 if (value == "")
                 {
                     lI_kV = "0";
@@ -149,8 +147,7 @@ namespace TAP_DB.ViewModel
                 else
                 {
                     lI_kV = value;
-                } 
-                
+                }
                 OnPropertyChanged();
                 //QueryAllTap();
 
@@ -171,19 +168,7 @@ namespace TAP_DB.ViewModel
             }
         }
 
-        /// <summary>
-        /// Таблица, которая содержит все данные по испытательным напряжениям
-        /// </summary>      
-        private DataTable allImpulseData;
-        public DataTable AllImpulseData
-        {
-            get { return allImpulseData; }
-            set
-            {
-                allImpulseData = value;
-                OnPropertyChanged();
-            }
-        }
+       
 
         /// <summary>
         /// DatagidBase
@@ -513,11 +498,12 @@ namespace TAP_DB.ViewModel
         public ICommand Save { get; private set; }
         public ICommand Open { get; private set; }
         public ICommand ImpulseDataOn { get; private set; }
-        public ICommand LoadImpulsOnMainForm { get; private set; }
 
+       
+   
         public MainVM()
         {
-            LoadImpulsOnMainForm = new DelegateCommand(LoadImpulsOnMainFormFunction);
+           
             ImpulseDataOn = new DelegateCommand(ImpulseDataOnFunction);
             ConfirmCleareFilter = new DelegateCommand(ConfirmCleareFilterFunction);
             CreateDocx = new DelegateCommand(CreateFileDocx);
@@ -525,38 +511,18 @@ namespace TAP_DB.ViewModel
             DoQuery = new DelegateCommand(QueryAllTap);
             Save = new DelegateCommand(SaveWork);
             Open = new DelegateCommand(OpenWork);
-            QueryAllTap();// получаем данные из таблицы   
-            
+           
+            QueryAllTap();// получаем данные из таблицы               
         }
-
-        public  void LoadImpulsOnMainFormFunction(object obj)
-        {
-            // var mainVM = (Window)obj;
-            //mainVM.Close();
-          
-            KV50Hz1min = KV50Hz1min_impuls;
-            LI_b1 = LI_b1_impuls;
-            AC_b1 = AC_b1_impuls;
-            LI_a0 = LI_a0_impuls;
-            AC_a0 = AC_a0_impuls;
-            LI_b2 = LI_b2_impuls;
-            AC_b2 = AC_b2_impuls;
-
-            OnPropertyChanged();
-            MessageBox.Show("Данные по испытательным напряжениям выгружены на основную форму");
-        }
-
-       
+           
 
         /// <summary>
-        /// Открытие окна данных испытательных напряжений и загрузка данных из БД
+        /// Открытие окна данных испытательных напряжений
         /// </summary>    
         public void ImpulseDataOnFunction(object obj)
-        {
-          
-            QueryAllImpuls();
+        {                     
             Add_Import_Impulse imp = new Add_Import_Impulse(this);
-            imp.ShowDialog();
+           
         }
 
         /// <summary>
@@ -568,9 +534,9 @@ namespace TAP_DB.ViewModel
             Save data = new Save(this);
             data.CreateFoldreSave();
             #region Серриализация умных таблиц
-            MainVM mainVM = (MainVM)obj;
-            MyDtataGridBase = mainVM.MyDtataGridBase;
-            MyDtataGridShema = mainVM.MyDtataGridShema;
+            MainVMConverter MainVMConverter = (MainVMConverter)obj;
+            MyDtataGridBase = MainVMConverter.MyDtataGridBase;
+            MyDtataGridShema = MainVMConverter.MyDtataGridShema;
             using (var file = File.Create(@"Save\DataGridBaseSave.xml"))
             {
                 MyDtataGridBase.Serialize(file);
@@ -592,12 +558,13 @@ namespace TAP_DB.ViewModel
         /// <param name="obj"></param>
         public void OpenWork(object obj)
         {
+          
             Save data = new Save();
             Save oldData = data.DeSerializableFile();
             #region Дессериализация умных таблиц
-            MainVM mainVM = (MainVM)obj;
-            MyDtataGridBase = mainVM.MyDtataGridBase;
-            MyDtataGridShema = mainVM.MyDtataGridShema;
+            MainVMConverter mainVMConverter = (MainVMConverter)obj;
+            MyDtataGridBase = mainVMConverter.MyDtataGridBase;
+            MyDtataGridShema = mainVMConverter.MyDtataGridShema;
 
             try
             {
@@ -657,6 +624,7 @@ namespace TAP_DB.ViewModel
                 Number_select_to_change_contactSelected = oldData.Number_select_to_change_contactSelected;
                 AllTapCh = oldData.AllTapCh;
                 AllShem = oldData.AllShem;
+                TapCHname = oldData.tapCHnameSelected;
                 // MessageBox.Show($"{oldData.SelectedIndex}");
                 // SelectedIndex = oldData.SelectedIndex;               
                 //SelectedShema = oldData.SelectedShema;
@@ -701,9 +669,9 @@ namespace TAP_DB.ViewModel
             if (CleareSmartTable && IsConfirmCleareFilterTrue)
             {              
                 #region Сброс фильтров таблицы
-                MainVM mainVM = (MainVM)obj;
-                MyDtataGridBase = mainVM.MyDtataGridBase;
-                MyDtataGridShema = mainVM.MyDtataGridShema;
+                MainVMConverter mainVMConverter = (MainVMConverter)obj;
+                MyDtataGridBase = mainVMConverter.MyDtataGridBase;
+                MyDtataGridShema = mainVMConverter.MyDtataGridShema;
 
                 MyDtataGridShema.GroupColumnDescriptions.Clear();
                 MyDtataGridBase.GroupColumnDescriptions.Clear();
@@ -788,7 +756,7 @@ namespace TAP_DB.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"{ex.Message}");
+                    //MessageBox.Show($"{ex.Message}");
                 }
                 #endregion
             }
@@ -797,61 +765,16 @@ namespace TAP_DB.ViewModel
             CleareInputData = true;
         }
 
-        /// <summary>
-        /// Метод обработки запроса в БД
-        /// </summary>        
-        public DataTable Select(string selectSQL) // функция  обработка запросов
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;//достаем строку подключения из config
-            SqlConnection sqlConnection = new SqlConnection(connectionString); // подключаемся к базе данных
-            try
-            {
-
-                DataTable dataTable = new DataTable("dataTable");// создаём таблицу в приложении
-
-                if (sqlConnection.State == ConnectionState.Closed)
-                {
-                    sqlConnection.Open();// открываем базу данных  
-                    SqlCommand sqlCommand = sqlConnection.CreateCommand();          // создаём команду
-                    sqlCommand.CommandText = selectSQL;                             // присваиваем команде текст
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand); // создаём обработчик
-                    sqlDataAdapter.Fill(dataTable);                                  // возращаем таблицу с результатом             
-                }
-                return dataTable;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            finally
-            {
-                sqlConnection.Close();
-            }
-            return AllTapCh;
-        }
-
-        /// <summary>
-        /// Реализация PropertyChanged
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-            }
-        }
-
+             
         #region Запросы
 
         /// <summary>
         /// Запрос всех схем на нужный РПН
         /// </summary>      
         public void QueryAllShem(object obj = null)
-        {
+        {           
             #region Query          
-            AllShem = Select("USE TAP_CHANGER " +
+            AllShem = DataBase.Select("USE TAP_CHANGER " +
                             "SELECT DISTINCT " +
                             "CONCAT([Type], ' ', Seria, ' ', Phaze_number, '-', I_A, ' ', Simbol, '/', Um_kV_rms, ' ', Izbiratel_value), " +
                             "Shema, " +
@@ -878,8 +801,9 @@ namespace TAP_DB.ViewModel
                             "JOIN Shema " +
                             "ON TapChanger.Shema_id = Shema.Shema_id " +
                             "Where " +
-                            $"CONCAT([Type],' ',Seria,' ',Phaze_number,'-', I_A,' ',Simbol,'/',Um_kV_rms,' ',Izbiratel_value)= '{TapCHname}' "+
-                            $"and S_kVA={(SelectedItem==null?(SstSelected):(selectedItem[10]))}");
+                            $"CONCAT([Type],' ',Seria,' ',Phaze_number,'-', I_A,' ',Simbol,'/',Um_kV_rms,' ',Izbiratel_value)= '{TapCHname}' " +
+                            $"and S_kVA={(SelectedItem == null ? (Sst) : (selectedItem[10]))} "+
+                            $"and LI_b1={(SelectedItem == null ? (LI_b1) : (selectedItem[17]))}");
 
             #endregion
         }
@@ -890,10 +814,11 @@ namespace TAP_DB.ViewModel
         public async void QueryAllTap(object obj = null)
         {
             await Task.Run(() =>
-            {
+            {        
+
                 IsBusy = true;
                 #region Query
-                AllTapCh = Select("USE TAP_CHANGER " +
+                AllTapCh = DataBase.Select("USE TAP_CHANGER " +
               "SELECT DISTINCT " +
               "CONCAT([Type], ' ', Seria, ' ', Phaze_number, '-', I_A, ' ', Simbol, '/', Um_kV_rms, ' ', Izbiratel_value)," +
               "[Type], " +
@@ -969,36 +894,10 @@ namespace TAP_DB.ViewModel
             });
         }
 
-        /// <summary>
-        /// Запрос на получение всех испытательных напряжений
-        /// </summary>       
-        public void QueryAllImpuls(object obj = null)
-        {         
-            #region Query
-            AllImpulseData = Select("USE TAP_CHANGER " +
-                                     "Select "+
-                                    "[Transformer] "+
-                                    ",[U_klass_kV] "+
-                                    ",[CLI_kV] "+
-                                    ",[LI_kV] "+
-                                    ",[One_min_kV] "+
-                                    ",[SI_kV] "+
-                                    ",[GOST_ISO] "+
-                                    ",[LI_kV_RPN] "+
-                                    ",[KV50Hz1minRPN] "+
-                                    ",[LI_b1] "+
-                                    ",[AC_b1] "+
-                                    ",[LI_a0] "+
-                                    ",[AC_a0] "+
-                                    ",[LI_b2] "+
-                                    ",[AC_b2] "+
-                                    ",TKP_RR1 "+
-                                    "FROM[TAP_CHANGER].[dbo].[Impulse]"  );
-
-            #endregion
-        }
 
         #endregion
 
+
+      
     }
 }

@@ -11,9 +11,10 @@ namespace TAP_DB.ViewModel
 {
     class CustomConverter : IMultiValueConverter
     {
+        MainVMConverter findCommandParameters=new MainVMConverter();
+      
         public object Convert(object[] Values, Type Target_Type, object Parameter, CultureInfo culture)
-        {
-            var findCommandParameters = new MainVM();
+        {           
             findCommandParameters.MyDtataGridBase = (SfDataGrid)Values[0];
             findCommandParameters.MyDtataGridShema = (SfDataGrid)Values[1];
             return findCommandParameters;

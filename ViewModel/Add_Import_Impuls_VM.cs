@@ -1,16 +1,45 @@
-﻿using System;
+﻿using Syncfusion.Windows.Shared;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using TAP_DB.Model;
+using TAP_DB.View;
+using TAP_DB.ViewModel.Base;
 
 namespace TAP_DB.ViewModel
 {
-    partial class MainVM
+    class Add_Import_Impuls_VM : BaseVM
     {
+
+        #region Поля
         /// <summary>
-        /// Выбранная строка в таблице с РПН
+        /// ссылка на MainVM
+        /// </summary>      
+
+        public MainVM MainVM_Data;
+        
+
+        /// <summary>
+        /// Таблица, которая содержит все данные по испытательным напряжениям
+        /// </summary>      
+        private DataTable allImpulseData;
+        public DataTable AllImpulseData
+        {
+            get { return allImpulseData; }
+            set
+            {
+                allImpulseData = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Выбранная строка в таблице с импульсами
         /// </summary>
         private DataRowView selectedImpulse;
         public DataRowView SelectedImpulse
@@ -28,9 +57,8 @@ namespace TAP_DB.ViewModel
                     AC_b1_impuls = Convert.ToString(selectedImpulse[10]);
                     LI_a0_impuls = Convert.ToString(selectedImpulse[11]);
                     AC_a0_impuls = Convert.ToString(selectedImpulse[12]);
-                    LI_b2_impuls = Convert.ToString(selectedImpulse[13]);                   
+                    LI_b2_impuls = Convert.ToString(selectedImpulse[13]);
                     AC_b2_impuls = Convert.ToString(selectedImpulse[14]);
-
                     OnPropertyChanged();
                 }
             }
@@ -41,6 +69,7 @@ namespace TAP_DB.ViewModel
         /// <summary>
         /// Импульсное напряжение на землю, кВ
         /// </summary>
+        
         private string lI_kV_impuls;
         public string LI_kV_impuls
         {
@@ -67,10 +96,11 @@ namespace TAP_DB.ViewModel
             }
             set
             {
+              
                 kV50Hz1min_impuls = value;
                 OnPropertyChanged();
             }
-        }                     
+        }
 
         /// <summary>
         /// Импульсное на диапазон
@@ -156,7 +186,7 @@ namespace TAP_DB.ViewModel
                 OnPropertyChanged();
             }
         }
-                                   
+
         /// <summary>
         /// КПЧ межфазное
         /// </summary>
@@ -172,6 +202,68 @@ namespace TAP_DB.ViewModel
                 aC_b2_impuls = value;
                 OnPropertyChanged();
             }
-        }      
+        }
+        #endregion
+
+        #region Команда загрузки данных на основную форму
+        public ICommand LoadImpulsOnMainForm { get; private set; }
+
+        public void LoadImpulsOnMainFormFunction(object obj)
+        {
+            MainVM_Data.LI_kV = lI_kV_impuls;
+            MainVM_Data.KV50Hz1min = KV50Hz1min_impuls;
+            MainVM_Data.LI_b1 = LI_b1_impuls;
+            MainVM_Data.AC_b1 = AC_b1_impuls;
+            MainVM_Data.LI_a0 = LI_a0_impuls;
+            MainVM_Data.AC_a0 = AC_a0_impuls;
+            MainVM_Data.LI_b2 = LI_b2_impuls;
+            MainVM_Data.AC_b2 = AC_b2_impuls;          
+
+           
+            MessageBox.Show("Данные по испытательным напряжениям выгружены на основную форму");
+        }
+        #endregion
+
+        public Add_Import_Impuls_VM(MainVM mainVMdata)
+        {
+            MainVM_Data = mainVMdata;
+            QueryAllImpuls();
+            LoadImpulsOnMainForm = new DelegateCommand(LoadImpulsOnMainFormFunction);            
+        }
+
+        #region Запросы  
+        /// <summary>
+        /// Запрос на получение всех испытательных напряжений
+        /// </summary>       
+        public void QueryAllImpuls(object obj = null)
+        {
+            #region Query
+            AllImpulseData = DataBase.Select("USE TAP_CHANGER " +
+                                     "Select " +
+                                    "[Transformer] " +
+                                    ",[U_klass_kV] " +
+                                    ",[CLI_kV] " +
+                                    ",[LI_kV] " +
+                                    ",[One_min_kV] " +
+                                    ",[SI_kV] " +
+                                    ",[GOST_ISO] " +
+                                    ",[LI_kV_RPN] " +
+                                    ",[KV50Hz1minRPN] " +
+                                    ",[LI_b1] " +
+                                    ",[AC_b1] " +
+                                    ",[LI_a0] " +
+                                    ",[AC_a0] " +
+                                    ",[LI_b2] " +
+                                    ",[AC_b2] " +
+                                    ",TKP_RR1 " +
+                                    "FROM[TAP_CHANGER].[dbo].[Impulse]");
+
+            #endregion
+        }
+        #endregion
+
+
+       
     }
 }
+

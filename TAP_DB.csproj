@@ -225,10 +225,13 @@
     <Compile Include="Command\CloseWindowCommand.cs" />
     <Compile Include="Command\Base\Command.cs" />
     <Compile Include="Model\CreateDocx.cs" />
+    <Compile Include="Model\DataBase.cs" />
     <Compile Include="Model\Save.cs" />
-    <Compile Include="ViewModel\CustomConverter.cs" />
-    <Compile Include="ViewModel\MainVMFindDataImpuls.cs" />
-    <Compile Include="ViewModel\TexBoxConverter.cs" />
+    <Compile Include="ViewModel\Add_Import_Impuls_VM.cs" />
+    <Compile Include="ViewModel\Base\BaseVM.cs" />
+    <Compile Include="ViewModel\Converters\CustomConverter.cs" />
+    <Compile Include="ViewModel\Converters\MainVMConverter.cs" />
+    <Compile Include="ViewModel\Converters\TexBoxConverter.cs" />
     <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="ViewModel\MainVM.cs" />
     <Compile Include="ViewModel\MainVMFindData.cs" />

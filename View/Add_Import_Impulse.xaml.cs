@@ -20,11 +20,14 @@ namespace TAP_DB.View
     /// </summary>
     public partial class Add_Import_Impulse : Window
     {
-        public Add_Import_Impulse(MainVM ParentVM)
-        {
-         
-            this.DataContext = ParentVM;
-            InitializeComponent();
+        
+        public Add_Import_Impulse(MainVM data)
+        {           
+            this.DataContext = new Add_Import_Impuls_VM(data);
+            InitializeComponent();           
+            this.ShowDialog();
         }
     }
+   
+
 }

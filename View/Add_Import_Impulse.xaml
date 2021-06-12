@@ -7,9 +7,12 @@
         xmlns:local="clr-namespace:TAP_DB.View"
         xmlns:viewModel="clr-namespace:TAP_DB.ViewModel"
         xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+        
         mc:Ignorable="d"
-        Title="Данные испытательных напряжений" Height="600" Width="1000" WindowState="Maximized"
+        Title="Данные испытательных напряжений" Height="auto" Width="1000" WindowStartupLocation="Manual"
         x:Name="WindowImpuls">
+
+    
 
 
     <Window.Resources>
@@ -36,7 +39,7 @@
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Background" Value="#FFCFECF6">
+            <Setter Property="Background" Value="#FFCFFFFF">
 
             </Setter>
             <Setter Property="materialDesign:ColorZoneAssist.Mode" Value="Custom"/>
@@ -151,8 +154,6 @@
                     </Grid.ColumnDefinitions>
 
 
-
-
                     <Grid   Grid.Column="0"  x:Name="GridHeight" >
                         <Syncfusion:SfDataGrid 
                                             
@@ -162,7 +163,9 @@
                             Margin="20,0,0,0"                
                             HeaderRowHeight="40"                   
                             ItemsSource="{Binding AllImpulseData, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                                  
-                            SelectedItem="{Binding SelectedImpulse, Mode=OneWayToSource}" >
+                            SelectedItem="{Binding SelectedImpulse, Mode=OneWayToSource}" 
+                            >
+                         
 
                             <Syncfusion:SfDataGrid.Columns >
                                 <Syncfusion:GridTextColumn HeaderText="Трансформатор"   MappingName="Transformer"  ValueBinding="{Binding Transformer}" />

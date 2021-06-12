@@ -29,7 +29,8 @@ namespace TAP_DB.View
     {
         public MainWindow()
         {
-
+            
+            InitializeComponent();
         }
 
         

@@ -13,7 +13,7 @@
 
 
     <Window.DataContext>
-        <viewModel:MainVM/>
+        <viewModel:MainVM />
     </Window.DataContext>
 
     <Window.Resources>
@@ -21,22 +21,36 @@
         <viewModel:TexBoxConverter x:Key="TexBoxConverter" />
         <viewModel:CustomConverter x:Key="CustomConverter" />
 
-        <Style TargetType="ToolBar">
+        <Style TargetType="Button" x:Key="ButtonTools">
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+            <Style.Setters >
+                <Setter Property="Background" Value="{x:Null}"></Setter>
+                <Setter Property="BorderBrush" Value="white"></Setter>
+                <Setter Property="BorderThickness" Value="0"></Setter>
+                
+            </Style.Setters>
+        </Style>
+
+        <Style TargetType="StatusBar">
             <Style.Setters>
                 <Setter Property="AllowDrop" Value="False"></Setter>
-                <Setter Property="Opacity" Value="0.5"></Setter>
-                <Setter Property="IsOverflowOpen" Value="False"></Setter>
+                <Setter Property="Opacity" Value="1"></Setter>
+               
                 <Setter Property="Background">
                     <Setter.Value>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                            <GradientStop Color="#FF13051D" Offset="0"></GradientStop>
-                            <GradientStop Color="#FF852085" Offset="1"></GradientStop>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,5">
+                            <GradientStop Color="White" Offset="0"></GradientStop>
+                            <GradientStop Color="Aqua" Offset="1"></GradientStop>
                         </LinearGradientBrush>
                     </Setter.Value>
                 </Setter>
 
             </Style.Setters>
-            <Style.Triggers>
+            <!--<Style.Triggers>
                 <EventTrigger RoutedEvent="MouseEnter">
                     <EventTrigger.Actions>
                         <BeginStoryboard>
@@ -55,7 +69,7 @@
                         </BeginStoryboard>
                     </EventTrigger.Actions>
                 </EventTrigger>
-            </Style.Triggers>
+            </Style.Triggers>-->
         </Style>
         
         <Style  TargetType="Syncfusion:FilterToggleButton" >
@@ -63,7 +77,7 @@
         </Style>
 
         <Style  TargetType="Syncfusion:SfDataGrid" x:Key="SfDataGridStyle">
-            <Style.Setters>
+            <Style.Setters>               
 
                 <Setter Property="NavigationMode" Value="Row"/>
                 <Setter Property="SelectionMode" Value="Single"></Setter>
@@ -109,15 +123,15 @@
         </Style>
 
         <Style BasedOn="{StaticResource MaterialDesignGroupBox}" TargetType="GroupBox" >            
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="HeaderTemplate">
+            <Setter Property="FontSize" Value="14"/>           
+            <Setter Property="HeaderTemplate">                
                 <Setter.Value>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" FontWeight="Bold"/>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Background" Value="#FFCFECF6">
+            <Setter Property="Background" Value="#FFCFFFFF">
 
             </Setter>
             <Setter Property="materialDesign:ColorZoneAssist.Mode" Value="Custom"/>
@@ -192,6 +206,25 @@
 
     </Window.Resources>
 
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonClose">
+            <BeginStoryboard x:Name="CloseMenu_BeginStoryboard" Storyboard="{StaticResource CloseMenu}"></BeginStoryboard>
+
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpen">
+            <BeginStoryboard x:Name="OpenMenu_BeginStoryboard" Storyboard="{StaticResource OpenMenu}"></BeginStoryboard>
+        </EventTrigger>
+
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonCloseFindData">
+            <BeginStoryboard x:Name="CloseMenuFindData_BeginStoryboard" Storyboard="{StaticResource CloseMenuFindData}"></BeginStoryboard>
+
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenFindData">
+            <BeginStoryboard x:Name="OpenMenuFindData_BeginStoryboard" Storyboard="{StaticResource OpenMenuFindData}"></BeginStoryboard>
+        </EventTrigger>
+
+    </Window.Triggers>
+
     <Window.InputBindings>
         <KeyBinding Command="{Binding DoQuery}" Gesture="CTRL+E" />
         <KeyBinding Command="{Binding Save}" Gesture="CTRL+S" >
@@ -215,24 +248,7 @@
 
 
 
-    <Window.Triggers>
-        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonClose">
-            <BeginStoryboard x:Name="CloseMenu_BeginStoryboard" Storyboard="{StaticResource CloseMenu}"></BeginStoryboard>
-
-        </EventTrigger>
-        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpen">
-            <BeginStoryboard x:Name="OpenMenu_BeginStoryboard" Storyboard="{StaticResource OpenMenu}"></BeginStoryboard>
-        </EventTrigger>
-
-        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonCloseFindData">
-            <BeginStoryboard x:Name="CloseMenuFindData_BeginStoryboard" Storyboard="{StaticResource CloseMenuFindData}"></BeginStoryboard>
-
-        </EventTrigger>
-        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenFindData">
-            <BeginStoryboard x:Name="OpenMenuFindData_BeginStoryboard" Storyboard="{StaticResource OpenMenuFindData}"></BeginStoryboard>
-        </EventTrigger>
-
-    </Window.Triggers>
+    
 
     <Syncfusion:BusyIndicator IsIndeterminate="True"  AllowDrop="False" Background="LightCoral"  IsBusy="{Binding IsBusy, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
 
@@ -249,27 +265,30 @@
                 <RowDefinition Height="0"/>
             </Grid.RowDefinitions>
 
-            <ToolBar   Grid.ColumnSpan="3" Grid.Row="0" Height="auto" >
-
+            <StatusBar ClipToBounds="True"  Grid.ColumnSpan="3" Grid.Row="0" Height="auto" >
+                
+                
                 <Button Margin="10,0,0,0" 
-                            VerticalAlignment="Center"                                                      
-                            Padding="0"
-                            ToolTip="Открыть Ctrl+O"
-                            Command="{Binding Open}">
+                        Style="{StaticResource ButtonTools}"
+                        VerticalAlignment="Center"                                                      
+                        Padding="0"
+                        ToolTip="Открыть Ctrl+O"
+                        Command="{Binding Open}">
                     <ButtonBase.CommandParameter>
                         <MultiBinding Converter="{StaticResource CustomConverter}">
                             <Binding ElementName="BaseDataGrid"/>
                             <Binding ElementName="ShemaDataGrid"/>
                         </MultiBinding>
                     </ButtonBase.CommandParameter>
-                    <materialDesign:PackIcon   Kind="OpenInNew"  Foreground="#00FFFF" Width="30"  Height="30" ></materialDesign:PackIcon>
+                    <materialDesign:PackIcon   Kind="OpenInNew"  Foreground="Green" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
 
                 <Button Margin="50,0,0,0" 
-                            VerticalAlignment="Center"                        
-                            Padding="0"
-                            ToolTip="Сохранить (Ctrl+S)"
-                            Command="{Binding Save}"                         >
+                       Style="{StaticResource ButtonTools}"
+                        VerticalAlignment="Center"                        
+                        Padding="0"
+                        ToolTip="Сохранить (Ctrl+S)"
+                        Command="{Binding Save}"                         >
                     <ButtonBase.CommandParameter>
                         <MultiBinding Converter="{StaticResource CustomConverter}">
                             <Binding ElementName="BaseDataGrid"/>
@@ -277,20 +296,21 @@
                         </MultiBinding>
                     </ButtonBase.CommandParameter>
 
-
-                    <materialDesign:PackIcon   Kind="ContentSaveAll"  Foreground="#0000FF" Width="30"  Height="30" ></materialDesign:PackIcon>
+                    <materialDesign:PackIcon   Kind="ContentSave"  Foreground="#0000FF" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
 
                 <Button Margin="50,0,0,0" 
-                            VerticalAlignment="Center"                                
-                            Padding="0"
-                            ToolTip="Применить фильтры (Ctrl+E)"
-                            Command="{Binding DoQuery, UpdateSourceTrigger=PropertyChanged}" Background="#FF8EF40B">
+                        Style="{StaticResource ButtonTools}"
+                        VerticalAlignment="Center"                                
+                        Padding="0"
+                        ToolTip="Применить фильтры (Ctrl+E)"
+                        Command="{Binding DoQuery, UpdateSourceTrigger=PropertyChanged}">
 
-                    <materialDesign:PackIcon   Kind="SqlQuery"  Foreground="#7FFF00" Width="30"  Height="30" ></materialDesign:PackIcon>
+                    <materialDesign:PackIcon   Kind="SqlQuery"  Foreground="Orange" Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
 
-                <Button  Margin="50,0,0,0"    
+                <Button  Margin="50,0,0,0"  
+                         Style="{StaticResource ButtonTools}"
                          x:Name="CleareFilter"
                          VerticalAlignment="Center"                           
                          Padding="0"                         
@@ -304,22 +324,25 @@
                         </MultiBinding>
                     </ButtonBase.CommandParameter>
 
-                    <materialDesign:PackIcon  Kind="RemoveCircle" Foreground="#FF4500" Width="30"  Height="30" ></materialDesign:PackIcon>
+                    <materialDesign:PackIcon  Kind="RemoveCircle"  Foreground="Red" Width="30"  Height="30" />
                 </Button>
 
-                <Button  Margin="50,0,0,0"                            
-                            VerticalAlignment="Center"   
-                            ToolTip="Экспорт в docx"
-                            Padding="0"
-                            Command="{Binding CreateDocx, UpdateSourceTrigger=PropertyChanged}">
-                    <materialDesign:PackIcon  Kind="MicrosoftOffice" Foreground="#FFA500"   Width="30"  Height="30" ></materialDesign:PackIcon>
+                <Button  Margin="50,0,0,0"  
+                         
+                         Style="{StaticResource ButtonTools}"
+                         VerticalAlignment="Center"   
+                         ToolTip="Экспорт в docx"
+                         Padding="0"
+                         Command="{Binding CreateDocx, UpdateSourceTrigger=PropertyChanged}">
+                    <materialDesign:PackIcon  Kind="MicrosoftOffice"   Foreground="Black"   Width="30"  Height="30" ></materialDesign:PackIcon>
                 </Button>
+
                 
-                
-            </ToolBar>
+
+            </StatusBar>
 
 
-            <Grid x:Name="GridMenu" Width="350"  Grid.Column="0" Grid.Row="1" Background="WhiteSmoke" >
+            <Grid x:Name="GridMenu" Width="350" Background="#FFCFFFFF" Grid.Column="0" Grid.Row="1" >
                 <Grid>
                     <StackPanel  >
                         <Button Grid.Column="2" 
@@ -368,25 +391,30 @@
                             </StackPanel>
                         </GroupBox>
 
-                        <GroupBox >
+                        <GroupBox Name="GroupBoxParent" >
                             <GroupBox.HeaderTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="0">
                                         <TextBlock FontWeight="Bold" FontSize="14" Text="Испытательное напряжение, кВ"></TextBlock>
-                                        <Button Margin="70,0,0,0" 
+                                        <Button                                             
+                                                Margin="70,0,0,0" 
                                                 ToolTip="Добавить/Выгрузить"                                                 
                                                 Height="17" Width="18" Padding="0" 
                                                 Background="{x:Null}" 
                                                 BorderBrush="{x:Null}"
-                                                Command="{Binding ImpulseDataOn}">
-                                            <Button.DataContext>
-                                                <viewModel:MainVM/>
-                                            </Button.DataContext>
+                                                Command="{Binding Path=DataContext.ImpulseDataOn, 
+                                                         RelativeSource={RelativeSource Mode=FindAncestor,
+                                                         AncestorType={x:Type Window} } }">
+
                                             <materialDesign:PackIcon  Padding="0" Kind="Flash" Foreground="Yellow" Width="auto" Height="auto"></materialDesign:PackIcon>
+                                           
                                         </Button>
                                     </StackPanel>
+
                                 </DataTemplate>
-                                
+                               
+
+
                             </GroupBox.HeaderTemplate>
                             <StackPanel>                               
                                 <TextBox Style="{StaticResource TextBoxStyle}" materialDesign:HintAssist.Hint="Импульсное на землю"                   
@@ -444,7 +472,7 @@
                 </ScrollViewer>
             </Grid>
 
-            <Grid Background="WhiteSmoke" x:Name="GridMenuFindData" Width="350"  Grid.Column="2" Grid.Row="1" >
+            <Grid  Background="#FFCFFFFF"  x:Name="GridMenuFindData" Width="350"  Grid.Column="2" Grid.Row="1" >
 
                 <StackPanel  Margin="0,0,20,0" VerticalAlignment="Top" HorizontalAlignment="Right"   Orientation="Horizontal"  >
                     <TextBox Foreground="Black"
@@ -617,10 +645,10 @@
             <Button Grid.Column="1" 
                 Grid.Row="1" 
                 VerticalAlignment="Top" 
-                Background="{x:Null}" 
+                Background="#FFCFFFFF" 
                 x:Name="ButtonOpen" 
                 HorizontalAlignment="Left"
-                BorderBrush="{x:Null}"
+                BorderBrush="#FFCFFFFF"
                 Width="0"
                 Height="15"
                 Padding="0">
@@ -631,15 +659,20 @@
             <Button Grid.Column="1" 
                 Grid.Row="1" 
                 VerticalAlignment="Top" 
-                Background="{x:Null}" 
+                Background="#FFCFFFFF" 
                 x:Name="ButtonOpenFindData" 
                 HorizontalAlignment="Right"
-                BorderBrush="{x:Null}"
+                BorderBrush="#FFCFFFFF"
                 Width="0"
                 Height="15"
                 Padding="0">
                 <materialDesign:PackIcon Foreground="red" Kind="ArrowCollapseLeft" Width="15" Height="15" HorizontalAlignment="Stretch" VerticalAlignment="Top" Opacity="0.7"></materialDesign:PackIcon>
             </Button>
         </Grid>
+        
     </Syncfusion:BusyIndicator>
+
+
+
+
 </Window>
